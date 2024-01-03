@@ -1,12 +1,14 @@
 'use client';
-import classNames from 'classnames'
-import React, {useState, useMemo} from 'react'
+import React, {useState} from 'react'
+import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import classNames from 'classnames';
 import { RiFileExcel2Line } from "react-icons/ri";
 import { BsTextareaResize } from "react-icons/bs";
-import { IoIosArrowBack } from "react-icons/io";
 import Icon from './icons/Icon';
 import Link from 'next/link';
+import UploadExcel from './UploadExcel';
+import InsertData from './InsertData';
 
 const menuItems = [
   { id: 1, label: "Subir Excel", icon: RiFileExcel2Line, link: "/" },
@@ -14,8 +16,7 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
-  const [toggleCollapse, setToggleCollapse] = useState(false);
-  const [isCollapsible, setIsCollapsible] = useState(false);
+  const [selectedOption,setSelectedOption]=useState(null);
 
   const router = useRouter();
 
@@ -24,90 +25,49 @@ const Sidebar = () => {
     [router.pathname]
   );
 
-  const wrapperClasses = classNames(
-    "h-screen px-4 pt-8 pb-4 bg-light flex justify-between flex-col",
-    {
-      ["w-80"]: !toggleCollapse,
-      ["w-20"]: toggleCollapse,
-    }
-  );
-
-  const collapseIconClasses = classNames(
-    "p-4 rounded bg-light-lighter absolute right-0",
-    {
-      "rotate-180": toggleCollapse,
-    }
-  );
+  const wrapperClasses = "h-screen px-4 pt-8 pb-4 bg-8A90F1 flex justify-between flex-col w-80";
 
   const getNavItemClasses = (menu) => {
     return classNames(
-      "flex items-center cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap",
+      "flex items-center cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap text-lg font-bold",
       {
         ["bg-light-lighter"]: activeMenu && activeMenu.id === menu.id,
       }
     );
   };
 
-  const onMouseOver = () => {
-    setIsCollapsible(!isCollapsible);
-  };
-
-  const handleSidebarToggle = () => {
-    setToggleCollapse(!toggleCollapse);
-  };
-
   return (
-    <div
-      className={wrapperClasses}
-      onMouseEnter={onMouseOver}
-      onMouseLeave={onMouseOver}
-      style={{ transition: "width 300ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
-    >
-      <div className="flex flex-col">
-        <div className="flex items-center justify-between relative">
-          <div className="flex items-center pl-1 gap-4">
-            <span
-              className={classNames("mt-2 text-lg font-medium text-text", {
-                hidden: toggleCollapse,
-              })}
-            >
-              <Icon/>
-            </span>
-          </div>
-          {isCollapsible && (
-            <button
-              className={collapseIconClasses}
-              onClick={handleSidebarToggle}
-            >
-              <IoIosArrowBack />
-            </button>
-          )}
+    <div className={wrapperClasses}>
+      <div className="flex flex-col w-full m-5">
+        <div className="flex items-center pl-1 gap-4 w-full">
+          <span className="mt-2 text-lg font-bold text-text w-full">
+            <Icon className="text-lg"/>
+          </span>
         </div>
 
-        <div className="flex flex-col items-start mt-24">
+        <div className="flex flex-col items-start mt-24 w-full">
           {menuItems.map(({ icon: Icon, ...menu }) => {
             const classes = getNavItemClasses(menu);
             return (
-              <div className={classes} key={menu.id}>
+              <div className={classes} key={menu.id} onClick={()=> setSelectedOption(menu.id)}>
                 <Link href={menu.link} className="flex py-4 px-3 items-center w-full h-full">
                   <div style={{ width: "2.5rem" }}>
-                    <Icon />
+                    <Icon className="text-lg"/>
                   </div>
-                  {!toggleCollapse && (
-                    <span
-                      className={classNames(
-                        "text-md font-medium text-text-light"
-                      )}
-                    >
-                      {menu.label}
-                    </span>
-                  )}
+                  <span className="text-lg font-bold text-text-light w-full">
+                    {menu.label}
+                  </span>
                 </Link>
               </div>
             );
           })}
         </div>
+        <div className='flex flex-col items-start mt-24 w-full'>
+          {selectedOption === 1 && <UploadExcel/>}
+          {selectedOption === 2 && <InsertData/>}
+        </div>
       </div>
+     
     </div>
   );
 };
