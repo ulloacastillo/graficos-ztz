@@ -6,8 +6,8 @@
     "extends": [
         "plugin:react/recommended",
         "standard",
-        "plugin:@next/next/recommended",
-        "prettier"
+        "plugin:@next/next/recommended"
+
     ],
     "parserOptions": {
         "ecmaFeatures": {

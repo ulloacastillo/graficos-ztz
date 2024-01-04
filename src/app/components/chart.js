@@ -79,9 +79,8 @@ export default function Chart() {
         'd',
         d3
           .line()
-          .x((d) => x(d[0]))
-          .y((d) => y(d[1]))
-          .curve(d3.curveNatural),
+          .x((d) => x(d[0]) + 12)
+          .y((d) => y(d[1])),
       )
       .attr('stroke', '#FF110099')
       .attr('stroke-width', 2)
