@@ -11,6 +11,8 @@ export default function Chart() {
   const svgRef = useRef();
   const data = useSelector((state) => state.chartData);
 
+
+  
   const margin = { top: 30, right: 30, bottom: 70, left: 60 },
       width = 460 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
