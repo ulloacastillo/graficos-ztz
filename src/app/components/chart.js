@@ -4,30 +4,25 @@ import { useRef, useEffect, useState } from 'react';
 import ImageBar from './imageBar';
 import * as d3 from 'd3';
 import candleSVG from '../assets/candle.svg';
+import { useSelector } from 'react-redux';
+
 
 export default function Chart() {
   const svgRef = useRef();
+  const data = useSelector((state) => state.chartData);
 
-  const data = [
-    ['ENE', 200],
-    ['FEB', 100],
-    ['MAR', 300],
-    ['ABR', 200],
-    ['MAY', 400],
-    ['JUN', 600],
-    ['JUL', 100],
-    ['AGO', 900],
-    ['SEP', 200],
-    ['OCT', 350],
-    ['NOV', 600],
-    ['DIC', 300],
-  ];
-
-  useEffect(() => {
-    const margin = { top: 30, right: 30, bottom: 70, left: 60 },
+  const margin = { top: 30, right: 30, bottom: 70, left: 60 },
       width = 460 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
+  const maxData = Math.max(...data.map(item => item[1]));
+  const minData = Math.min(...data.map(item => item[1]));
+  const domainMax = maxData + maxData * 0.1;
+  const domainMin = minData - minData * 0.1;
+
+
+  useEffect(() => {
+    d3.select(svgRef.current).selectAll("*").remove();
     // append the svg object to the body of the page
     const svg = d3
       .select(svgRef.current)
@@ -38,7 +33,6 @@ export default function Chart() {
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     // Parse the Data
-
     // X axis
     const x = d3
       .scaleBand()
@@ -55,7 +49,7 @@ export default function Chart() {
       .style('text-anchor', 'end');
 
     // Add Y axis
-    const y = d3.scaleLinear().range([height, 0]).domain([0, 1000]);
+    const y = d3.scaleLinear().range([height, 0]).domain([domainMin, domainMax]);
     svg.append('g').call(d3.axisLeft(y));
 
     // Bars
@@ -111,7 +105,7 @@ export default function Chart() {
       .attr('transform', 'translate(5)')
       .attr('font-weight', '600')
       .text((d) => d[1]);
-  }, []);
+  }, [data]);
 
   return <svg viewBox="0 0 460 400" ref={svgRef}></svg>;
 }

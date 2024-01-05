@@ -1,22 +1,24 @@
-import React, { useState } from 'react'
-import {validateData} from '../src/utils/validation';
+import React, { useState } from 'react';
+import { validateData } from '../utils/validation';
+import { useDispatch } from 'react-redux';
+import { updateChartData } from '../redux/actions';
 
 const InsertData = () => {
-
   const [inputData, setInputdata] = useState('');
-  const handleInputChange = (event) =>{
+  const dispatch = useDispatch();
+
+  const handleInputChange = (event) => {
     setInputdata(event.target.value);
   };
-  
-  const handleGenerateGraph = ()=>{
+
+  const handleGenerateGraph = () => {
     const validation = validateData(inputData);
-  
-    if(!validation.isValid){
+    if (!validation.isValid) {
       console.error(validation.error);
       return;
     }
-  
-  }
+    dispatch(updateChartData(validation.data));
+  };
   return (
     <div>
       <h3 className="mb-4 font-bold text-2xl text-black dark:text-black"> Ingresar datos: </h3>

@@ -1,34 +1,19 @@
 'use client';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { chartReducer } from './redux/reducers';
+import Layout from './components/Layout';
 
-import { useState } from 'react';
-import Layout from '../../components/Layout';
-import Chart from './components/chart';
-import UploadImage from './components/UploadImage.jsx';
-
+const store = configureStore({
+  reducer: chartReducer,
+});
 export default function Home() {
-  const [title, setTitle] = useState('Título del gráfico');
+
 
   return (
-    <main>
+    <Provider store={store}>
        <Layout/>
-      <div>
-        <UploadImage />
-        <section>
-          <header>
-            <input
-              type="text"
-              name="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            ></input>
-          </header>
-          <main>
-            <Chart />
-          </main>
-        </section>
-      </div>
-    </main>
+    </Provider>
+   
   );
-  
-  
 }
