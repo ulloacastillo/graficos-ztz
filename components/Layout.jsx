@@ -25,7 +25,9 @@ const Layout = () => {
               <Chart />
             </main>
           </section>
-          <UploadImage className="grow" />
+          <div className="grow-[1]">
+            <UploadImage  />
+          </div>
         </div>
       </div>
     </div>

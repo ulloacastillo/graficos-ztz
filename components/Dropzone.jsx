@@ -7,14 +7,17 @@ import { useImageStore } from '@/app/store/image';
 export default function Dropzone() {
   const addImage = useImageStore((state) => state.addImage);
   const image = useImageStore((state) => state.image);
+  const [isUpload, setUpload] = useState(false);
 
   const onDrop = useCallback((acceptedFiles) => {
+    console.log('dsadaj');
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
 
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
+        setUpload(true);
         // Do whatever you want with the file contents
         const img = reader.result;
         addImage(
@@ -41,23 +44,35 @@ export default function Dropzone() {
   });
 
   const files = image.map((file) => (
-    <div key={file.path}>
-      <img key={file.name} src={file.preview} width="30px" />
-      {file.name}
+    <div
+      key={file.path}
+      className="size-20 rounded-lg bg-slate-300/40 flex flex-col items-center justify-center relative"
+    >
+      <img key={file.name} src={file.preview} width="50px" />
     </div>
   ));
 
   return (
-    <section className="container">
-      <div {...getRootProps({ className: 'dropzone' })}>
+    <section
+      className="relative flex flex-col size-full items-center justify-center hover:cursor-pointer"
+      onClick={open}
+    >
+      <div
+        {...getRootProps({
+          className:
+            'flex flex-col justify-center items-center absolute inset-0',
+        })}
+      >
         <input {...getInputProps()} />
-        <p>Arrastra tus archivos aquí</p>
-        <button onClick={open}>Abrir</button>
       </div>
-      <aside>
-        <h4>Files</h4>
-        <ul>{files}</ul>
-      </aside>
+      <h2 className="text-3xl font-bold">Sube tu imagen aquí</h2>
+      <p className="mb-[1.5rem]">Arrasta el archivo</p>
+      {isUpload && (
+        <aside className="absolute top-[60%] flex flex-col items-center">
+          <h4>Imagen Subida</h4>
+          <ul>{files}</ul>
+        </aside>
+      )}
     </section>
   );
 }
