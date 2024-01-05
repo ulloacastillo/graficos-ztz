@@ -9,12 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
     "d3": "^7.8.5",
     "next": "14.0.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
+    "react-icons": "^4.12.0",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.16",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard": "^17.1.0",
@@ -23,8 +28,10 @@
     "eslint-plugin-prettier": "^5.1.2",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
+    "postcss": "^8.4.32",
     "prettier": "^3.1.1",
-    "standard": "^17.1.0"
+    "standard": "^17.1.0",
+    "tailwindcss": "^3.4.0"
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"

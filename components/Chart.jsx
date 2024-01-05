@@ -1,12 +1,13 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import ImageBar from './imageBar';
+import { useImageStore } from '@/app/store/image';
 import * as d3 from 'd3';
-import candleSVG from '../assets/candle.svg';
 
-export default function Chart() {
+function Chart() {
+  const image = useImageStore((state) => state.image);
   const svgRef = useRef();
+  const chartConfig = useRef();
 
   const data = [
     ['ENE', 200],
@@ -86,21 +87,6 @@ export default function Chart() {
       .attr('stroke-width', 2)
       .attr('fill', 'none');
 
-    // Images
-    svg
-      .selectAll('image')
-      .data(data)
-      .join('image')
-      .attr('xlink:href', (d, i) => {
-        if (i % 2 === 0)
-          return 'https://clipart-library.com/images/zTXoLGgyc.png';
-        else
-          return 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Santa_hat.svg/2560px-Santa_hat.svg.png';
-      })
-      .attr('x', (d) => x(d[0]))
-      .attr('y', (d) => y(d[1] + 90))
-      .attr('width', x.bandwidth());
-
     svg
       .selectAll('claims')
       .data(data)
@@ -111,7 +97,27 @@ export default function Chart() {
       .attr('transform', 'translate(5)')
       .attr('font-weight', '600')
       .text((d) => d[1]);
+    chartConfig.current = { svg, x, y };
   }, []);
+
+  useEffect(() => {
+    const { svg, x, y } = chartConfig.current;
+    // Images
+
+    const u = svg.selectAll('image').data(data);
+
+    if (image[0]) {
+      u.join('image')
+        .attr('xlink:href', (d, i) => image[0].src)
+        .attr('x', (d) => x(d[0]))
+        .attr('y', (d) => y(d[1] + 90))
+        .attr('width', x.bandwidth());
+    }
+
+    //u.exit().remove();
+  }, [image]);
 
   return <svg viewBox="0 0 460 400" ref={svgRef}></svg>;
 }
+
+export default Chart;

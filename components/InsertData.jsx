@@ -23,7 +23,7 @@ const InsertData = () => {
       <textarea className="w-full" value={inputData} onChange={handleInputChange} ></textarea>
       <div className='py-8'>
         <h3 className="mb-4 font-bold text-2xl text-black dark:text-black"> Filtrar por: </h3>
-        <ul class="items-center w-full text-lg font-bold text-black bg-white border border-black rounded-lg sm:flex dark:bg-8A90F1 dark:border-black dark:text-black">
+        <ul className="items-center w-full text-lg font-bold text-black bg-white border border-black rounded-lg sm:flex dark:bg-8A90F1 dark:border-black dark:text-black">
           <li className="w-full border-b border-black sm:border-b-0 sm:border-r dark:border-black">
             <div className="flex items-center ps-3">
               <input
@@ -32,7 +32,7 @@ const InsertData = () => {
                 name="periodo"
                 value="Mes"
               />
-              <label for="horizontal-month" className="w-full py-3 ms-2 text-lg font-bold text-black dark:text-black"> Mes </label>
+              <label htmlFor="horizontal-month" className="w-full py-3 ms-2 text-lg font-bold text-black dark:text-black"> Mes </label>
             </div>
           </li>
           <li className="w-full dark:border-black">
@@ -43,7 +43,7 @@ const InsertData = () => {
                 name="periodo"
                 value="Año"
               />
-              <label for="horizontal-year" className="w-full py-3 ms-2 text-lg font-bold text-black dark:text-black"> Año </label>
+              <label htmlFor="horizontal-year" className="w-full py-3 ms-2 text-lg font-bold text-black dark:text-black"> Año </label>
             </div>
           </li>
         </ul>
