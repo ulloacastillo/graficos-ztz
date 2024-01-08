@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from 'react';
 import Sidebar from "./Sidebar";
-import Chart from "./chart";
+import Chart from "./Chart";
 import UploadImage from './UploadImage.jsx';
 import FrequencyBox from "./FrequencyBox";
 
