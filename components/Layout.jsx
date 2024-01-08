@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Sidebar from './Sidebar';
 import UploadImage from './UploadImage';
 import Chart from './Chart';
+import FrequencyBox from './FrequencyBox';
 
 const Layout = () => {
   const [title, setTitle] = useState('Título del gráfico');
@@ -26,6 +27,7 @@ const Layout = () => {
           </section>
           <div className="grow-[1]">
             <UploadImage />
+            <FrequencyBox />
           </div>
         </div>
       </div>

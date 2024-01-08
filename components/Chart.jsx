@@ -4,31 +4,39 @@ import { useRef, useEffect, useState } from 'react';
 import { useImageStore } from '@/app/store/image';
 import * as d3 from 'd3';
 import boxPng from '../src/app/assets/box.png';
-
+import { useSelector } from 'react-redux';
 
 function Chart() {
   const image = useImageStore((state) => state.image);
   const svgRef = useRef();
   const chartConfig = useRef();
 
-  const data = [
-    ['ENE', 200],
-    ['FEB', 100],
-    ['MAR', 300],
-    ['ABR', 200],
-    ['MAY', 400],
-    ['JUN', 600],
-    ['JUL', 100],
-    ['AGO', 900],
-    ['SEP', 200],
-    ['OCT', 350],
-    ['NOV', 600],
-    ['DIC', 300],
-  ];
+  const data = useSelector((state) => state.chartData);
+  const headers = useSelector((state) => state.chartHeaders);
+  console.log(data);
+  // const data = [
+  //   ['ENE', 200],
+  //   ['FEB', 100],
+  //   ['MAR', 300],
+  //   ['ABR', 200],
+  //   ['MAY', 400],
+  //   ['JUN', 600],
+  //   ['JUL', 100],
+  //   ['AGO', 900],
+  //   ['SEP', 200],
+  //   ['OCT', 350],
+  //   ['NOV', 600],
+  //   ['DIC', 300],
+  // ];
 
   const margin = { top: 30, right: 30, bottom: 70, left: 60 },
     width = 800 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
+
+  const maxData = Math.max(...data.map((item) => item[1]));
+  const minData = Math.min(...data.map((item) => item[1]));
+  const domainMax = maxData + maxData * 0.1;
+  const domainMin = minData - minData * 0.1;
 
   useEffect(() => {
     // append the svg object to the body of the page
@@ -112,7 +120,7 @@ function Chart() {
       .style('text-anchor', 'middle');
 
     chartConfig.current = { svg, x, y };
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     const { svg, x, y } = chartConfig.current;
