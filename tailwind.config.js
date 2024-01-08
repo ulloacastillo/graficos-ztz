@@ -12,6 +12,9 @@ module.exports = {
         '8A90F1': '#F6F8FA',
       },
     },
+    backgroundImage:{
+      back: 'url(../app/assets/backgroundchart.svg)'
+    }
   },
   plugins: [],
 };

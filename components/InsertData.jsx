@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { validateData } from '../utils/validation';
+import { validateData } from '../src/app/utils/validation';
 import { useDispatch } from 'react-redux';
-import { updateChartData } from '../redux/actions';
+import { updateChartData } from '../src/app/redux/actions';
 
 const InsertData = () => {
   const [inputData, setInputdata] = useState('');

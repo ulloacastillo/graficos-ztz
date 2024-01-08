@@ -1,9 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import ImageBar from './imageBar';
 import * as d3 from 'd3';
-import candleSVG from '../assets/candle.svg';
 import { useSelector } from 'react-redux';
 
 

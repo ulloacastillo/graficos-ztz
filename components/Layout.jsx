@@ -11,9 +11,9 @@ import FrequencyBox from "./FrequencyBox";
 const Layout = () => {
   const [title, setTitle] = useState('Título del gráfico');
   return (
-    <div className="h-screen flex flex-row justify-start bg-F6F8FA">
+    <div className="w-full h-screen bg-back bg-no-repeat bg-cover flex items-center">
       <Sidebar />
-      <div className="bg-white flex-1 p-4 text-black flex justify-center items-center">
+      <div className="bg-opacity-100 flex-1 p-4 text-black flex justify-center items-center">
       <main className="w-3/4 h-3/4">
       <div>
         <UploadImage />
