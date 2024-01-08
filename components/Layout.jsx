@@ -14,19 +14,19 @@ const Layout = () => {
         <div className="flex flex-row justify-center items-center">
           <section className="grow-[4]">
             <header>
-              <input
-                type="text"
+              <textarea
+                className="text-3xl outline-none w-96 ml-6 text-wrap"
                 name="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-              ></input>
+              ></textarea>
             </header>
             <main>
               <Chart />
             </main>
           </section>
           <div className="grow-[1]">
-            <UploadImage  />
+            <UploadImage />
           </div>
         </div>
       </div>
