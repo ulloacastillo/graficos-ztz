@@ -1,16 +1,12 @@
-'use client';
-
-import { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import { useSelector } from 'react-redux';
-
 
 export default function Chart() {
   const svgRef = useRef();
   const data = useSelector((state) => state.chartData);
+  const headers = useSelector((state) => state.chartHeaders);
 
-
-  
   const margin = { top: 30, right: 30, bottom: 70, left: 60 },
       width = 460 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
@@ -20,10 +16,8 @@ export default function Chart() {
   const domainMax = maxData + maxData * 0.1;
   const domainMin = minData - minData * 0.1;
 
-
   useEffect(() => {
     d3.select(svgRef.current).selectAll("*").remove();
-    // append the svg object to the body of the page
     const svg = d3
       .select(svgRef.current)
       .append('svg')
@@ -32,15 +26,8 @@ export default function Chart() {
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    // Parse the Data
-    // X axis
-    const x = d3
-      .scaleBand()
-      .range([0, width])
-      .domain(data.map((d) => d[0]))
-      .padding(0.2);
-    svg
-      .append('g')
+    const x = d3.scaleBand().range([0, width]).domain(data.map((d) => d[0])).padding(0.2);
+    svg.append('g')
       .attr('transform', `translate(0, ${height})`)
       .call(d3.axisBottom(x))
       .selectAll('text')
@@ -48,13 +35,23 @@ export default function Chart() {
       .attr('font-size', '8')
       .style('text-anchor', 'end');
 
-    // Add Y axis
+    svg.append("text")
+      .attr("transform", `translate(${width / 2} ,${height + margin.top + 20})`)
+      .style("text-anchor", "middle")
+      .text(headers[0]);
+
     const y = d3.scaleLinear().range([height, 0]).domain([domainMin, domainMax]);
     svg.append('g').call(d3.axisLeft(y));
 
-    // Bars
-    svg
-      .selectAll('mybar')
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text(headers[1]); 
+
+    svg.selectAll('mybar')
       .data(data)
       .join('rect')
       .attr('x', (d) => x(d[0]))
@@ -64,9 +61,7 @@ export default function Chart() {
       .attr('fill', '#265c2f');
 
     const curve = d3.line().curve(d3.curveNatural);
-    // Lines
-    svg
-      .append('g')
+    svg.append('g')
       .append('path')
       .datum(data)
       .attr(
@@ -80,9 +75,7 @@ export default function Chart() {
       .attr('stroke-width', 2)
       .attr('fill', 'none');
 
-    // Images
-    svg
-      .selectAll('image')
+    svg.selectAll('image')
       .data(data)
       .join('image')
       .attr('xlink:href', (d, i) => {
@@ -95,8 +88,7 @@ export default function Chart() {
       .attr('y', (d) => y(d[1] + 90))
       .attr('width', x.bandwidth());
 
-    svg
-      .selectAll('claims')
+    svg.selectAll('claims')
       .data(data)
       .join('text')
       .attr('x', (d) => x(d[0]))
@@ -105,7 +97,7 @@ export default function Chart() {
       .attr('transform', 'translate(5)')
       .attr('font-weight', '600')
       .text((d) => d[1]);
-  }, [data]);
+  }, [data, headers]);
 
   return <svg viewBox="0 0 460 400" ref={svgRef}></svg>;
 }

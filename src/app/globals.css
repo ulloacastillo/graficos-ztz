@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.FrequencyBox-container {
+  @apply bg-glass rounded-3xl p-4 border transition-all duration-500 border-solid border-glass relative;
+  position: absolute;
+  top: 0;
+  right: 0;
+}

@@ -22,9 +22,10 @@ const FrequencyBox = () => {
   const frequencies = calculateFrequencies(data);
 
   return (
-    <div className="absolute top-50 right-80 m-4 border-2 border-black p-4">
+    <div className="FrequencyBox-container">
+      <h3 className='text-center font-bold'> Frecuencia de reclamos </h3>
       {Object.entries(frequencies).map(([year, { count, total }]) => (
-        <p key={year}>{`Reclamos recibidos ${year} : ${total} Frecuencia de reclamos año: ${count}`}</p>
+        <p key={year}>{`Año ${year} : ${total} Frecuencia de reclamos año: ${count}`}</p>
       ))}
     </div>
   );

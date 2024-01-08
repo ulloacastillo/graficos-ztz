@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { validateData } from '../src/app/utils/validation';
 import { useDispatch } from 'react-redux';
-import { updateChartData } from '../src/app/redux/actions';
+import { updateChartData, updateChartHeaders } from '../src/app/redux/actions';
 
 const InsertData = () => {
   const [inputData, setInputdata] = useState('');
@@ -18,6 +18,7 @@ const InsertData = () => {
       return;
     }
     dispatch(updateChartData(validation.data));
+    dispatch(updateChartHeaders(validation.headers));
   };
   return (
     <div>

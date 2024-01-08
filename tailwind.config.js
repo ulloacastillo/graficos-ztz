@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       colors: {
         '8A90F1': '#F6F8FA',
+        "glass": "rgba(255,255,255,0.25)"
       },
     },
     backgroundImage:{
