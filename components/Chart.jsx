@@ -1,8 +1,13 @@
-import React, { useRef, useEffect } from 'react';
+'use client';
+
+import { useRef, useEffect, useState } from 'react';
+import { useImageStore } from '@/app/store/image';
 import * as d3 from 'd3';
+import boxPng from '../src/app/assets/box.png';
 import { useSelector } from 'react-redux';
 
-export default function Chart() {
+function Chart() {
+  const image = useImageStore((state) => state.image);
   const svgRef = useRef();
   const data = useSelector((state) => state.chartData);
   const headers = useSelector((state) => state.chartHeaders);
@@ -28,6 +33,24 @@ export default function Chart() {
 
     const x = d3.scaleBand().range([0, width]).domain(data.map((d) => d[0])).padding(0.2);
     svg.append('g')
+      .scaleBand()
+      .range([0, width])
+      .domain(data.map((d) => d[0]))
+      .padding(0.2);
+
+    svg
+      .selectAll('box')
+      .data(data)
+      .join('image')
+      .attr('x', (d) => x(d[0]))
+      .attr('y', height)
+      .attr('xlink:href', 'https://pngimg.com/d/gift_PNG100322.png')
+      .attr('width', x.bandwidth());
+
+    // X axis
+
+    svg
+      .append('g')
       .attr('transform', `translate(0, ${height})`)
       .call(d3.axisBottom(x))
       .selectAll('text')
@@ -60,44 +83,49 @@ export default function Chart() {
       .attr('height', (d) => height - y(d[1]))
       .attr('fill', '#265c2f');
 
-    const curve = d3.line().curve(d3.curveNatural);
-    svg.append('g')
+    // Lines
+    svg
+      .append('g')
       .append('path')
       .datum(data)
+      .attr('class', 'line')
+      .style('stroke-dasharray', '3, 3')
       .attr(
         'd',
         d3
           .line()
-          .x((d) => x(d[0]) + 12)
+          .x((d) => x(d[0]) + x.bandwidth() / 2)
           .y((d) => y(d[1])),
       )
       .attr('stroke', '#FF110099')
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 1)
       .attr('fill', 'none');
 
-    svg.selectAll('image')
-      .data(data)
-      .join('image')
-      .attr('xlink:href', (d, i) => {
-        if (i % 2 === 0)
-          return 'https://clipart-library.com/images/zTXoLGgyc.png';
-        else
-          return 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Santa_hat.svg/2560px-Santa_hat.svg.png';
-      })
-      .attr('x', (d) => x(d[0]))
-      .attr('y', (d) => y(d[1] + 90))
-      .attr('width', x.bandwidth());
-
-    svg.selectAll('claims')
+    svg
+      .selectAll('claims')
       .data(data)
       .join('text')
-      .attr('x', (d) => x(d[0]))
-      .attr('y', (d) => y(d[1] + 120))
+      .text((d) => d[1])
+      .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
+      .attr('y', (d) => y(d[1] + 20))
       .attr('font-size', 8)
-      .attr('transform', 'translate(5)')
       .attr('font-weight', '600')
       .text((d) => d[1]);
   }, [data, headers]);
 
-  return <svg viewBox="0 0 460 400" ref={svgRef}></svg>;
+  useEffect(() => {
+    const { svg, x, y } = chartConfig.current;
+    // Images
+
+    const u = svg.selectAll('image').data(data);
+    const bars = svg.selectAll('rect').data(data);
+    bars.remove();
+    
+
+    u.exit().remove();
+  }, [image]);
+
+  return <svg viewBox="0 0 800 420" ref={svgRef}></svg>;
 }
+
+export default Chart;
