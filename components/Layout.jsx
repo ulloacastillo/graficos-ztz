@@ -2,11 +2,9 @@
 import { useState } from 'react';
 import Sidebar from './Sidebar';
 import UploadImage from './UploadImage';
-
 import Chart from './Chart';
 
 const Layout = () => {
-  const [title, setTitle] = useState('Título del gráfico');
   const [title, setTitle] = useState('Título del gráfico');
   return (
     <div className="w-full h-screen bg-back bg-no-repeat bg-cover flex items-center">

@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useImageStore } from '@/app/store/image';
+import { useImageStore } from '../src/app/store/image';
 
 export default function Dropzone() {
   const addImage = useImageStore((state) => state.addImage);
