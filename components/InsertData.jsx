@@ -22,39 +22,58 @@ const InsertData = () => {
   };
   return (
     <div>
-      <h3 className="mb-4 font-bold text-2xl text-black dark:text-black"> Ingresar datos: </h3>
-      <textarea className="w-full" value={inputData} onChange={handleInputChange} ></textarea>
-      <div className='py-8'>
-        <h3 className="mb-4 font-bold text-2xl text-black dark:text-black"> Filtrar por: </h3>
+      <h3 className="mb-4 font-bold text-2xl text-black dark:text-black">
+        {' '}
+        Ingresar datos:{' '}
+      </h3>
+      <textarea
+        className="w-full h-32 p-4 text-black bg-white border border-black rounded-lg sm:text-lg dark:bg-8A90F1 dark:border-black dark:text-black"
+        value={inputData}
+        onChange={handleInputChange}
+        placeholder="Copie y pegue sus datos aquí"
+      ></textarea>
+      <div className="py-8">
+        <h3 className="mb-4 font-bold text-2xl text-black dark:text-black">
+          {' '}
+          Filtrar por:{' '}
+        </h3>
         <ul className="items-center w-full text-lg font-bold text-black bg-white border border-black rounded-lg sm:flex dark:bg-8A90F1 dark:border-black dark:text-black">
           <li className="w-full border-b border-black sm:border-b-0 sm:border-r dark:border-black">
             <div className="flex items-center ps-3">
-              <input
-                type="radio"
-                id="mes"
-                name="periodo"
-                value="Mes"
-              />
-              <label htmlFor="horizontal-month" className="w-full py-3 ms-2 text-lg font-bold text-black dark:text-black"> Mes </label>
+              <input type="radio" id="mes" name="periodo" value="Mes" />
+              <label
+                htmlFor="horizontal-month"
+                className="w-full py-3 ms-2 text-lg font-bold text-black dark:text-black"
+              >
+                {' '}
+                Mes{' '}
+              </label>
             </div>
           </li>
           <li className="w-full dark:border-black">
             <div className="flex items-center ps-3">
-              <input
-                type="radio"
-                id="año"
-                name="periodo"
-                value="Año"
-              />
-              <label htmlFor="horizontal-year" className="w-full py-3 ms-2 text-lg font-bold text-black dark:text-black"> Año </label>
+              <input type="radio" id="año" name="periodo" value="Año" />
+              <label
+                htmlFor="horizontal-year"
+                className="w-full py-3 ms-2 text-lg font-bold text-black dark:text-black"
+              >
+                {' '}
+                Año{' '}
+              </label>
             </div>
           </li>
         </ul>
       </div>
-      <button type="button" onClick={handleGenerateGraph} className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold text-lg w-full py-2.5 text-center me-2 mb-2 px-8"> Generar Grafico</button>
+      <button
+        type="button"
+        onClick={handleGenerateGraph}
+        className="focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold text-lg w-full py-2.5 text-center me-2 mb-2 px-8"
+      >
+        {' '}
+        Generar Grafico
+      </button>
     </div>
-  )
+  );
 };
 
-
-export default InsertData
+export default InsertData;

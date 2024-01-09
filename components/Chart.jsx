@@ -40,6 +40,8 @@ function Chart() {
 
   useEffect(() => {
     // append the svg object to the body of the page
+    d3.select(svgRef.current).selectAll('*').remove();
+
     const svg = d3
       .select(svgRef.current)
       .append('svg')
@@ -55,29 +57,27 @@ function Chart() {
       .padding(0.2);
 
     svg
-      .selectAll('box')
-      .data(data)
-      .join('image')
-      .attr('x', (d) => x(d[0]))
-      .attr('y', height)
-      .attr('xlink:href', 'https://pngimg.com/d/gift_PNG100322.png')
-      .attr('width', x.bandwidth());
-
-    // X axis
-
-    svg
       .append('g')
-      .attr('transform', `translate(0, ${height})`)
+      .attr('transform', `translate(0, ${height + (x.bandwidth() * 3) / 4})`)
       .call(d3.axisBottom(x))
       .selectAll('text')
       .attr('transform', 'translate(8)')
       .attr('font-size', '8')
       .style('text-anchor', 'end');
 
+    // X axis
+
     // Add Y axis
     const y = d3.scaleLinear().range([height, 0]).domain([0, 1000]);
     svg.append('g').call(d3.axisLeft(y));
-
+    svg
+      .append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', 0 - margin.left)
+      .attr('x', 0 - height / 2)
+      .attr('dy', '1em')
+      .style('text-anchor', 'middle')
+      .text(headers[1]);
     // Bars
     svg
       .selectAll('mybar')
@@ -88,7 +88,14 @@ function Chart() {
       .attr('width', x.bandwidth())
       .attr('height', (d) => height - y(d[1]))
       .attr('fill', '#265c2f');
-
+    svg
+      .selectAll('box')
+      .data(data)
+      .join('image')
+      .attr('x', (d) => x(d[0]))
+      .attr('y', height - x.bandwidth() / 4)
+      .attr('xlink:href', 'https://pngimg.com/d/gift_PNG100322.png')
+      .attr('width', x.bandwidth());
     // Lines
     svg
       .append('g')
@@ -116,6 +123,7 @@ function Chart() {
       .attr('y', (d) => y(d[1] + 20))
       .attr('font-size', 8)
       .attr('font-weight', '600')
+      .attr('fill', 'black')
       .attr('text-anchor', 'middle')
       .style('text-anchor', 'middle');
 
@@ -139,6 +147,14 @@ function Chart() {
         .attr('height', (d, i) => height - y(d[1]))
         .attr('preserveAspectRatio', 'none');
     }
+    svg
+      .selectAll('box')
+      .data(data)
+      .join('image')
+      .attr('x', (d) => x(d[0]))
+      .attr('y', height - x.bandwidth() / 4)
+      .attr('xlink:href', 'https://pngimg.com/d/gift_PNG100322.png')
+      .attr('width', x.bandwidth());
 
     u.exit().remove();
   }, [image]);

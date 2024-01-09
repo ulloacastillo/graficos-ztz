@@ -4,7 +4,9 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useImageStore } from '../src/app/store/image';
 
-export default function Dropzone() {
+export default function Dropzone(props) {
+  const { title, titleSize } = props;
+
   const addImage = useImageStore((state) => state.addImage);
   const image = useImageStore((state) => state.image);
   const [isUpload, setUpload] = useState(false);
@@ -65,7 +67,7 @@ export default function Dropzone() {
       >
         <input {...getInputProps()} />
       </div>
-      <h2 className="text-3xl font-bold">Sube tu imagen aquí</h2>
+      <h2 className={`${titleSize} font-bold`}>{title}</h2>
       <p className="mb-[1.5rem]">Arrasta el archivo</p>
       {isUpload && (
         <aside className="absolute top-[60%] flex flex-col items-center">
