@@ -4,33 +4,30 @@ import { useRef, useEffect, useState } from 'react';
 import { useImageStore } from '@/app/store/image';
 import * as d3 from 'd3';
 import boxPng from '../src/app/assets/box.png';
-
+import { useSelector } from 'react-redux';
 
 function Chart() {
   const image = useImageStore((state) => state.image);
   const svgRef = useRef();
   const chartConfig = useRef();
 
-  const data = [
-    ['ENE', 200],
-    ['FEB', 100],
-    ['MAR', 300],
-    ['ABR', 200],
-    ['MAY', 400],
-    ['JUN', 600],
-    ['JUL', 100],
-    ['AGO', 900],
-    ['SEP', 200],
-    ['OCT', 350],
-    ['NOV', 600],
-    ['DIC', 300],
-  ];
-
+  const data = useSelector((state) => state.chartData);
+  const headers = useSelector((state) => state.chartHeaders);
+  console.log(data);
   const margin = { top: 30, right: 30, bottom: 70, left: 60 },
     width = 800 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
 
+  const maxData = Math.max(...data.map((item) => item[1]));
+
+  console.log(data);
   useEffect(() => {
+
+    const parsedData = data.map(item => [new Date(item[0]), item[1]]);
+    parsedData.sort((a, b) => a[0] - b[0]);
+    const sortedData = parsedData.map(item => [item[0].toLocaleDateString('es-CL'), item[1]]);
+
+      d3.select(svgRef.current).selectAll("*").remove();
     // append the svg object to the body of the page
     const svg = d3
       .select(svgRef.current)
@@ -56,30 +53,34 @@ function Chart() {
       .attr('width', x.bandwidth());
 
     // X axis
-
     svg
-      .append('g')
-      .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(x))
-      .selectAll('text')
-      .attr('transform', 'translate(8)')
-      .attr('font-size', '8')
-      .style('text-anchor', 'end');
+    .append('g')
+    .attr('transform', `translate(0, ${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll('text')
+    .attr('transform', 'translate(-10,-10)rotate(-45)')
+    .style('text-anchor', 'end');
 
     // Add Y axis
-    const y = d3.scaleLinear().range([height, 0]).domain([0, 1000]);
+    const y = d3.scaleLinear().range([height, 0]).domain([0, maxData]);
     svg.append('g').call(d3.axisLeft(y));
 
     // Bars
-    svg
-      .selectAll('mybar')
-      .data(data)
-      .join('rect')
-      .attr('x', (d) => x(d[0]))
-      .attr('y', (d) => y(d[1]))
-      .attr('width', x.bandwidth())
-      .attr('height', (d) => height - y(d[1]))
-      .attr('fill', '#265c2f');
+  svg
+    .selectAll('mybar')
+    .data(data)
+    .join('rect')
+    .attr('x', (d) => x(d[0]))
+    .attr('y', height)
+    .attr('width', x.bandwidth())
+    .attr('height', 0)
+    .attr('fill', '#265c2f')
+    .transition()
+    .duration(800)
+    .delay((d, i) => i * 200)
+    .attr('y', (d) => y(d[1]))
+    .attr('height', (d) => height - y(d[1]));
+
 
     // Lines
     svg
@@ -112,7 +113,7 @@ function Chart() {
       .style('text-anchor', 'middle');
 
     chartConfig.current = { svg, x, y };
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     const { svg, x, y } = chartConfig.current;

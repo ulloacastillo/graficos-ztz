@@ -1,25 +1,36 @@
 export function validateData(input) {
   const lines = input.trim().split('\n');
   const headers = lines[0].split(',');
-  const data = [];
+  let dateCounts = {};
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
-    const match = line.match(/^(\d{4}),(\d+)$/);
+    const match = line.match(/^(\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2})$/);
 
     if (!match) {
       return { isValid: false, error: `La línea ${i + 1} no sigue el formato correcto.` };
     }
 
-    const year = parseInt(match[1], 10);
-    const quantity = parseInt(match[2], 10);
+    let date = match[1];
 
-    if (isNaN(year) || isNaN(quantity)) {
-      return { isValid: false, error: `La línea ${i + 1} contiene un número no válido.` };
+    if (dateCounts[date]) {
+      dateCounts[date]++;
+    } else {
+      dateCounts[date] = 1;
     }
-
-    data.push([year, quantity]);
   }
+
+  const data = Object.entries(dateCounts)
+    .map(([date, count]) => {
+
+      if (date.includes('-')) {
+        const parts = date.split('-');
+        date = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+      return [new Date(date), count];
+    })
+    .sort((a, b) => a[0] - b[0])
+    .map(([date, count]) => [date.toISOString().split('T')[0], count]);
 
   return { isValid: true, headers, data };
 }
