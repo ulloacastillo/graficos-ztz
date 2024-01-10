@@ -3,8 +3,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { useImageStore } from '@/app/store/image';
 import * as d3 from 'd3';
-import boxPng from '../src/app/assets/box.png';
-import { useSelector } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 function Chart() {
@@ -25,12 +23,14 @@ function Chart() {
   const domainMin = minData - minData * 0.1;
 
   useEffect(() => {
-
-    const parsedData = data.map(item => [new Date(item[0]), item[1]]);
+    const parsedData = data.map((item) => [new Date(item[0]), item[1]]);
     parsedData.sort((a, b) => a[0] - b[0]);
-    const sortedData = parsedData.map(item => [item[0].toLocaleDateString('es-CL'), item[1]]);
+    const sortedData = parsedData.map((item) => [
+      item[0].toLocaleDateString('es-CL'),
+      item[1],
+    ]);
 
-      d3.select(svgRef.current).selectAll("*").remove();
+    d3.select(svgRef.current).selectAll('*').remove();
     // append the svg object to the body of the page
     d3.select(svgRef.current).selectAll('*').remove();
 
@@ -48,24 +48,15 @@ function Chart() {
       .domain(data.map((d) => d[0]))
       .padding(0.2);
 
-    svg
-      .selectAll('box')
-      .data(data)
-      .join('image')
-      .attr('x', (d) => x(d[0]))
-      .attr('y', height)
-      .attr('xlink:href', 'https://pngimg.com/d/gift_PNG100322.png')
-      .attr('width', x.bandwidth());
-
     // X axis
 
-    svg
-    .append('g')
-    .attr('transform', `translate(0, ${height})`)
-    .call(d3.axisBottom(x))
-    .selectAll('text')
-    .attr('transform', 'translate(-10,-10)rotate(-45)')
-    .style('text-anchor', 'end');
+    // svg
+    //   .append('g')
+    //   .attr('transform', `translate(0, ${height})`)
+    //   .call(d3.axisBottom(x))
+    //   .selectAll('text')
+    //   .attr('transform', 'translate(-10,-10)rotate(-45)')
+    //   .style('text-anchor', 'end');
 
     // X axis
 
@@ -81,30 +72,22 @@ function Chart() {
       .style('text-anchor', 'middle')
       .text(headers[1]);
     // Bars
-  svg
-    .selectAll('mybar')
-    .data(data)
-    .join('rect')
-    .attr('x', (d) => x(d[0]))
-    .attr('y', height)
-    .attr('width', x.bandwidth())
-    .attr('height', 0)
-    .attr('fill', '#265c2f')
-    .transition()
-    .duration(800)
-    .delay((d, i) => i * 200)
-    .attr('y', (d) => y(d[1]))
-    .attr('height', (d) => height - y(d[1]));
-
     svg
-      .selectAll('box')
+      .selectAll('mybar')
       .data(data)
-      .join('image')
+      .join('rect')
       .attr('x', (d) => x(d[0]))
-      .attr('y', height - x.bandwidth() / 4)
-      .attr('xlink:href', 'https://pngimg.com/d/gift_PNG100322.png')
-      .attr('width', x.bandwidth());
-    // Lines
+      .attr('y', height)
+      .attr('width', x.bandwidth())
+      .attr('height', 0)
+      .attr('fill', '#265c2f')
+      .transition()
+      .duration(800)
+      .delay((d, i) => i * 200)
+      .attr('y', (d) => y(d[1]))
+      .attr('height', (d) => height - y(d[1]))
+      .style('stroke-width', '5');
+
     svg
       .append('g')
       .append('path')
@@ -129,14 +112,23 @@ function Chart() {
       .text((d) => d[1])
       .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
       .attr('y', (d) => y(d[1] + 20))
-      .attr('font-size', 8)
+      .attr('font-size', 10)
       .attr('font-weight', '600')
-      .attr('fill', 'black')
+      .attr('fill', 'red')
       .attr('text-anchor', 'middle')
       .style('text-anchor', 'middle');
 
+    svg
+      .selectAll('base')
+      .data(data)
+      .join('image')
+      .attr('href', '/svg-path.svg')
+      .style('fill', 'red')
+      .attr('x', (d) => x(d[0]))
+      .attr('y', height - x.bandwidth() / 3)
+      .attr('width', x.bandwidth() * 1.2);
+
     chartConfig.current = { svg, x, y };
-  }, [data]);
   }, [data]);
 
   useEffect(() => {
@@ -156,16 +148,6 @@ function Chart() {
         .attr('height', (d, i) => height - y(d[1]))
         .attr('preserveAspectRatio', 'none');
     }
-    svg
-      .selectAll('box')
-      .data(data)
-      .join('image')
-      .attr('x', (d) => x(d[0]))
-      .attr('y', height - x.bandwidth() / 4)
-      .attr('xlink:href', 'https://pngimg.com/d/gift_PNG100322.png')
-      .attr('width', x.bandwidth());
-
-    u.exit().remove();
   }, [image]);
 
   return <svg viewBox="0 0 800 420" ref={svgRef}></svg>;

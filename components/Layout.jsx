@@ -25,7 +25,6 @@ const Layout = () => {
             </header>
             <main className="relative">
               <Chart />
-              <FrequencyBox />
             </main>
           </section>
           <div className="grow-[1]">
