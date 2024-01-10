@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import UploadImage from './UploadImage';
 import Chart from './Chart';
 import FrequencyBox from './FrequencyBox';
+import { ColumnSelector } from './SelectorFrequency';
 
 const Layout = () => {
   const [title, setTitle] = useState('Escriba el Título del gráfico');
@@ -20,6 +21,7 @@ const Layout = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               ></textarea>
+              <ColumnSelector />
             </header>
             <main className="relative">
               <Chart />
