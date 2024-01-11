@@ -11,3 +11,9 @@ export const updateChartHeaders = (headers) => ({
   type: UPDATE_CHART_HEADERS,
   payload: headers,
 });
+export const UPDATE_ORIGINAL_DATA = 'UPDATE_ORIGINAL_DATA';
+
+export const updateOriginalData = (data) => ({
+  type: UPDATE_ORIGINAL_DATA,
+  payload: data,
+});

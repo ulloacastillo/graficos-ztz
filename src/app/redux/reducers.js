@@ -1,8 +1,9 @@
-import { UPDATE_CHART_DATA, UPDATE_CHART_HEADERS } from "./actions";
+import { UPDATE_CHART_DATA, UPDATE_CHART_HEADERS, UPDATE_ORIGINAL_DATA } from "./actions";
 
 const initialState = {
   chartData: [],
   chartHeaders: [],
+  originalData: [],
 };
 
 export const chartReducer = (state = initialState, action) => {
@@ -17,6 +18,11 @@ export const chartReducer = (state = initialState, action) => {
         ...state,
         chartHeaders: action.payload,
       };
+      case UPDATE_ORIGINAL_DATA:
+        return {
+          ...state,
+          originalData: action.payload,
+        };
     default:
       return state;
   }

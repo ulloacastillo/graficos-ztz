@@ -59,9 +59,10 @@ function Chart() {
     .call(d3.axisBottom(x))
     .selectAll('text')
     .attr('transform', 'translate(-10,-10)rotate(-45)')
-    .style('text-anchor', 'end');
-
-    // Add Y axis
+    .style('text-anchor', 'end')
+    .style('font-size', '20px')
+    .style('font-weight', 'bold');
+    
     const y = d3.scaleLinear().range([height, 0]).domain([0, maxData]);
     svg.append('g').call(d3.axisLeft(y));
 
