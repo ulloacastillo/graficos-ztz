@@ -1,25 +1,24 @@
 // Filter.jsx
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateChartData } from '../src/app/redux/actions'; // Asegúrate de importar la acción correcta
+import { updateChartData } from '../src/app/redux/actions';
 
 const Filter = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('Mes');
-  const originalData = useSelector((state) => state.originalData); // Obtén originalData del estado de la aplicación
-  const dispatch = useDispatch(); // Obtén la función de despacho del store de Redux
+  const originalData = useSelector((state) => state.originalData);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // Esta función se ejecutará cada vez que selectedPeriod cambie
+
     let filteredData;
-  
-    // Trabaja con una copia de originalData
+
     const dataCopy = [...originalData];
   
     if (selectedPeriod === 'Mes') {
-      // Agrupa los datos por mes y suma el conteo
+
       filteredData = dataCopy
         .reduce((acc, item) => {
-          const date = item[0].slice(5, 7); // Obtiene el mes (mm)
+          const date = item[0].slice(5, 7);
           const existingItem = acc.find((i) => i[0] === date);
           if (existingItem) {
             existingItem[1] += item[1];
@@ -32,12 +31,11 @@ const Filter = () => {
       console.log('Datos filtrados por mes:', filteredData);
     
   
-      console.log('Datos filtrados por mes:', filteredData); // Agrega esta línea
+      console.log('Datos filtrados por mes:', filteredData);
     } else if (selectedPeriod === 'Año') {
-      // Filtra los datos por año y suma el conteo
       filteredData = dataCopy
         .reduce((acc, item) => {
-          const date = item[0].slice(0, 4); // Obtiene el año (yyyy)
+          const date = item[0].slice(0, 4);
           const existingItem = acc.find((i) => i[0] === date);
           if (existingItem) {
               existingItem[1] += item[1];
@@ -47,10 +45,10 @@ const Filter = () => {
           return acc;
         }, []);
   
-      console.log('Datos filtrados por año:', filteredData); // Agrega esta línea
+      console.log('Datos filtrados por año:', filteredData);
     }
   
-    // Despacha la acción updateChartData con los datos filtrados
+
     dispatch(updateChartData(filteredData));
   }, [selectedPeriod]);
   

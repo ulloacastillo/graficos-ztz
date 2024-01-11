@@ -18,9 +18,6 @@ function Chart() {
     height = 420 - margin.top - margin.bottom;
 
   const maxData = Math.max(...data.map((item) => item[1]));
-  const minData = Math.min(...data.map((item) => item[1]));
-  const domainMax = maxData + maxData * 0.1;
-  const domainMin = minData - minData * 0.1;
 
   useEffect(() => {
     const parsedData = data.map((item) => [new Date(item[0]), item[1]]);
