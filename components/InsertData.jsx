@@ -29,8 +29,7 @@ const InsertData = () => {
       <Filter/>
       <button type="button" onClick={handleGenerateGraph} className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold text-lg w-full py-2.5 text-center me-2 mb-2 px-8"> Generar Grafico</button>
     </div>
-  )
+  );
 };
 
-
-export default InsertData
+export default InsertData;
