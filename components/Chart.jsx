@@ -44,18 +44,6 @@ function Chart() {
       .range([0, width])
       .domain(data.map((d) => d[0]))
       .padding(0.2);
-
-    // X axis
-
-    // svg
-    //   .append('g')
-    //   .attr('transform', `translate(0, ${height})`)
-    //   .call(d3.axisBottom(x))
-    //   .selectAll('text')
-    //   .attr('transform', 'translate(-10,-10)rotate(-45)')
-    //   .style('text-anchor', 'end');
-
-    // X axis
     svg
     .append('g')
     .attr('transform', `translate(0, ${height})`)
@@ -122,16 +110,17 @@ function Chart() {
       .attr('fill', 'red')
       .attr('text-anchor', 'middle')
       .style('text-anchor', 'middle');
-
-    svg
-      .selectAll('base')
-      .data(data)
-      .join('image')
-      .attr('href', '/svg-path.svg')
-      .style('fill', 'red')
-      .attr('x', (d) => x(d[0]))
-      .attr('y', height - x.bandwidth() / 3)
-      .attr('width', x.bandwidth() * 1.2);
+      
+      svg
+        .selectAll('base')
+        .data(data)
+        .join('image')
+        .attr('href', '/svg-path.svg')
+        .style('fill', 'red')
+        .attr('x', (d) => x(d[0]))
+        .attr('y', (d) => y.range()[0] - x.bandwidth() * 1.1)
+        .attr('width', x.bandwidth())
+        .attr('height', x.bandwidth() * 1.2);
 
     chartConfig.current = { svg, x, y };
   }, [data]);
