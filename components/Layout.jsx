@@ -26,9 +26,6 @@ const Layout = () => {
               <Chart />
             </main>
           </section>
-          <div className="col-span-1">
-            <UploadImage />
-          </div>
         </div>
       </div>
     </div>

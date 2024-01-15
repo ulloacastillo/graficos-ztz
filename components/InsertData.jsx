@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import { validateData } from '../src/app/utils/validation';
 import { useDispatch } from 'react-redux';
-import { updateChartData, updateChartHeaders,updateOriginalData } from '../src/app/redux/actions';
+import {
+  updateChartData,
+  updateChartHeaders,
+  updateOriginalData,
+} from '../src/app/redux/actions';
 import Filter from './Filter';
+import { useDataStore } from '../src/app/store/store.js';
 
 const InsertData = () => {
-  const [inputData, setInputdata] = useState('');
+  //const [inputData, setInputdata] = useState('');
+
+  const inputData = useDataStore((state) => state.data);
+  const setInputdata = useDataStore((state) => state.setData);
+
   const dispatch = useDispatch();
 
   const handleInputChange = (event) => {
@@ -24,10 +33,24 @@ const InsertData = () => {
   };
   return (
     <div>
-      <h3 className="mb-4 font-bold text-2xl text-black dark:text-black"> Ingresar datos: </h3>
-      <textarea className="w-300" value={inputData} onChange={handleInputChange} ></textarea>
-      <Filter/>
-      <button type="button" onClick={handleGenerateGraph} className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold text-lg w-full py-2.5 text-center me-2 mb-2 px-8"> Generar Grafico</button>
+      <h3 className="mb-4 font-bold text-2xl text-black dark:text-black">
+        {' '}
+        Ingresar datos:{' '}
+      </h3>
+      <textarea
+        className="w-300"
+        value={inputData}
+        onChange={handleInputChange}
+      ></textarea>
+      <Filter />
+      <button
+        type="button"
+        onClick={handleGenerateGraph}
+        className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold text-lg w-full py-2.5 text-center me-2 mb-2 px-8"
+      >
+        {' '}
+        Generar Grafico
+      </button>
     </div>
   );
 };
