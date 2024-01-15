@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropzone from './Dropzone';
+import Dropzone from './DropzoneExcel';
 
 const UploadExcel = () => {
   return (
