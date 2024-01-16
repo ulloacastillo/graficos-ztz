@@ -36,6 +36,7 @@ function Chart() {
   const image = useImageStore((state) => state.image);
   const svgRef = useRef();
   const [icons, setIcons] = useState([]);
+  const useImage = useChartSettings((state) => state.useImage);
 
   const data = useSelector((state) => state.chartData);
   const headers = useSelector((state) => state.chartHeaders);
@@ -45,13 +46,13 @@ function Chart() {
     height = 420 - margin.top - margin.bottom;
 
   const maxData = Math.max(...data.map((item) => item[1]));
-  const chartSettings = useChartSettings((state) => state.chartSettings);
+  const theme = useChartSettings((state) => state.theme);
 
   useEffect(() => {
     const myColor = d3
       .scaleLinear()
       .domain([1, data.length])
-      .range(COLORS[chartSettings.theme]);
+      .range(COLORS[theme]);
 
     setIcons(new Array(data.length));
 
@@ -100,25 +101,45 @@ function Chart() {
       .style('text-anchor', 'middle')
       .text(headers[1]);
     // Bars
-    svg
-      .selectAll('mybar')
-      .data(data)
-      .join('rect')
-      .attr('x', (d) => x(d[0]))
-      .attr('y', height)
-      .attr('ry', 5)
-      .attr('width', x.bandwidth())
-      .attr('height', 0)
-      .attr('fill', (d, i) => {
-        console.log(myColor(i));
-        return myColor(i);
-      })
-      .transition()
-      .duration(800)
-      .delay((d, i) => i * 200)
-      .attr('y', (d) => y(d[1]))
-      .attr('height', (d) => height - y(d[1]));
 
+    if (theme === 'Navidad') {
+      svg
+        .append('g')
+        .selectAll('triangle')
+        .data(data)
+        .join('path')
+        .attr('class', 'line')
+        .attr('d', (d) => {
+          console.log(height, y(d[1]));
+          return `M 0 ${height} L ${x.bandwidth()} ${height} L ${
+            x.bandwidth() / 2
+          } ${y(d[1])}`;
+        })
+        .attr('stroke', 'none')
+        .attr('stroke-width', 1)
+        .attr('fill', (d, i) => myColor(i))
+        .attr('transform', (d) => `translate(${x(d[0])}, 0)`);
+    } else if (theme === 'Halloween' && useImage) {
+    } else {
+      svg
+        .selectAll('mybar')
+        .data(data)
+        .join('rect')
+        .attr('x', (d) => x(d[0]))
+        .attr('y', height)
+        .attr('ry', 5)
+        .attr('width', x.bandwidth())
+        .attr('height', 0)
+        .attr('fill', (d, i) => {
+          console.log(myColor(i));
+          return myColor(i);
+        })
+        .transition()
+        .duration(800)
+        .delay((d, i) => i * 200)
+        .attr('y', (d) => y(d[1]))
+        .attr('height', (d) => height - y(d[1]));
+    }
     svg
       .append('g')
       .append('path')
@@ -140,7 +161,7 @@ function Chart() {
 
     u.remove();
 
-    if (image[0]) {
+    if (image[0] && useImage) {
       u.join('image')
         .attr('xlink:href', (d, i) => image[0].src)
         .attr('x', (d) => x(d[0]))
@@ -198,7 +219,7 @@ function Chart() {
       .attr('text-anchor', 'middle')
       .style('text-anchor', 'middle');
 
-    if (chartSettings.theme !== 'default') {
+    if (theme !== 'default') {
       svg
         .selectAll('image1')
         .data(data)
@@ -206,15 +227,13 @@ function Chart() {
         .attr(
           'href',
           (d, i) =>
-            IMAGES[chartSettings.theme][
-              Math.floor(Math.random() * IMAGES[chartSettings.theme].length)
-            ],
+            IMAGES[theme][Math.floor(Math.random() * IMAGES[theme].length)],
         )
         .attr('x', (d) => x(d[0]))
         .attr('y', (d) => y(d[1]) + x.bandwidth() / 5)
         .attr('width', x.bandwidth());
     }
-  }, [data, image, chartSettings]);
+  }, [data, image, theme, useImage]);
 
   return <svg viewBox="0 0 800 420" ref={svgRef}></svg>;
 }
