@@ -2,14 +2,16 @@
 
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useImageStore } from '../src/app/store/image';
+import { useImageStore } from '../src/app/store/store';
 
 export default function Dropzone(props) {
   const { title, titleSize } = props;
 
   const addImage = useImageStore((state) => state.addImage);
   const image = useImageStore((state) => state.image);
-  const [isUpload, setUpload] = useState(false);
+
+  const isUpload = useImageStore((state) => state.isUpload);
+  const setIsUpload = useImageStore((state) => state.setIsUpload);
 
   const onDrop = useCallback((acceptedFiles) => {
     console.log('dsadaj');
@@ -19,7 +21,7 @@ export default function Dropzone(props) {
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
-        setUpload(true);
+        setIsUpload(true);
         // Do whatever you want with the file contents
         const img = reader.result;
         addImage(
@@ -67,11 +69,20 @@ export default function Dropzone(props) {
       >
         <input {...getInputProps()} />
       </div>
-      <h2 className={`${titleSize} font-bold`}>{title}</h2>
-      <p className="mb-[1.5rem]">Arrasta el archivo</p>
+      <h2 className={`${titleSize} font-bold text-center`}>{title}</h2>
+      {!isUpload && <p className="mb-[1.5rem]">Arrasta el archivo</p>}
+
       {isUpload && (
         <aside className="absolute top-[60%] flex flex-col items-center">
           <h4>Imagen Subida</h4>
+          <button
+            onClick={() => {
+              addImage([]);
+              setIsUpload(false);
+            }}
+          >
+            ❌
+          </button>
           <ul>{files}</ul>
         </aside>
       )}

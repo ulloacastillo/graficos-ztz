@@ -13,9 +13,6 @@ module.exports = {
         glass: 'rgba(255,255,255,0.25)',
       },
     },
-    backgroundImage: {
-      back: 'url(../app/assets/Snow.svg)',
-    },
   },
   plugins: [],
 };

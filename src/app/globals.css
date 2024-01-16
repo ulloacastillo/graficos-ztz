@@ -5,3 +5,11 @@
 .sidebarContainer {
   @apply bg-glass rounded-3xl p-4 border border-solid border-glass relative;
 }
+
+rect {
+  filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+}
+
+svg image {
+  filter: drop-shadow(2px 2px 2px rgb(0 0 0 / 0.4));
+}

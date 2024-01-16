@@ -1,14 +1,41 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { useImageStore } from '@/app/store/image';
+import { useImageStore, useChartSettings } from '@/app/store/store';
 import * as d3 from 'd3';
 import { useSelector } from 'react-redux';
 
 function Chart() {
+  const months = {
+    '01': 'ENE',
+    '02': 'FEB',
+    '03': 'MAR',
+    '04': 'ABR',
+    '05': 'MAY',
+    '06': 'JUN',
+    '07': 'JUL',
+    '08': 'AGO',
+    '09': 'SEP',
+    10: 'OCT',
+    11: 'NOV',
+    12: 'DEC',
+  };
+
+  const COLORS = {
+    default: ['#9f8df8', 'blue'],
+    Navidad: ['#f00', '#009900'],
+    Halloween: ['#FF8800', '#000'], //#5E1A9E
+  };
+
+  const IMAGES = {
+    default: ['/tela.png', '/ghosts.png', '/pumkin.png'],
+    Halloween: ['/tela.png', '/ghosts.png', '/pumkin.png'],
+    Navidad: ['/esfera1.png', '/esfera2.png', '/cinta.png'],
+  };
+
   const image = useImageStore((state) => state.image);
   const svgRef = useRef();
-  const chartConfig = useRef();
+  const [icons, setIcons] = useState([]);
 
   const data = useSelector((state) => state.chartData);
   const headers = useSelector((state) => state.chartHeaders);
@@ -18,8 +45,16 @@ function Chart() {
     height = 420 - margin.top - margin.bottom;
 
   const maxData = Math.max(...data.map((item) => item[1]));
+  const chartSettings = useChartSettings((state) => state.chartSettings);
 
   useEffect(() => {
+    const myColor = d3
+      .scaleLinear()
+      .domain([1, data.length])
+      .range(COLORS[chartSettings.theme]);
+
+    setIcons(new Array(data.length));
+
     const parsedData = data.map((item) => [new Date(item[0]), item[1]]);
     parsedData.sort((a, b) => a[0] - b[0]);
     const sortedData = parsedData.map((item) => [
@@ -43,16 +78,16 @@ function Chart() {
       .scaleBand()
       .range([0, width])
       .domain(data.map((d) => d[0]))
-      .padding(0.2);
-    svg
-      .append('g')
-      .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(x))
-      .selectAll('text')
-      .attr('transform', 'translate(-10,-10)rotate(-45)')
-      .style('text-anchor', 'end')
-      .style('font-size', '20px')
-      .style('font-weight', 'bold');
+      .padding(0.1);
+    // svg
+    //   .append('g')
+    //   .attr('transform', `translate(0, ${height})`)
+    //   .call(d3.axisBottom(x))
+    //   .selectAll('text')
+    //   .attr('transform', 'translate(-10,-10)rotate(-45)')
+    //   .style('text-anchor', 'end')
+    //   .style('font-size', '20px')
+    //   .style('font-weight', 'bold');
 
     const y = d3.scaleLinear().range([height, 0]).domain([0, maxData]);
     svg.append('g').call(d3.axisLeft(y));
@@ -71,15 +106,18 @@ function Chart() {
       .join('rect')
       .attr('x', (d) => x(d[0]))
       .attr('y', height)
+      .attr('ry', 5)
       .attr('width', x.bandwidth())
       .attr('height', 0)
-      .attr('fill', '#265c2f')
+      .attr('fill', (d, i) => {
+        console.log(myColor(i));
+        return myColor(i);
+      })
       .transition()
       .duration(800)
       .delay((d, i) => i * 200)
       .attr('y', (d) => y(d[1]))
-      .attr('height', (d) => height - y(d[1]))
-      .style('stroke-width', '5');
+      .attr('height', (d) => height - y(d[1]));
 
     svg
       .append('g')
@@ -92,57 +130,91 @@ function Chart() {
         d3
           .line()
           .x((d) => x(d[0]) + x.bandwidth() / 2)
-          .y((d) => y(d[1])),
+          .y((d) => y(d[1]) + x.bandwidth() / 5),
       )
-      .attr('stroke', '#FF110099')
+      .attr('stroke', '#fff')
       .attr('stroke-width', 1)
       .attr('fill', 'none');
 
+    const u = svg.selectAll('uploadImage').data(data);
+
+    u.remove();
+
+    if (image[0]) {
+      u.join('image')
+        .attr('xlink:href', (d, i) => image[0].src)
+        .attr('x', (d) => x(d[0]))
+        .attr('y', (d) => y(d[1]) - x.bandwidth())
+        .attr('width', x.bandwidth());
+    }
+    svg
+      .selectAll('base')
+      .data(data)
+      .join('image')
+      .attr('href', '/svg-path.svg')
+      .attr('x', (d) => x(d[0]) - x.bandwidth() * 0.025)
+      .attr('y', (d) => y.range()[0] - x.bandwidth() * 0.2)
+      .attr('width', x.bandwidth() * 1.05);
+
+    svg
+      .selectAll('months')
+      .data(data)
+      .join('text')
+      .text((d) => {
+        const [year, month, day] = d[0].split('-');
+        return `${months[month]}`;
+      })
+      .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
+      .attr('y', (d) => y.range()[0] + x.bandwidth() / 4)
+      .attr('fill', (d, i) => myColor(i))
+      .attr('font-size', 8)
+      .attr('font-weight', '600')
+      .style('text-anchor', 'middle');
+
+    svg
+      .selectAll('years')
+      .data(data)
+      .join('text')
+      .text((d) => {
+        const [year, month, day] = d[0].split('-');
+        return `${year}`;
+      })
+      .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
+      .attr('y', (d) => y.range()[0] + x.bandwidth() / 2)
+      .attr('fill', (d, i) => myColor(i))
+      .attr('font-size', 8)
+      .attr('font-weight', '600')
+      .style('text-anchor', 'middle');
     svg
       .selectAll('claims')
       .data(data)
       .join('text')
       .text((d) => d[1])
       .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
-      .attr('y', (d) => y(d[1] + 20))
-      .attr('font-size', 10)
+      .attr('y', (d) => y(d[1]) - x.bandwidth() / 3.05)
+      .attr('font-size', 12)
       .attr('font-weight', '600')
-      .attr('fill', 'red')
+      .attr('fill', (d, i) => '#fff')
       .attr('text-anchor', 'middle')
       .style('text-anchor', 'middle');
 
-    svg
-      .selectAll('base')
-      .data(data)
-      .join('image')
-      .attr('href', '/svg-path.svg')
-      .style('fill', 'red')
-      .attr('x', (d) => x(d[0]))
-      .attr('y', (d) => y.range()[0] - x.bandwidth() * 1.1)
-      .attr('width', x.bandwidth())
-      .attr('height', x.bandwidth() * 1.2);
-
-    chartConfig.current = { svg, x, y };
-  }, [data]);
-
-  useEffect(() => {
-    const { svg, x, y } = chartConfig.current;
-    // Images
-
-    const u = svg.selectAll('image').data(data);
-    const bars = svg.selectAll('rect').data(data);
-    bars.remove();
-
-    if (image[0]) {
-      u.join('image')
-        .attr('xlink:href', (d, i) => image[0].src)
+    if (chartSettings.theme !== 'default') {
+      svg
+        .selectAll('image1')
+        .data(data)
+        .join('image')
+        .attr(
+          'href',
+          (d, i) =>
+            IMAGES[chartSettings.theme][
+              Math.floor(Math.random() * IMAGES[chartSettings.theme].length)
+            ],
+        )
         .attr('x', (d) => x(d[0]))
-        .attr('y', (d) => y(d[1]))
-        .attr('width', x.bandwidth())
-        .attr('height', (d, i) => height - y(d[1]))
-        .attr('preserveAspectRatio', 'none');
+        .attr('y', (d) => y(d[1]) + x.bandwidth() / 5)
+        .attr('width', x.bandwidth());
     }
-  }, [image]);
+  }, [data, image, chartSettings]);
 
   return <svg viewBox="0 0 800 420" ref={svgRef}></svg>;
 }
