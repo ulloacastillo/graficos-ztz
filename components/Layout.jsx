@@ -15,12 +15,11 @@ const Layout = () => {
           <section className="grow-[4]">
             <header>
               <textarea
-                className="text-3xl outline-none w-96 ml-6 text-wrap bg-transparent overflow-visible"
+                className="text-2xl outline-none w-full ml-6 text-wrap bg-transparent overflow-visible"
                 name="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               ></textarea>
-              <ColumnSelector />
             </header>
             <main className="relative">
               <Chart />
