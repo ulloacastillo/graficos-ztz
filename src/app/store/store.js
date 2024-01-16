@@ -19,7 +19,9 @@ export const useDataStore = create((set) => ({
 
 export const useChartSettings = create((set) => ({
   theme: 'default',
+  events: [],
   useImage: false,
   setTheme: (value) => set({ theme: value }),
   setUseImage: (bool) => set({ useImage: bool }),
+  setEvents: (events) => set({ events: [...events] }),
 }));

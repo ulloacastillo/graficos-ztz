@@ -37,10 +37,11 @@ function Chart() {
   const svgRef = useRef();
   const [icons, setIcons] = useState([]);
   const useImage = useChartSettings((state) => state.useImage);
+  const eventsRegister = useChartSettings((state) => state.events);
 
   const data = useSelector((state) => state.chartData);
   const headers = useSelector((state) => state.chartHeaders);
-  console.log(data);
+
   const margin = { top: 30, right: 30, bottom: 70, left: 60 },
     width = 800 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
@@ -110,7 +111,6 @@ function Chart() {
         .join('path')
         .attr('class', 'line')
         .attr('d', (d) => {
-          console.log(height, y(d[1]));
           return `M 0 ${height} L ${x.bandwidth()} ${height} L ${
             x.bandwidth() / 2
           } ${y(d[1])}`;
@@ -131,7 +131,6 @@ function Chart() {
         .attr('width', x.bandwidth())
         .attr('height', 0)
         .attr('fill', (d, i) => {
-          console.log(myColor(i));
           return myColor(i);
         })
         .transition()
@@ -165,7 +164,7 @@ function Chart() {
       u.join('image')
         .attr('xlink:href', (d, i) => image[0].src)
         .attr('x', (d) => x(d[0]))
-        .attr('y', (d) => y(d[1]) - x.bandwidth())
+        .attr('y', (d) => y(d[1]) - x.bandwidth() * 0.9)
         .attr('width', x.bandwidth());
     }
     svg
@@ -215,7 +214,17 @@ function Chart() {
       .attr('y', (d) => y(d[1]) - x.bandwidth() / 3.05)
       .attr('font-size', 12)
       .attr('font-weight', '600')
-      .attr('fill', (d, i) => '#fff')
+      .attr('fill', (d, i) => myColor(i))
+      .attr('text-anchor', 'middle')
+      .style('text-anchor', 'middle');
+
+    svg
+      .selectAll('icons')
+      .data(eventsRegister)
+      .join('text')
+      .text((d) => d.icon)
+      .attr('x', (d, i) => x(d.date) + x.bandwidth() / 2)
+      .attr('y', y.range()[0] - x.bandwidth() * 0.1)
       .attr('text-anchor', 'middle')
       .style('text-anchor', 'middle');
 
@@ -233,7 +242,7 @@ function Chart() {
         .attr('y', (d) => y(d[1]) + x.bandwidth() / 5)
         .attr('width', x.bandwidth());
     }
-  }, [data, image, theme, useImage]);
+  }, [data, image, theme, useImage, eventsRegister]);
 
   return <svg viewBox="0 0 800 420" ref={svgRef}></svg>;
 }
