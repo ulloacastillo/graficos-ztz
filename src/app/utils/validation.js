@@ -5,7 +5,9 @@ export function validateData(input) {
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
-    const match = line.match(/^(\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2})$/);
+    const match = line.match(/^(\d{1,2}\/\d{1,2}\/\d{2}|\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2})$/);
+
+
 
     if (!match) {
       return { isValid: false, error: `La línea ${i + 1} no sigue el formato correcto.` };

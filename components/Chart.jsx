@@ -194,7 +194,7 @@ function Chart() {
       .attr('y', (d) => y(d[1]) - x.bandwidth() / 3.05)
       .attr('font-size', 12)
       .attr('font-weight', '600')
-      .attr('fill', (d, i) => '#fff')
+      .attr('fill', (d, i) => '#9B31C7')
       .attr('text-anchor', 'middle')
       .style('text-anchor', 'middle');
 
