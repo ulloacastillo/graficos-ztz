@@ -22,7 +22,9 @@ const Sidebar = () => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const wrapperClasses =
-    'h-screen px-4 pt-8 pb-4 bg-8A90F1 flex justify-between flex-col w-80';
+    'h-screen px-4 pt-8 pb-4 bg-slate-300 flex justify-between flex-col w-80';
+
+  const activeButton = 'bg-red-300';
 
   return (
     <div className={wrapperClasses}>
@@ -32,20 +34,29 @@ const Sidebar = () => {
             <Logo />
           </span>
         </div>
-        <div className="flex-col items-start mt-24">
+        <div className="flex flex-col items-start mt-10 gap-2">
           {menuItems.map(({ icon: Icon, ...menu }) => {
             return (
               <div
                 key={menu.id}
                 onClick={() => setSelectedOption(menu.id)}
-                className="flex items-center"
+                className={`flex items-center w-[200px] gap-3 px-3 py-2 rounded-lg ${
+                  menu.id === selectedOption && 'bg-white text-slate-500'
+                }`}
               >
                 <Link href={menu.link}>
-                  <div className="flex items-center gap-2">
-                    <Icon />
-                    <span className="text-lg font-bold text-text-light w-full">
+                  <div className={`flex items-center gap-3`}>
+                    <Icon
+                      size={30}
+                      color={`${
+                        menu.id === selectedOption
+                          ? 'rgb(100 116 139)'
+                          : 'white'
+                      }`}
+                    />
+                    <h2 className="text-lg text-text-light w-full">
                       {menu.label}
-                    </span>
+                    </h2>
                   </div>
                 </Link>
               </div>
