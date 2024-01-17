@@ -21,7 +21,9 @@ export const useChartSettings = create((set) => ({
   theme: 'default',
   events: [],
   useImage: false,
+  filterType: 'Mes',
   setTheme: (value) => set({ theme: value }),
   setUseImage: (bool) => set({ useImage: bool }),
   setEvents: (events) => set({ events: [...events] }),
+  setFilterType: (type) => set({ filterType: type }),
 }));

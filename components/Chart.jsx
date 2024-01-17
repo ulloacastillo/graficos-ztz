@@ -2,8 +2,8 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { useImageStore, useChartSettings } from '@/app/store/store';
-import * as d3 from 'd3';
 import { useSelector } from 'react-redux';
+import * as d3 from 'd3';
 
 function Chart() {
   const months = {
@@ -38,6 +38,7 @@ function Chart() {
   const [icons, setIcons] = useState([]);
   const useImage = useChartSettings((state) => state.useImage);
   const eventsRegister = useChartSettings((state) => state.events);
+  const filterType = useChartSettings((state) => state.filterType);
 
   const data = useSelector((state) => state.chartData);
   const headers = useSelector((state) => state.chartHeaders);
@@ -50,6 +51,7 @@ function Chart() {
   const theme = useChartSettings((state) => state.theme);
 
   useEffect(() => {
+    console.log('data', data);
     const myColor = d3
       .scaleLinear()
       .domain([1, data.length])
@@ -177,12 +179,14 @@ function Chart() {
       .attr('width', x.bandwidth() * 1.05);
 
     svg
-      .selectAll('months')
+      .selectAll('monthText')
       .data(data)
       .join('text')
       .text((d) => {
-        const [year, month, day] = d[0].split('-');
-        return `${months[month]}`;
+        if (filterType === 'Mes') {
+          return `${months[d[0]]}`;
+        }
+        return `${d[0]}`;
       })
       .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
       .attr('y', (d) => y.range()[0] + x.bandwidth() / 4)
