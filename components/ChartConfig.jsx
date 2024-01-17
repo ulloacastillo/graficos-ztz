@@ -27,30 +27,47 @@ function ChartConfig() {
     console.log(theme);
   };
 
-  const handleCheckBox = (e) => {
+  const handleToogle = (e) => {
     setUseImage(!useImage);
   };
 
+  const toogleOffClass = ` bg-slate-100`;
+  const toogleOnClass = `bg-green-600 translate-x-[20px]`;
+
   return (
-    <div className="flex flex-col items-start gap-3">
-      <select name="themes" onChange={handleChange} value={theme}>
-        <option value="default">Sin Temática</option>
-        <option value="Halloween">Halloween</option>
-        <option value="Navidad">Navidad</option>
-      </select>
-      <label>
-        Usar imagen subida
-        <input
-          type="checkbox"
-          onChange={handleCheckBox}
-          checked={useImage}
-        ></input>
-      </label>
-      <div>
-        <nav>
+    <div className="flex flex-col items-start gap-3 w-[100%]">
+      <div className="w-[100%]">
+        <h2 className="text-lg ">Temática e Imagen</h2>
+        <div className="flex flex-col  w-[80%] border-solid border-2 shadow-md border-slate-200 rounded-md py-4 px-1 gap-3">
+          <div className="flex flex-row justify-between">
+            <label for="themes">Temáica del gráfico</label>
+            <select name="themes" onChange={handleChange} value={theme}>
+              <option value="default">Sin Temática</option>
+              <option value="Halloween">Halloween</option>
+              <option value="Navidad">Navidad</option>
+            </select>
+          </div>
+          <div className="flex flex-row ">
+            <label>Usar imagen subida</label>
+            <button
+              className={`w-[50px] my-0 mx-auto cursor-pointer rounded-full p-1 shadow-md bg-slate-200`}
+              onClick={handleToogle}
+            >
+              <span
+                className={`block size-[20px] rounded-full transition-all ${
+                  useImage ? toogleOnClass : toogleOffClass
+                }`}
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="w-[100%]">
+        <h2 className="text-lg ">Eventos Por Mes</h2>
+        <nav className="flex flex-row justify-center flex-wrap w-[80%] border-solid border-2 border-slate-200 shadow-md rounded-md py-4 px-1 gap-3">
           {eventsRegister.map((d, i) => (
-            <li key={i}>
-              <div>
+            <li key={i} className="list-none ">
+              <div className="flex flex-col items-center">
                 <span>{d.date}</span>
                 <SelectEvent index={i} />
               </div>
