@@ -21,8 +21,7 @@ const menuItems = [
 const Sidebar = () => {
   const [selectedOption, setSelectedOption] = useState(null);
 
-  const wrapperClasses =
-    'h-screen px-4 pt-8 pb-4 bg-slate-300 flex justify-between flex-col w-80';
+  const wrapperClasses = `min-h-screen h-fit px-4 pt-8 pb-4 bg-slate-300 flex justify-between flex-col w-96`;
 
   const activeButton = 'bg-red-300';
 

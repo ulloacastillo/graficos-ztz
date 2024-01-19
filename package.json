@@ -20,6 +20,7 @@
     "redux": "^5.0.1",
     "sweetalert2": "^11.10.3",
     "sweetalert2-react-content": "^5.0.7",
+    "xlsx": "^0.18.5",
     "zustand": "^4.4.7"
   },
   "devDependencies": {

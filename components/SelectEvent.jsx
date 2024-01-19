@@ -26,14 +26,16 @@ function SelectEvent(props) {
     );
   };
   return (
-    <select name="monthEvent" onChange={handleChange}>
+    <select
+      name="monthEvent"
+      onChange={handleChange}
+      className="bg-transparent"
+    >
       <option selected value={'none'}>
-        Ninguno
+        🚫
       </option>
       {EVENTS.map((e) => (
-        <option value={e.name}>
-          {e.name} + {e.icon}
-        </option>
+        <option value={e.name}>{e.icon}</option>
       ))}
     </select>
   );
