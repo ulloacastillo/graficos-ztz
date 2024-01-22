@@ -18,13 +18,10 @@ function ChartConfig() {
     );
 
     setEvents(array);
-
-    console.log('aqui', eventsRegister, data);
   }, [data]);
 
   const handleChange = (e) => {
     setTheme(e.target.value);
-    console.log(theme);
   };
 
   const handleToogle = (e) => {
@@ -40,7 +37,7 @@ function ChartConfig() {
         <h2 className="text-lg ">Temática e Imagen</h2>
         <div className="flex flex-col  w-[80%] border-solid border-2 shadow-md border-slate-200 rounded-md py-4 px-1 gap-3">
           <div className="flex flex-row justify-between">
-            <label for="themes">Temáica del gráfico</label>
+            <label htmlFor="themes">Temáica del gráfico</label>
             <select name="themes" onChange={handleChange} value={theme}>
               <option value="default">Sin Temática</option>
               <option value="Halloween">Halloween</option>

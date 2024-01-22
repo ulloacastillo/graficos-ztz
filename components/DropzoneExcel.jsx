@@ -65,8 +65,13 @@ export default function Dropzone(props) {
     onDrop,
     noClick: true,
     maxFiles: 2,
-    accept:
-      '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    accept: {
+      'text/csv': [`.csv`],
+      'application/vnd.ms-excel': ['.xls'],
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': [
+        '.xlsx',
+      ],
+    },
   });
 
   return (
