@@ -8,18 +8,20 @@ import { ColumnSelector } from './SelectorFrequency';
 const Layout = () => {
   const [title, setTitle] = useState('Escriba el Título del gráfico');
   return (
-    <div className="w-full h-screen bg-back bg-no-repeat bg-cover flex items-center">
+    <div className="w-full h-screen bg-back bg-no-repeat bg-cover flex items-center ">
       <Sidebar />
       <div className="flex-1 p-4 text-black">
         <div className="flex flex-row justify-center items-center">
-          <section className="grow-[4]">
+          <section className="grow-[4] p-32">
             <header>
-              <textarea
-                className="text-2xl outline-none w-full ml-6 text-wrap bg-transparent overflow-visible"
+              <input
+                type="text"
+                placeholder="Escriba el Título del gráfico"
+                className="text-2xl outline-none w-full text-center bg-transparent overflow-visible"
                 name="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-              ></textarea>
+              />
             </header>
             <main className="relative">
               <Chart />

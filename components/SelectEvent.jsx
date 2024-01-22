@@ -32,7 +32,7 @@ function SelectEvent(props) {
       className="bg-transparent"
     >
       <option selected value={'none'}>
-        🚫
+        🔘
       </option>
       {EVENTS.map((e) => (
         <option value={e.name}>{e.icon}</option>
