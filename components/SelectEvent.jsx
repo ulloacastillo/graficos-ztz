@@ -31,11 +31,13 @@ function SelectEvent(props) {
       onChange={handleChange}
       className="bg-transparent"
     >
-      <option selected value={'none'}>
+      <option defaultValue value={'none'}>
         🔘
       </option>
       {EVENTS.map((e) => (
-        <option value={e.name}>{e.icon}</option>
+        <option key={e.id} value={e.name}>
+          {e.icon}
+        </option>
       ))}
     </select>
   );

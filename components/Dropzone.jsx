@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useImageStore } from '../src/app/store/store';
 
@@ -14,7 +14,6 @@ export default function Dropzone(props) {
   const setIsUpload = useImageStore((state) => state.setIsUpload);
 
   const onDrop = useCallback((acceptedFiles) => {
-    console.log('dsadaj');
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
 
