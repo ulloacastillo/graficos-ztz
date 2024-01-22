@@ -21,6 +21,8 @@ function Chart() {
     12: 'DEC',
   };
 
+  const maxBarWith = 50;
+
   const COLORS = {
     default: ['#9f8df8', 'blue'],
     Navidad: ['#f00', '#009900'],
@@ -40,16 +42,20 @@ function Chart() {
   const eventsRegister = useChartSettings((state) => state.events);
   const filterType = useChartSettings((state) => state.filterType);
 
+  const [moving, setMoving] = useState(false);
+  const chartConfig = useRef();
+
   const data = useSelector((state) => state.chartData);
+
   const headers = useSelector((state) => state.chartHeaders);
 
-  const margin = { top: 30, right: 30, bottom: 70, left: 60 },
+  const margin = { top: 80, right: 30, bottom: 70, left: 60 },
     width = 800 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
 
   const maxData = Math.max(...data.map((item) => item[1]));
   const theme = useChartSettings((state) => state.theme);
-
+  let svgGlobal;
   useEffect(() => {
     console.log('data', data);
     const myColor = d3
@@ -83,6 +89,12 @@ function Chart() {
       .range([0, width])
       .domain(data.map((d) => d[0]))
       .padding(0.1);
+
+    if (data.length < 5) {
+      x.padding(0.5);
+    }
+
+    console.log(data.length, x.bandwidth());
     // svg
     //   .append('g')
     //   .attr('transform', `translate(0, ${height})`)
@@ -94,6 +106,11 @@ function Chart() {
     //   .style('font-weight', 'bold');
 
     const y = d3.scaleLinear().range([height, 0]).domain([0, maxData]);
+
+    let imgCoords = data.map((d) => {
+      return { x: x(d[0]), y: y(d[1]) + x.bandwidth() / 5 };
+    });
+
     svg.append('g').call(d3.axisLeft(y));
     svg
       .append('text')
@@ -120,6 +137,9 @@ function Chart() {
         .attr('stroke', 'none')
         .attr('stroke-width', 1)
         .attr('fill', (d, i) => myColor(i))
+        .transition()
+        .duration(800)
+        .delay((d, i) => i * 200)
         .attr('transform', (d) => `translate(${x(d[0])}, 0)`);
     } else if (theme === 'Halloween' && useImage) {
     } else {
@@ -237,16 +257,60 @@ function Chart() {
         .selectAll('image1')
         .data(data)
         .join('image')
-        .attr(
-          'href',
-          (d, i) =>
-            IMAGES[theme][Math.floor(Math.random() * IMAGES[theme].length)],
-        )
+        .attr('href', (d, i) => {
+          return IMAGES[theme][
+            Math.floor(Math.random() * IMAGES[theme].length)
+          ];
+        })
         .attr('x', (d) => x(d[0]))
         .attr('y', (d) => y(d[1]) + x.bandwidth() / 5)
-        .attr('width', x.bandwidth());
+        .attr('width', x.bandwidth())
+        .attr('cursor', 'grab');
     }
+
+    chartConfig.current = { svg, x, y, imgCoords };
   }, [data, image, theme, useImage, eventsRegister]);
+
+  useEffect(() => {
+    const drag = d3
+      .drag()
+      .on('start', () => {
+        console.log('drag');
+        d3.select(this).raise();
+      })
+      .on('drag', (event, d) => {
+        setMoving(true);
+        d3.select(this)
+          .attr('y', (d.y = event.y))
+          .attr('x', d.x);
+        console.log('dragging', event.y, d);
+      })
+      .on('end', () => setMoving(false));
+
+    let { svg, x, y, imgCoords } = chartConfig.current;
+
+    console.log(imgCoords);
+
+    if (theme !== 'default') {
+      const u = svg.selectAll('image1').data(imgCoords);
+      u.remove();
+
+      svg
+        .selectAll('image1')
+        .data(imgCoords)
+        .join('image')
+        .attr('href', (d, i) => {
+          return IMAGES[theme][
+            Math.floor(Math.random() * IMAGES[theme].length)
+          ];
+        })
+        .attr('x', (d) => d.x)
+        .attr('y', (d) => d.y)
+        .attr('width', x.bandwidth())
+        .attr('cursor', 'grab')
+        .call(drag);
+    }
+  }, [moving, data, theme]);
 
   return <svg viewBox="0 0 800 420" ref={svgRef}></svg>;
 }
