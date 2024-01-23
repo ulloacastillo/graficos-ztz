@@ -45,7 +45,7 @@ const Filter = () => {
     const array = filteredData.map(
       (d) => new Object({ date: d[0], amount: d[1], icon: null }),
     );
-    const showImagesArray = filteredData.map((d) => true);
+    const showImagesArray = filteredData.map((d) => false);
     setEvents(array);
     setShowImages(showImagesArray);
   }, [filterType, originalData]);

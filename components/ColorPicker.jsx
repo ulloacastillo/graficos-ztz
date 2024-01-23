@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function ColorPicker(props) {
   const { setColor, color } = props;
@@ -14,6 +14,10 @@ function ColorPicker(props) {
       setText(e.target.value);
     }
   };
+
+  useEffect(() => {
+    setText(color);
+  }, [color]);
 
   return (
     <div

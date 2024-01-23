@@ -23,7 +23,7 @@ export const useChartSettings = create((set) => ({
   showImages: [],
   initialColor: '#9f8df8',
   endColor: '#0000ff',
-  useImage: false,
+  useImage: true,
   filterType: 'Mes',
   setTheme: (value) => set({ theme: value }),
   setUseImage: (bool) => set({ useImage: bool }),

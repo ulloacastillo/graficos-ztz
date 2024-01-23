@@ -4,12 +4,12 @@ import { useEffect } from 'react';
 import SelectEvent from './SelectEvent';
 import ColorPicker from './ColorPicker';
 import CheckBoxImage from './CheckBoxImage';
+import { THEMES } from '@/app/constants';
 
 function ChartConfig() {
   const theme = useChartSettings((state) => state.theme);
   const setTheme = useChartSettings((state) => state.setTheme);
-  const useImage = useChartSettings((state) => state.useImage);
-  const setUseImage = useChartSettings((state) => state.setUseImage);
+
   const eventsRegister = useChartSettings((state) => state.events);
   const setEvents = useChartSettings((state) => state.setEvents);
   const data = useSelector((state) => state.chartData);
@@ -28,14 +28,9 @@ function ChartConfig() {
 
   const handleChange = (e) => {
     setTheme(e.target.value);
+    setInitialColor(THEMES[e.target.value].colors[0]);
+    setEndColor(THEMES[e.target.value].colors[1]);
   };
-
-  const handleToogle = (e) => {
-    setUseImage(!useImage);
-  };
-
-  const toogleOffClass = ` bg-slate-100`;
-  const toogleOnClass = `bg-green-600 translate-x-[20px]`;
 
   return (
     <div className="flex flex-col items-start gap-3 w-[100%]">
@@ -48,6 +43,7 @@ function ChartConfig() {
               <option value="default">Sin Temática</option>
               <option value="Halloween">Halloween</option>
               <option value="Navidad">Navidad</option>
+              <option value="Valentin">Valentin</option>
             </select>
           </div>
           <div className="flex flex-row justify-between items-center">
@@ -58,19 +54,7 @@ function ChartConfig() {
             <span>Color Final</span>
             <ColorPicker setColor={setEndColor} color={endColor} />
           </div>
-          <div className="flex flex-row ">
-            <label>Usar imagen subida</label>
-            <button
-              className={`w-[50px] my-0 mx-auto cursor-pointer rounded-full p-1 shadow-md bg-slate-200`}
-              onClick={handleToogle}
-            >
-              <span
-                className={`block size-[20px] rounded-full transition-all ${
-                  useImage ? toogleOnClass : toogleOffClass
-                }`}
-              ></span>
-            </button>
-          </div>
+          <div className="flex flex-row "></div>
         </div>
       </div>
       <div className="w-[100%]">
