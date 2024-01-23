@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import SelectEvent from './SelectEvent';
 import ColorPicker from './ColorPicker';
+import CheckBoxImage from './CheckBoxImage';
 
 function ChartConfig() {
   const theme = useChartSettings((state) => state.theme);
@@ -78,7 +79,10 @@ function ChartConfig() {
           {eventsRegister.map((d, i) => (
             <li key={i} className="list-none ">
               <div className="flex flex-col items-center">
-                <span>{d.date}</span>
+                <div className="flex gap-1">
+                  <span>{d.date}</span>
+                  <CheckBoxImage index={i} />
+                </div>
                 <SelectEvent index={i} />
               </div>
             </li>

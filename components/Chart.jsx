@@ -12,6 +12,7 @@ function Chart() {
 
   const useImage = useChartSettings((state) => state.useImage);
   const eventsRegister = useChartSettings((state) => state.events);
+  const showImages = useChartSettings((state) => state.showImages);
   const filterType = useChartSettings((state) => state.filterType);
   const initialColor = useChartSettings((state) => state.initialColor);
   const endColor = useChartSettings((state) => state.endColor);
@@ -144,7 +145,7 @@ function Chart() {
         .attr('xlink:href', (d, i) => image[0].src)
         .attr('x', (d) => x(d[0]))
         .attr('y', (d) => y(d[1]) - x.bandwidth() * 0.9)
-        .attr('width', x.bandwidth());
+        .attr('width', (d, i) => (showImages[i] ? x.bandwidth() : 0));
     }
     svg
       .selectAll('base')
@@ -228,7 +229,16 @@ function Chart() {
     }
 
     chartConfig.current = { svg, x, y };
-  }, [data, image, theme, useImage, eventsRegister, initialColor, endColor]);
+  }, [
+    data,
+    image,
+    theme,
+    useImage,
+    eventsRegister,
+    initialColor,
+    endColor,
+    showImages,
+  ]);
 
   return <svg viewBox="0 0 800 420" ref={svgRef}></svg>;
 }

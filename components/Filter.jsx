@@ -10,6 +10,7 @@ const Filter = () => {
   const setFilterType = useChartSettings((state) => state.setFilterType);
   const filterType = useChartSettings((state) => state.filterType);
   const setEvents = useChartSettings((state) => state.setEvents);
+  const setShowImages = useChartSettings((state) => state.setShowImages);
 
   useEffect(() => {
     let filteredData;
@@ -44,8 +45,9 @@ const Filter = () => {
     const array = filteredData.map(
       (d) => new Object({ date: d[0], amount: d[1], icon: null }),
     );
-
+    const showImagesArray = filteredData.map((d) => true);
     setEvents(array);
+    setShowImages(showImagesArray);
   }, [filterType, originalData]);
 
   return (
