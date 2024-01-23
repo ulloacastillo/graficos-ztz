@@ -13,6 +13,8 @@ function Chart() {
   const useImage = useChartSettings((state) => state.useImage);
   const eventsRegister = useChartSettings((state) => state.events);
   const filterType = useChartSettings((state) => state.filterType);
+  const initialColor = useChartSettings((state) => state.initialColor);
+  const endColor = useChartSettings((state) => state.endColor);
 
   const chartConfig = useRef();
 
@@ -29,7 +31,7 @@ function Chart() {
     const myColor = d3
       .scaleLinear()
       .domain([1, data.length])
-      .range(COLORS[theme]);
+      .range([initialColor, endColor]);
 
     const parsedData = data.map((item) => [new Date(item[0]), item[1]]);
     parsedData.sort((a, b) => a[0] - b[0]);
@@ -226,7 +228,7 @@ function Chart() {
     }
 
     chartConfig.current = { svg, x, y };
-  }, [data, image, theme, useImage, eventsRegister]);
+  }, [data, image, theme, useImage, eventsRegister, initialColor, endColor]);
 
   return <svg viewBox="0 0 800 420" ref={svgRef}></svg>;
 }

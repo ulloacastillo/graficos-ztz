@@ -2,6 +2,7 @@ import { useChartSettings } from '@/app/store/store';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import SelectEvent from './SelectEvent';
+import ColorPicker from './ColorPicker';
 
 function ChartConfig() {
   const theme = useChartSettings((state) => state.theme);
@@ -11,6 +12,10 @@ function ChartConfig() {
   const eventsRegister = useChartSettings((state) => state.events);
   const setEvents = useChartSettings((state) => state.setEvents);
   const data = useSelector((state) => state.chartData);
+  const setInitialColor = useChartSettings((state) => state.setInitialColor);
+  const initialColor = useChartSettings((state) => state.initialColor);
+  const setEndColor = useChartSettings((state) => state.setEndColor);
+  const endColor = useChartSettings((state) => state.endColor);
 
   useEffect(() => {
     const array = data.map(
@@ -34,8 +39,8 @@ function ChartConfig() {
   return (
     <div className="flex flex-col items-start gap-3 w-[100%]">
       <div className="w-[100%]">
-        <h2 className="text-lg ">Temática e Imagen</h2>
-        <div className="flex flex-col  w-[80%] border-solid border-2 shadow-md border-slate-200 rounded-md py-4 px-1 gap-3">
+        <h2 className="text-lg ">Configuración de Barras</h2>
+        <div className="flex flex-col  w-[80%] border-solid border-2 shadow-md border-slate-200 rounded-md py-4 px-1 gap-4">
           <div className="flex flex-row justify-between">
             <label htmlFor="themes">Temáica del gráfico</label>
             <select name="themes" onChange={handleChange} value={theme}>
@@ -43,6 +48,14 @@ function ChartConfig() {
               <option value="Halloween">Halloween</option>
               <option value="Navidad">Navidad</option>
             </select>
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <span>Color Inicial</span>
+            <ColorPicker setColor={setInitialColor} color={initialColor} />
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <span>Color Final</span>
+            <ColorPicker setColor={setEndColor} color={endColor} />
           </div>
           <div className="flex flex-row ">
             <label>Usar imagen subida</label>
