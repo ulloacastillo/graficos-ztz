@@ -16,15 +16,15 @@ export const MONTHS = {
 export const THEMES = {
   default: {
     colors: ['#9f8df8', '#0000ff'],
-    images: ['/tela.png', '/ghosts.png', '/pumkin.png'],
+    images: [],
   },
   Navidad: {
     colors: ['#ff0000', '#009900'],
-    images: ['/tela.png', '/ghosts.png', '/pumkin.png'],
+    images: ['/esfera1.png', '/esfera2.png', '/cinta.png'],
   },
   Halloween: {
     colors: ['#FF8800', '#000000'],
-    images: ['/esfera1.png', '/esfera2.png', '/cinta.png'],
+    images: ['/tela.png', '/ghosts.png', '/pumkin.png'],
   }, //#5E1A9E
   Valentin: {
     colors: ['#ffc0c0', '#ff0000'],

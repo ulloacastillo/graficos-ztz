@@ -82,12 +82,12 @@ function Chart() {
     if (theme === 'Navidad') {
       svg
         .append('g')
-        .selectAll('triangle')
+        .selectAll('triangle1')
         .data(data)
         .join('path')
         .attr('class', 'line')
         .attr('d', (d) => {
-          return `M 0 ${height} L ${x.bandwidth()} ${height} L ${
+          return `M 0 ${height} L ${x.bandwidth() / 2} ${height} L ${
             x.bandwidth() / 2
           } ${y(d[1])}`;
         })
@@ -98,7 +98,31 @@ function Chart() {
         .duration(800)
         .delay((d, i) => i * 200)
         .attr('transform', (d) => `translate(${x(d[0])}, 0)`);
-    } else if (theme === 'Navidad' || theme === 'Halloween') {
+
+      svg
+        .append('g')
+        .selectAll('triangle2')
+        .data(data)
+        .join('path')
+        .join('path')
+        .attr('class', 'line')
+        .attr('d', (d) => {
+          return `M ${x.bandwidth()} ${height} L ${
+            x.bandwidth() / 2
+          } ${height} L ${x.bandwidth() / 2} ${y(d[1])}`;
+        })
+        .attr('stroke', 'none')
+        .attr('stroke-width', 1)
+        .attr('fill', (d, i) => myColor(i + 1))
+        .transition()
+        .duration(800)
+        .delay((d, i) => i * 200)
+        .attr('transform', (d) => `translate(${x(d[0]) - 1}, 0)`);
+    } else if (
+      theme === 'Navidad' ||
+      theme === 'Halloween' ||
+      theme === 'default'
+    ) {
       svg
         .selectAll('mybar')
         .data(data)
@@ -120,7 +144,6 @@ function Chart() {
 
     if (theme === 'Valentin') {
       svg
-        .append('g')
         .append('path')
         .datum(data)
         .attr('class', 'line')
@@ -131,6 +154,7 @@ function Chart() {
             .x((d) => x(d[0]) + x.bandwidth() / 2)
             .y((d) => y(d[1]) + x.bandwidth() / 5),
         )
+        .transition(d3.transition().ease(d3.easeSin).duration(2500))
         .attr('stroke', '#f083ad')
         .attr('stroke-width', 10)
         .attr('fill', 'none');
