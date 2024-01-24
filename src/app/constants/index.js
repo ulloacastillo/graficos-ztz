@@ -13,14 +13,21 @@ export const MONTHS = {
   12: 'DEC',
 };
 
-export const COLORS = {
-  default: ['#9f8df8', 'blue'],
-  Navidad: ['#f00', '#009900'],
-  Halloween: ['#FF8800', '#000'], //#5E1A9E
-};
-
-export const IMAGES = {
-  default: ['/tela.png', '/ghosts.png', '/pumkin.png'],
-  Halloween: ['/tela.png', '/ghosts.png', '/pumkin.png'],
-  Navidad: ['/esfera1.png', '/esfera2.png', '/cinta.png'],
+export const THEMES = {
+  default: {
+    colors: ['#9f8df8', '#0000ff'],
+    images: ['/tela.png', '/ghosts.png', '/pumkin.png'],
+  },
+  Navidad: {
+    colors: ['#ff0000', '#009900'],
+    images: ['/tela.png', '/ghosts.png', '/pumkin.png'],
+  },
+  Halloween: {
+    colors: ['#FF8800', '#000000'],
+    images: ['/esfera1.png', '/esfera2.png', '/cinta.png'],
+  }, //#5E1A9E
+  Valentin: {
+    colors: ['#ffc0c0', '#ff0000'],
+    images: [],
+  },
 };

@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { useImageStore, useChartSettings } from '@/app/store/store';
 import { useSelector } from 'react-redux';
-import { MONTHS, COLORS, IMAGES } from '@/app/constants';
+import { MONTHS, THEMES } from '@/app/constants';
 import * as d3 from 'd3';
 
 function Chart() {
@@ -12,7 +12,10 @@ function Chart() {
 
   const useImage = useChartSettings((state) => state.useImage);
   const eventsRegister = useChartSettings((state) => state.events);
+  const showImages = useChartSettings((state) => state.showImages);
   const filterType = useChartSettings((state) => state.filterType);
+  const initialColor = useChartSettings((state) => state.initialColor);
+  const endColor = useChartSettings((state) => state.endColor);
 
   const chartConfig = useRef();
 
@@ -29,7 +32,7 @@ function Chart() {
     const myColor = d3
       .scaleLinear()
       .domain([1, data.length])
-      .range(COLORS[theme]);
+      .range([initialColor, endColor]);
 
     const parsedData = data.map((item) => [new Date(item[0]), item[1]]);
     parsedData.sort((a, b) => a[0] - b[0]);
@@ -95,7 +98,7 @@ function Chart() {
         .duration(800)
         .delay((d, i) => i * 200)
         .attr('transform', (d) => `translate(${x(d[0])}, 0)`);
-    } else {
+    } else if (theme === 'Navidad' || theme === 'Halloween') {
       svg
         .selectAll('mybar')
         .data(data)
@@ -115,23 +118,56 @@ function Chart() {
         .attr('height', (d) => height - y(d[1]));
     }
 
-    // gráfico de línea
-    svg
-      .append('g')
-      .append('path')
-      .datum(data)
-      .attr('class', 'line')
-      .style('stroke-dasharray', '3, 3')
-      .attr(
-        'd',
-        d3
-          .line()
-          .x((d) => x(d[0]) + x.bandwidth() / 2)
-          .y((d) => y(d[1]) + x.bandwidth() / 5),
-      )
-      .attr('stroke', '#fff')
-      .attr('stroke-width', 1)
-      .attr('fill', 'none');
+    if (theme === 'Valentin') {
+      svg
+        .append('g')
+        .append('path')
+        .datum(data)
+        .attr('class', 'line')
+        .attr(
+          'd',
+          d3
+            .line()
+            .x((d) => x(d[0]) + x.bandwidth() / 2)
+            .y((d) => y(d[1]) + x.bandwidth() / 5),
+        )
+        .attr('stroke', '#f083ad')
+        .attr('stroke-width', 10)
+        .attr('fill', 'none');
+
+      svg
+        .append('g')
+        .selectAll('heartImg')
+        .data(data)
+        .enter()
+        .append('image')
+        .attr('xlink:href', (d, i) => {
+          if (i === data.length - 1) return '/arrow.png';
+          return Math.random() < 0.5 ? '/heart.png' : '/candy.png';
+        })
+        .attr('x', (d) => x(d[0]) + x.bandwidth() / 3.6)
+        .attr('y', (d) => y(d[1]))
+        .attr('width', (d, i) =>
+          i === data.length - 1 ? x.bandwidth() / 2 : x.bandwidth() / 1.8,
+        );
+    } else {
+      svg
+        .append('g')
+        .append('path')
+        .datum(data)
+        .attr('class', 'line')
+        .style('stroke-dasharray', '3, 3')
+        .attr(
+          'd',
+          d3
+            .line()
+            .x((d) => x(d[0]) + x.bandwidth() / 2)
+            .y((d) => y(d[1]) + x.bandwidth() / 5),
+        )
+        .attr('stroke', '#fff')
+        .attr('stroke-width', 1)
+        .attr('fill', 'none');
+    }
 
     // para evitar que se sobrescriban las imágenes subidas
     const u = svg.selectAll('uploadImage').data(data);
@@ -142,7 +178,7 @@ function Chart() {
         .attr('xlink:href', (d, i) => image[0].src)
         .attr('x', (d) => x(d[0]))
         .attr('y', (d) => y(d[1]) - x.bandwidth() * 0.9)
-        .attr('width', x.bandwidth());
+        .attr('width', (d, i) => (showImages[i] ? x.bandwidth() : 0));
     }
     svg
       .selectAll('base')
@@ -218,18 +254,26 @@ function Chart() {
         .data(data)
         .join('image')
         .attr('href', (d, i) => {
-          return IMAGES[theme][
-            Math.floor(Math.random() * IMAGES[theme].length)
+          return THEMES[theme].images[
+            Math.floor(Math.random() * THEMES[theme].images.length)
           ];
         })
         .attr('x', (d) => x(d[0]))
         .attr('y', (d) => y(d[1]) + x.bandwidth() / 5)
-        .attr('width', x.bandwidth())
-        .attr('cursor', 'grab');
+        .attr('width', x.bandwidth());
     }
 
     chartConfig.current = { svg, x, y };
-  }, [data, image, theme, useImage, eventsRegister]);
+  }, [
+    data,
+    image,
+    theme,
+    useImage,
+    eventsRegister,
+    initialColor,
+    endColor,
+    showImages,
+  ]);
 
   return <svg viewBox="0 0 800 420" ref={svgRef}></svg>;
 }

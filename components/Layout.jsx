@@ -76,7 +76,10 @@ const Layout = () => {
                 onChange={(e) => setTitle(e.target.value)}
               />
             </header>
-            <main className="relative pl-2 pr-2">
+            <main className="relative pl-2 pr-2  bg-cover">
+              {
+                ////bg-[url('/velentines.avif')]
+              }
               <Chart />
             </main>
           </section>

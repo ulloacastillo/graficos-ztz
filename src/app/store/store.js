@@ -20,10 +20,16 @@ export const useDataStore = create((set) => ({
 export const useChartSettings = create((set) => ({
   theme: 'default',
   events: [],
-  useImage: false,
+  showImages: [],
+  initialColor: '#9f8df8',
+  endColor: '#0000ff',
+  useImage: true,
   filterType: 'Mes',
   setTheme: (value) => set({ theme: value }),
   setUseImage: (bool) => set({ useImage: bool }),
   setEvents: (events) => set({ events: [...events] }),
   setFilterType: (type) => set({ filterType: type }),
+  setInitialColor: (color) => set({ initialColor: color }),
+  setEndColor: (color) => set({ endColor: color }),
+  setShowImages: (list) => set({ showImages: [...list] }),
 }));
