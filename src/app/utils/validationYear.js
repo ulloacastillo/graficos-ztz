@@ -4,9 +4,9 @@ export function validateData(input) {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
-    if (line.length === 0) continue; // Ignorar líneas vacías
+    if (line.length === 0) continue;
 
-    const match = line.match(/^(\d{4})=(\d+)$/);
+    const match = line.match(/^(\d{4})\s*=\s*(\d+)$/);
 
     if (!match) {
       return { isValid: false, error: `La línea ${i + 1} no sigue el formato correcto.` };

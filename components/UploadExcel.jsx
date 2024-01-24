@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropzone from './DropzoneExcel';
-import Filter from './Filter'; // Asegúrate de que la ruta sea correcta
+import Filter from './Filter';
 
 const UploadExcel = () => {
   return (
