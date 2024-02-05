@@ -125,8 +125,7 @@ function Chart() {
 
       if (image[0] && useImage) {
         u.join('image')
-          .attr('xlink:href', (d, i) => {
-            console.log(image[0]);
+          .attr('href', (d, i) => {
             return image[0].src;
           })
           .attr('x', (d) => x(d[0]) + x.bandwidth() / 10)
@@ -180,7 +179,7 @@ function Chart() {
         .data(data)
         .enter()
         .append('image')
-        .attr('xlink:href', (d, i) => {
+        .attr('href', (d, i) => {
           return '/hanger.webp';
         })
         .attr('x', (d) => x(d[0]))
@@ -204,7 +203,7 @@ function Chart() {
           .data(data)
           .enter()
           .append('image')
-          .attr('xlink:href', (d, i) => {
+          .attr('href', (d, i) => {
             return image[0].src;
           })
           .attr('x', (d) => x(d[0]) + x.bandwidth() * 0.1)
@@ -270,8 +269,7 @@ function Chart() {
 
       if (image[0] && useImage) {
         u.join('image')
-          .attr('xlink:href', (d, i) => {
-            console.log(image[0]);
+          .attr('href', (d, i) => {
             return image[0].src;
           })
           .attr('x', (d) => x(d[0]) + x.bandwidth() / 10)
@@ -327,7 +325,7 @@ function Chart() {
         .data(data)
         .enter()
         .append('image')
-        .attr('xlink:href', (d, i) => {
+        .attr('href', (d, i) => {
           return '/white-face.png';
         })
         .attr('x', (d) => x(d[0]))
@@ -358,7 +356,7 @@ function Chart() {
         .data(data)
         .enter()
         .append('image')
-        .attr('xlink:href', (d, i) => {
+        .attr('href', (d, i) => {
           if (i === data.length - 1) return '/arrow.png';
           return Math.random() < 0.5 ? '/heart.png' : '/candy.png';
         })
@@ -419,6 +417,7 @@ function Chart() {
       .data(data)
       .join('image')
       .attr('href', imgBase)
+      .attr('crossorigin', 'anonymous')
       .attr('x', (d) => x(d[0]) - x.bandwidth() * 0.025)
       .attr('y', (d) => y.range()[0] - yOffSet)
       .attr('width', x.bandwidth() * 1.05);
@@ -522,7 +521,14 @@ function Chart() {
     showImages,
   ]);
 
-  return <svg viewBox="0 0 800 420" ref={svgRef}></svg>;
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 800 420"
+      ref={svgRef}
+      id="takeScreenshotChart"
+    ></svg>
+  );
 }
 
 export default Chart;

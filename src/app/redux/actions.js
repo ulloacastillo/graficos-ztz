@@ -17,3 +17,17 @@ export const updateOriginalData = (data) => ({
   type: UPDATE_ORIGINAL_DATA,
   payload: data,
 });
+
+export const UPDATE_CLAIMS = 'UPDATE_CLAIMS';
+
+export const updateClaims = (claims) => ({
+  type: UPDATE_CLAIMS,
+  payload: claims,
+});
+
+export const UPDATE_COL_NUMBER = 'UPDATE_COL_NUMBER';
+
+export const updadateColNumber = (col) => ({
+  type: UPDATE_COL_NUMBER,
+  payload: col,
+});

@@ -7,6 +7,8 @@ import {
   updateChartData,
   updateChartHeaders,
   updateOriginalData,
+  updateClaims,
+  updadateColNumber,
 } from '../src/app/redux/actions';
 import Swal from 'sweetalert2';
 
@@ -52,6 +54,13 @@ export default function Dropzone(props) {
           dispatch(updateOriginalData(validation.data));
           dispatch(updateChartData(validation.data));
           dispatch(updateChartHeaders(validation.headers));
+          dispatch(
+            updateClaims({
+              total: validation.total,
+              notAnswered: validation.notAnswered,
+            }),
+          );
+          dispatch(updadateColNumber(validation.colNumber));
 
           setUpload(true);
         };
