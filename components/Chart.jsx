@@ -448,8 +448,11 @@ function Chart() {
       .data(data)
       .join('text')
       .text((d) => {
-        const [year, month, day] = d[0].split('-');
-        return `${year}`;
+        const dateString = String(d[0]);
+        const parsedDate = dateString.includes('-')
+          ? dateString.split('-')
+          : [dateString];
+        const [year, month, day] = parsedDate.map(Number);
       })
       .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
       .attr('y', (d) => y.range()[0] + monthTextOffsetY + 11)

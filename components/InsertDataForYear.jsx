@@ -26,21 +26,25 @@ const InsertDataForYear = () => {
   };
   return (
     <div>
-      <h3 className="mb-4 font-bold text-2xl text-black dark:text-black">
-        Ingresar datos por Año:
-      </h3>
-      <textarea
-        value={inputData}
-        onChange={handleInputChange}
-        className="w-300"
-      ></textarea>
-      <button
-        type="button"
-        onClick={handleGenerateGraph}
-        className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-      >
-        Generar Grafico
-      </button>
+      <div>
+        <h3 className="mb-4 font-bold text-2xl text-black dark:text-black">
+          Ingresar datos por Año:
+        </h3>
+        <textarea
+          value={inputData}
+          onChange={handleInputChange}
+          className="w-300"
+        ></textarea>
+      </div>
+      <div>
+        <button
+          type="button"
+          onClick={handleGenerateGraph}
+          className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+        >
+          Generar Grafico
+        </button>
+      </div>
     </div>
   );
 };
