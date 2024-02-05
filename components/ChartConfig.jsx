@@ -44,6 +44,7 @@ function ChartConfig() {
               <option value="Halloween">Halloween</option>
               <option value="Navidad">Navidad</option>
               <option value="Valentin">Valentin</option>
+              <option value="Cyber">Cyber Day</option>
             </select>
           </div>
           <div className="flex flex-row justify-between items-center">

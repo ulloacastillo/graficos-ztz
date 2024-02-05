@@ -24,10 +24,18 @@ export const THEMES = {
   },
   Halloween: {
     colors: ['#FF8800', '#000000'],
-    images: ['/tela.png', '/ghosts.png', '/pumkin.png'],
+    images: ['/ghost.png', '/bat.png', '/ghost2.png', '/pumkin.png'],
   }, //#5E1A9E
   Valentin: {
     colors: ['#ffc0c0', '#ff0000'],
     images: [],
   },
+  Cyber: {
+    colors: ['#00ff00', '#0000ff'],
+    images: [],
+  },
+  Chile: {
+    colors: ['#00ff00', '#0000ff'],
+  },
+  images: [],
 };

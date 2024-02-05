@@ -10,7 +10,7 @@ const Layout = () => {
       <Sidebar />
       <div className="flex-1 p-4 text-black">
         <div className="flex flex-row justify-center items-center">
-          <section className="grow-[4] p-32">
+          <section className="grow-[4] p-4">
             <header>
               <input
                 type="text"
