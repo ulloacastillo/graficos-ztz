@@ -12,11 +12,17 @@ import ChartConfig from './ChartConfig';
 import DataTable from './DataTable';
 import { useSelector } from 'react-redux';
 import Chart from './Chart';
+import DonutChart from './DonutChart';
 
 const App = () => {
   const [open, setOpen] = useState(true);
   const [selectedOption, setSelectedOption] = useState(1);
   const filteredData = useSelector((state) => state.chartData);
+  const colNumber = parseInt(useSelector((state) => state.colNumber));
+  const claims = useSelector((state) => state.claims);
+
+  console.log(colNumber === 2);
+
   const [title, setTitle] = useState('Escriba el Título del gráfico');
   const [subTitle, setSubTitle] = useState('Escriba el Subtítulo del gráfico');
   const Menu = [
@@ -101,7 +107,9 @@ const App = () => {
             {selectedOption === 3 && <UploadImage />}
             {selectedOption === 4 && <ChartConfig />}
           </div>
-          <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1"></div>
+          <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1 flex flex-col items-center justify-center">
+            {colNumber === 2 && <DonutChart claims={claims} />}
+          </div>
           <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1 flex items-center justify-center">
             <DataTable data={filteredData} />
           </div>

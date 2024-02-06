@@ -23,7 +23,7 @@ function ColorPicker(props) {
     <div
       className={`flex flex-row items-center gap-2 bg-white px-2 py-1 relative w-fit rounded-full`}
     >
-      <div className={`bg-[${color}] w-8 h-8 p-1 rounded-full`}>
+      <div className={`bg-[${color}] w-8 h-8 rounded-full`}>
         <input
           className={`size-full rounded-full border-none left-4 cursor-pointer outline-none bg-transparent`}
           id="colorInput"
@@ -39,7 +39,7 @@ function ColorPicker(props) {
         type="text"
         value={text}
         onChange={handleChange}
-        className="w-16 text-slate-600"
+        className="w-16 text-sm text-slate-600"
       />
       <span className="text-sm font-medium pr-2 text-slate-600">HEX</span>
     </div>

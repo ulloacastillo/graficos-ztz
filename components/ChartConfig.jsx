@@ -34,15 +34,15 @@ function ChartConfig() {
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <div className="w-full flex flex-col items-center">
+      <div className="w-[80%]  flex flex-col items-center">
         <h2 className="text-lg ">Configuración de Barras</h2>
-        <div className="w-72 h-80 mx-auto bg-gray-100 rounded-xl shadow-2xl p-6">
-          <div className="flex flex-row justify-between">
-            <label className="pb-6" htmlFor="themes">
+        <div className="w-full mx-5 flex flex-col gap-y-4 bg-gray-100 rounded-xl shadow-2xl p-6">
+          <div className="flex flex-row justify-between items-center">
+            <label className="text-sm" htmlFor="themes">
               Tematica del gráfico
             </label>
             <select
-              className="text-sm"
+              className="bg-gray-50 border border-gray-300 text-sm rounded-full block p-2.5 w-fit"
               name="themes"
               onChange={handleChange}
               value={theme}
@@ -55,11 +55,11 @@ function ChartConfig() {
             </select>
           </div>
           <div className="flex flex-row justify-between items-center">
-            <span className="pb-6">Color Inicial</span>
+            <span className="text-sm">Color Inicial</span>
             <ColorPicker setColor={setInitialColor} color={initialColor} />
           </div>
           <div className="flex flex-row justify-between items-center">
-            <span className="pr-3">Color Final</span>
+            <span className="text-sm">Color Final</span>
             <ColorPicker setColor={setEndColor} color={endColor} />
           </div>
           <div className="flex flex-row "></div>
@@ -72,7 +72,7 @@ function ChartConfig() {
             <li key={i} className="list-none ">
               <div className="flex flex-col items-center">
                 <div className="flex gap-1">
-                  <span>{d.date}</span>
+                  <span className="text-sm">{d.date}</span>
                   <CheckBoxImage index={i} />
                 </div>
                 <SelectEvent index={i} />
