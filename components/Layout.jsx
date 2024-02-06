@@ -57,7 +57,10 @@ const Layout = () => {
               </div>
               <div className="pt-7">
                 <DataTable data={filteredData} />
-                {colNumber === 2 && <DonutChart claims={claims} />}
+                {
+                  //{colNumber === 2 && <DonutChart claims={claims} />}}
+                }
+                <DonutChart claims={claims} />
               </div>
             </main>
           </section>
