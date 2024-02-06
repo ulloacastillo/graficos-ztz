@@ -43,13 +43,18 @@ const InsertCSV = () => {
         onChange={handleInputChange}
       ></textarea>
       <Filter />
-      <button
-        type="button"
-        onClick={handleGenerateGraph}
-        className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-      >
-        Generar Grafico
-      </button>
+      <div className="flex items-center justify-center py-5">
+        <button
+          type="button"
+          onClick={handleGenerateGraph}
+          className="cursor-pointer transition-all bg-ztz-mainblue text-white px-6 py-2 rounded-lg
+border-ztz-indigoblue
+border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+        >
+          Generar Grafico
+        </button>
+      </div>
     </div>
   );
 };

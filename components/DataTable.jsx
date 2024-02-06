@@ -33,27 +33,41 @@ const DataTable = ({ data }) => {
   };
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg inline-block">
-      <table className="w-2/4 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th className="px-6 py-1">{getHeader()}</th>
-            <th className="px-6 py-1">Reclamos</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr
-              key={index}
-              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-            >
-              <td className="px-6 py-1">{formatDate(item[0])}</td>
-              <td className="px-6 py-1">{item[1]}</td>
+    <div>
+      <div className="mt-4 px-8">
+        <button
+          className="cursor-pointer transition-all bg-ztz-mainblue text-white px-6 py-2 rounded-lg
+border-ztz-indigoblue
+border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
+          onClick={handleExportExcel}
+        >
+          Generar Excel
+        </button>
+      </div>
+      <div className="py-6">
+        <table className="min-w-full text-left text-sm font-light">
+          <thead className="border-b font-medium dark:border-neutral-500">
+            <tr>
+              <th className="px-6 py-3">{getHeader()}</th>
+              <th className="px-6 py-3">Reclamos</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <button onClick={handleExportExcel}>Exportar a Excel</button>
+          </thead>
+          <tbody>
+            {data.map((item, index) => (
+              <tr
+                key={index}
+                className="border-b dark:border-neutral-500  hover:bg-ztz-mainblue hover:text-white"
+              >
+                <td className="whitespace-nowrap px-6 py-3 font-medium">
+                  {formatDate(item[0])}
+                </td>
+                <td className="whitespace-nowrap px-6 py-3">{item[1]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

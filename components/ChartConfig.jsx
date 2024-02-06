@@ -33,13 +33,20 @@ function ChartConfig() {
   };
 
   return (
-    <div className="flex flex-col items-start gap-3 w-[100%]">
-      <div className="w-[100%]">
+    <div className="flex flex-col items-center justify-center h-full">
+      <div className="w-full flex flex-col items-center">
         <h2 className="text-lg ">Configuración de Barras</h2>
-        <div className="flex flex-col  w-[80%] border-solid border-2 shadow-md border-slate-200 rounded-md py-4 px-1 gap-4">
+        <div className="w-72 h-80 mx-auto bg-gray-100 rounded-xl shadow-2xl p-6">
           <div className="flex flex-row justify-between">
-            <label htmlFor="themes">Temáica del gráfico</label>
-            <select name="themes" onChange={handleChange} value={theme}>
+            <label className="pb-6" htmlFor="themes">
+              Tematica del gráfico
+            </label>
+            <select
+              className="text-sm"
+              name="themes"
+              onChange={handleChange}
+              value={theme}
+            >
               <option value="default">Sin Temática</option>
               <option value="Halloween">Halloween</option>
               <option value="Navidad">Navidad</option>
@@ -48,17 +55,17 @@ function ChartConfig() {
             </select>
           </div>
           <div className="flex flex-row justify-between items-center">
-            <span>Color Inicial</span>
+            <span className="pb-6">Color Inicial</span>
             <ColorPicker setColor={setInitialColor} color={initialColor} />
           </div>
           <div className="flex flex-row justify-between items-center">
-            <span>Color Final</span>
+            <span className="pr-3">Color Final</span>
             <ColorPicker setColor={setEndColor} color={endColor} />
           </div>
           <div className="flex flex-row "></div>
         </div>
       </div>
-      <div className="w-[100%]">
+      <div className="w-full flex flex-col items-center py-6">
         <h2 className="text-lg ">Eventos Por Mes</h2>
         <nav className="flex flex-row justify-center flex-wrap w-[80%] border-solid border-2 border-slate-200 shadow-md rounded-md py-4 px-1 gap-3">
           {eventsRegister.map((d, i) => (

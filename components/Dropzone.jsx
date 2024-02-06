@@ -51,7 +51,7 @@ export default function Dropzone(props) {
       key={file.path}
       className="size-20 rounded-lg bg-slate-300/40 flex flex-col items-center justify-center relative"
     >
-      <img key={file.name} src={file.preview} width="50px" />
+      <img key={file.name} src={file.preview} width="50px" alt="" />
     </div>
   ));
 
