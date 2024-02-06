@@ -8,7 +8,7 @@ const InsertData = () => {
     setIsChecked(!isChecked);
   };
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center h-full py-6 space-y-4">
       <div>
         <label className="relative inline-flex items-center cursor-pointer">
           <input
@@ -18,8 +18,8 @@ const InsertData = () => {
             checked={isChecked}
             onChange={handleCheckboxChange}
           />
-          <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-          <span className="ms-3 text-sm font-medium text-gray-900">
+          <div className="peer ring-2 ring-gray-900 bg-gradient-to-r from-ztz-softblue to-ztz-indigoblue rounded-xl outline-none duration-300 after:duration-500 w-20 h-8  shadow-inner peer-checked:bg-gradient-to-r peer-checked:from-ztz-mainblue peer-checked:to-dark-purple shadow-gray-900 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-900  after:content-[''] after:rounded-2xl after:absolute after:outline-none after:h-12 after:w-12 after:bg-gray-50 after:-top-2 after:-left-2 after:flex after:justify-center after:items-center after:border-4 after:border-gray-900  peer-checked:after:translate-x-14"></div>
+          <span className="ms-3 text-sm text-gray-900 pl-3 font-bold">
             {isChecked ? 'Ingrese datos manuales' : 'Ingrese CSV'}
           </span>
         </label>

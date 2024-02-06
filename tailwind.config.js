@@ -9,11 +9,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        '8A90F1': '#F6F8FA',
-        glass: 'rgba(255,255,255,0.25)',
-      },
-      backgroundImage: {
-        velentin: "url('/public/velentines.jpeg')",
+        'dark-purple': '#05002b',
+        'light-white': 'rgba(255,255,255,0.17)',
+        'ztz-indigoblue': '#4158be',
+        'ztz-mainblue': '#8e95ff',
+        'ztz-softblue': '#8dbaff',
       },
     },
   },

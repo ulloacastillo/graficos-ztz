@@ -2,8 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-.sidebarContainer {
-  @apply bg-glass rounded-3xl p-4 border border-solid border-glass relative;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
 }
 
 rect {

@@ -50,10 +50,9 @@ const Filter = () => {
   }, [filterType, originalData]);
 
   return (
-    <div className="py-8">
+    <div className="w-full px-8 py-8">
       <h3 className="mb-4 font-bold text-2xl text-black dark:text-black">
-        {' '}
-        Filtrar por:{' '}
+        Filtrar por:
       </h3>
       <ul className="items-center w-full text-lg font-bold text-black bg-white border border-black rounded-lg sm:flex dark:bg-8A90F1 dark:border-black dark:text-black">
         <li className="w-full border-b border-black sm:border-b-0 sm:border-r dark:border-black">
@@ -70,8 +69,7 @@ const Filter = () => {
               htmlFor="horizontal-month"
               className="w-full py-3 ms-2 text-lg font-bold text-black dark:text-black"
             >
-              {' '}
-              Mes{' '}
+              Mes
             </label>
           </div>
         </li>
