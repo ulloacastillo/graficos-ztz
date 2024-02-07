@@ -85,7 +85,7 @@ const App = () => {
                 <input
                   type="text"
                   placeholder="Escriba el Subtitulo del gráfico"
-                  className="w-80 h-10 bg-gradient-to-tr from-orange-300 to-orange-500 rounded-xl shadow-2xl px-4 text-white text-center"
+                  className="w-80 h-10 bg-gradient-to-tr from-orange-300 to-orange-500 rounded-xl px-4 text-white text-center"
                   name="title"
                   value={subTitle}
                   onChange={(e) => setSubTitle(e.target.value)}

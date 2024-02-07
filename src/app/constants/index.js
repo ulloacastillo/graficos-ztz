@@ -34,6 +34,10 @@ export const THEMES = {
     colors: ['#00ff00', '#0000ff'],
     images: [],
   },
+  NewYear: {
+    colors: ['#000000', '#D4AF37'],
+    images: [],
+  },
   Chile: {
     colors: ['#00ff00', '#0000ff'],
   },

@@ -365,6 +365,70 @@ function Chart() {
         .attr('width', (d, i) =>
           i === data.length - 1 ? x.bandwidth() / 2 : x.bandwidth() / 1.8,
         );
+    }
+    if (theme === 'NewYear') {
+      let path = svg
+        .append('path')
+        .datum(data)
+        .attr('class', 'line')
+        .attr(
+          'd',
+          d3
+            .line()
+            .x((d) => x(d[0]) + x.bandwidth() / 2)
+            .y((d) => y(d[1]) + x.bandwidth() / 5),
+        )
+        .attr('stroke', '#000000')
+        .attr('stroke-width', 5)
+        .attr('fill', 'none');
+
+      let totalLength = path.node().getTotalLength();
+
+      path
+        .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+        .attr('stroke-dashoffset', totalLength)
+        .transition()
+        .duration(2500)
+        .ease(d3.easeSin)
+        .attr('stroke-dashoffset', 0);
+
+      let images = svg
+        .append('g')
+        .selectAll('heartImg')
+        .data(data)
+        .enter()
+        .append('image')
+        .attr('href', (d, i) => {
+          if (i === data.length - 1) return '/ArrowNewYear.png';
+          return Math.random() < 0.5 ? '/fireWork.png' : '/fireWork2.png';
+        })
+        .attr(
+          'x',
+          (d) =>
+            x(d[0]) -
+            x.bandwidth() / 4 +
+            ((x.bandwidth() / 1.8) * 2 - x.bandwidth()) / 2 +
+            10,
+        )
+        .attr('y', y.range()[0])
+        .attr('width', 0)
+        .attr('height', 0);
+
+      images
+        .transition()
+        .delay((d, i) => i * 200)
+        .duration(1000)
+        .attr('y', (d) => y(d[1]) - x.bandwidth() / 4)
+        .attr('width', (d, i) =>
+          i === data.length - 1
+            ? (x.bandwidth() / 2) * 2
+            : (x.bandwidth() / 1.8) * 2,
+        )
+        .attr('height', (d, i) =>
+          i === data.length - 1
+            ? (x.bandwidth() / 2) * 2
+            : (x.bandwidth() / 1.8) * 2,
+        );
     } else {
       svg
         .append('g')
@@ -386,7 +450,7 @@ function Chart() {
 
     // linea eje x
 
-    if (theme === 'Valentin' || theme === 'Cyber') {
+    if (theme === 'Valentin' || theme === 'Cyber' || theme === 'NewYear') {
       svg
         .append('line')
         .attr('x1', (d) => 0)
@@ -402,7 +466,11 @@ function Chart() {
       imgBase = (d) => '/svg-path.svg';
       yOffSet = x.bandwidth() * 0.2;
       monthTextOffsetY = x.bandwidth() / 4;
-    } else if (theme === 'Cyber') {
+    } else if (
+      theme === 'Cyber' ||
+      theme === 'NewYear' ||
+      theme === 'Valentin'
+    ) {
       imgBase = (d) => '/';
       yOffSet = x.bandwidth() * 0.2;
       monthTextOffsetY = 10;
