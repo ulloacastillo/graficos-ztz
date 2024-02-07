@@ -16,11 +16,12 @@ function Chart() {
   const filterType = useChartSettings((state) => state.filterType);
   const initialColor = useChartSettings((state) => state.initialColor);
   const endColor = useChartSettings((state) => state.endColor);
-
+  const textColor = useChartSettings((state) => state.textColor);
   const chartConfig = useRef();
 
   const data = useSelector((state) => state.chartData);
 
+  console.log(data);
   const margin = { top: 80, right: 30, bottom: 70, left: 60 },
     width = 800 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
@@ -428,7 +429,8 @@ function Chart() {
       .join('text')
       .text((d) => {
         if (filterType === 'Mes') {
-          return `${MONTHS[d[0]]}`;
+          console.log('dasdad', MONTHS[d[0]], MONTHS[d[0]] ?? d[0], d[0]);
+          return MONTHS[d[0]] ?? d[0];
         }
         return `${d[0]}`;
       })
@@ -485,7 +487,7 @@ function Chart() {
         .attr('y', (d) => y(d[1]) + x.bandwidth() * 1.2)
         .attr('font-size', 10)
         .attr('font-weight', '600')
-        .attr('fill', (d, i) => '#fff')
+        .attr('fill', (d, i) => textColor)
         .attr('text-anchor', 'middle')
         .style('text-anchor', 'middle')
         .attr(
@@ -519,6 +521,7 @@ function Chart() {
     initialColor,
     endColor,
     showImages,
+    textColor,
   ]);
 
   return (

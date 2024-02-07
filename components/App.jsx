@@ -9,6 +9,7 @@ import UploadExcel from './UploadExcel';
 import InsertData from './InsertData';
 import UploadImage from './UploadImage';
 import ChartConfig from './ChartConfig';
+import Legend from './Legend';
 import DataTable from './DataTable';
 import { useSelector } from 'react-redux';
 import Chart from './Chart';
@@ -75,28 +76,31 @@ const App = () => {
       >
         <div className="grid grid-cols-3 grid-auto-rows:min-content gap-9 h-full">
           <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl col-span-3 flex flex-col items-center justify-center">
-            <header className="pt-4 pb-6 flex flex-col items-center">
-              <div className="mb-2">
-                <input
-                  type="text"
-                  placeholder="Escriba el Título del gráfico"
-                  className="w-96 h-14 bg-gradient-to-tr from-ztz-softblue to-ztz-indigoblue rounded-xl px-4 text-white text-center"
-                  name="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
+            <header className="w-full px-5 flex flex-row items-center justify-between">
+              <div className="flex flex-col items-center">
+                <div className="mb-2">
+                  <input
+                    type="text"
+                    placeholder="Escriba el Título del gráfico"
+                    className="w-96 h-14 bg-gradient-to-tr from-ztz-softblue to-ztz-indigoblue rounded-xl px-4 text-white text-center"
+                    name="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </div>
 
-              <div>
-                <input
-                  type="text"
-                  placeholder="Escriba el Subtitulo del gráfico"
-                  className="w-80 h-10 bg-gradient-to-tr from-orange-300 to-orange-500 rounded-xl shadow-2xl px-4 text-white text-center"
-                  name="title"
-                  value={subTitle}
-                  onChange={(e) => setSubTitle(e.target.value)}
-                />
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Escriba el Subtitulo del gráfico"
+                    className="w-80 h-10 bg-gradient-to-tr from-orange-300 to-orange-500 rounded-xl shadow-2xl px-4 text-white text-center"
+                    name="title"
+                    value={subTitle}
+                    onChange={(e) => setSubTitle(e.target.value)}
+                  />
+                </div>
               </div>
+              <Legend />
             </header>
 
             <Chart />

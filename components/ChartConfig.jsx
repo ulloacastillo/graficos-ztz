@@ -17,6 +17,8 @@ function ChartConfig() {
   const initialColor = useChartSettings((state) => state.initialColor);
   const setEndColor = useChartSettings((state) => state.setEndColor);
   const endColor = useChartSettings((state) => state.endColor);
+  const textColor = useChartSettings((state) => state.textColor);
+  const setTextColor = useChartSettings((state) => state.setTextColor);
 
   useEffect(() => {
     const array = data.map(
@@ -54,13 +56,22 @@ function ChartConfig() {
               <option value="Cyber">Cyber Day</option>
             </select>
           </div>
+          {theme !== 'Cyber' && (
+            <>
+              <div className="flex flex-row justify-between items-center">
+                <span className="text-sm">Color Inicial</span>
+                <ColorPicker setColor={setInitialColor} color={initialColor} />
+              </div>
+              <div className="flex flex-row justify-between items-center">
+                <span className="text-sm">Color Final</span>
+                <ColorPicker setColor={setEndColor} color={endColor} />
+              </div>
+            </>
+          )}
+
           <div className="flex flex-row justify-between items-center">
-            <span className="text-sm">Color Inicial</span>
-            <ColorPicker setColor={setInitialColor} color={initialColor} />
-          </div>
-          <div className="flex flex-row justify-between items-center">
-            <span className="text-sm">Color Final</span>
-            <ColorPicker setColor={setEndColor} color={endColor} />
+            <span className="text-sm">Color del Texto </span>
+            <ColorPicker setColor={setTextColor} color={textColor} />
           </div>
           <div className="flex flex-row "></div>
         </div>

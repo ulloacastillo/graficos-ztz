@@ -6,17 +6,24 @@ export function validateData(input) {
     const line = lines[i].trim();
     if (line.length === 0) continue;
 
-    const match = line.match(/^(\d{4})\s*=\s*(\d+)$/);
+    const match = line.match(/^[a-zA-Z0-9]{1,4}\s*=\s*(\d+)$/);
 
     if (!match) {
-      return { isValid: false, error: `La línea ${i + 1} no sigue el formato correcto.` };
+      return {
+        isValid: false,
+        error: `La línea ${i + 1} no sigue el formato correcto.`,
+      };
     }
+    const [year, quantity] = line.split('=');
+    console.log(year);
+    // const year = match[1];
+    // const quantity = parseInt(match[2], 10);
 
-    const year = parseInt(match[1], 10);
-    const quantity = parseInt(match[2], 10);
-
-    if (isNaN(year) || isNaN(quantity)) {
-      return { isValid: false, error: `La línea ${i + 1} contiene un número no válido.` };
+    if (isNaN(quantity)) {
+      return {
+        isValid: false,
+        error: `La línea ${i + 1} contiene un número no válido.`,
+      };
     }
 
     data.push([year, quantity]);
