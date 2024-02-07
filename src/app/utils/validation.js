@@ -1,4 +1,5 @@
 export function validateData(input) {
+  console.log(input);
   const lines = input.trim().split('\n');
   const headers = lines[0].split(',');
   let dateCounts = {};
@@ -25,13 +26,16 @@ export function validateData(input) {
         dateCounts[date] = 1;
       }
     } else if (headers.length === 2) {
-      const match = true;
+      const match = line.match(
+        /^(\d{1,2}\/\d{1,2}\/\d{2}|\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{2}),+(\d{1,2}\/\d{1,2}\/\d{2}|\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{2}|[A-Z]{2})$/,
+      );
       if (!match) {
         return {
           isValid: false,
           error: `La línea ${i + 1} no sigue el formato correcto.`,
         };
       }
+
       const [date, answer] = line.split(',');
       notAnswered += answer === 'SI' || answer === 'NO' ? 1 : 0;
       if (dateCounts[date]) {

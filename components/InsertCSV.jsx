@@ -38,7 +38,7 @@ const InsertCSV = () => {
         Ingresar datos CSV:
       </h3>
       <textarea
-        className="w-300"
+        className="w-full"
         value={inputData}
         onChange={handleInputChange}
       ></textarea>
