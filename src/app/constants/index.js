@@ -31,7 +31,11 @@ export const THEMES = {
     images: [],
   },
   Cyber: {
-    colors: ['#00ff00', '#0000ff'],
+    colors: ['#3C8FDC', '#FF9B6B'],
+    images: [],
+  },
+  NewYear: {
+    colors: ['#000000', '#D4AF37'],
     images: [],
   },
   Chile: {

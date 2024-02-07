@@ -54,6 +54,7 @@ function ChartConfig() {
               <option value="Navidad">Navidad</option>
               <option value="Valentin">Valentin</option>
               <option value="Cyber">Cyber Day</option>
+              <option value="NewYear">Año nuevo</option>
             </select>
           </div>
           {theme !== 'Cyber' && (

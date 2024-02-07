@@ -12,6 +12,7 @@ import ChartConfig from './ChartConfig';
 import Legend from './Legend';
 import DataTable from './DataTable';
 import { useSelector } from 'react-redux';
+import { useChartSettings } from '@/app/store/store';
 import Chart from './Chart';
 import DonutChart from './DonutChart';
 
@@ -22,8 +23,10 @@ const App = () => {
   const colNumber = parseInt(useSelector((state) => state.colNumber));
   const claims = useSelector((state) => state.claims);
 
-  console.log(colNumber === 2);
 
+
+  const initialColor = useChartSettings((state) => state.initialColor);
+  const endColor = useChartSettings((state) => state.endColor);
   const [title, setTitle] = useState('Escriba el Título del gráfico');
   const [subTitle, setSubTitle] = useState('Escriba el Subtítulo del gráfico');
   const Menu = [
@@ -32,7 +35,7 @@ const App = () => {
     { id: 3, tittle: 'Subir Imagen', icon: CiImageOn, gap: true },
     { id: 4, tittle: 'Configuración', icon: CiSettings },
   ];
-
+  console.log(initialColor);
   return (
     <div className="flex">
       <div
@@ -85,22 +88,22 @@ const App = () => {
                     className="w-96 h-14 bg-gradient-to-tr from-ztz-softblue to-ztz-indigoblue rounded-xl px-4 text-white text-center"
                     name="title"
                     value={title}
+                    style={{ background: initialColor }}
                     onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
 
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Escriba el Subtitulo del gráfico"
-                    className="w-80 h-10 bg-gradient-to-tr from-orange-300 to-orange-500 rounded-xl shadow-2xl px-4 text-white text-center"
-                    name="title"
-                    value={subTitle}
-                    onChange={(e) => setSubTitle(e.target.value)}
-                  />
-                </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Escriba el Subtitulo del gráfico"
+                  className="w-80 h-10 bg-gradient-to-tr from-orange-300 to-orange-500 rounded-xl shadow-2xl px-4 text-white text-center"
+                  name="title"
+                  style={{ background: endColor }}
+                  value={subTitle}
+                  onChange={(e) => setSubTitle(e.target.value)}
+                />
               </div>
-              <Legend />
             </header>
 
             <Chart />
