@@ -11,12 +11,15 @@ import UploadImage from './UploadImage';
 import ChartConfig from './ChartConfig';
 import DataTable from './DataTable';
 import { useSelector } from 'react-redux';
+import { useChartSettings } from '@/app/store/store';
 import Chart from './Chart';
 
 const App = () => {
   const [open, setOpen] = useState(true);
   const [selectedOption, setSelectedOption] = useState(1);
   const filteredData = useSelector((state) => state.chartData);
+  const initialColor = useChartSettings((state) => state.initialColor);
+  const endColor = useChartSettings((state) => state.endColor);
   const [title, setTitle] = useState('Escriba el Título del gráfico');
   const [subTitle, setSubTitle] = useState('Escriba el Subtítulo del gráfico');
   const Menu = [
@@ -25,7 +28,7 @@ const App = () => {
     { id: 3, tittle: 'Subir Imagen', icon: CiImageOn, gap: true },
     { id: 4, tittle: 'Configuración', icon: CiSettings },
   ];
-
+  console.log(initialColor);
   return (
     <div className="flex">
       <div
@@ -74,7 +77,8 @@ const App = () => {
                 <input
                   type="text"
                   placeholder="Escriba el Título del gráfico"
-                  className="w-96 h-14 bg-gradient-to-tr from-ztz-softblue to-ztz-indigoblue rounded-xl px-4 text-white text-center"
+                  className={`w-96 h-14 rounded-xl px-4 text-white text-center`}
+                  style={{ background: initialColor }}
                   name="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
@@ -85,7 +89,8 @@ const App = () => {
                 <input
                   type="text"
                   placeholder="Escriba el Subtitulo del gráfico"
-                  className="w-80 h-10 bg-gradient-to-tr from-orange-300 to-orange-500 rounded-xl px-4 text-white text-center"
+                  className="w-80 h-10 rounded-xl px-4 text-white text-center"
+                  style={{ background: endColor }}
                   name="title"
                   value={subTitle}
                   onChange={(e) => setSubTitle(e.target.value)}
