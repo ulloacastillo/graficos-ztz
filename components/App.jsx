@@ -23,8 +23,6 @@ const App = () => {
   const colNumber = parseInt(useSelector((state) => state.colNumber));
   const claims = useSelector((state) => state.claims);
 
-
-
   const initialColor = useChartSettings((state) => state.initialColor);
   const endColor = useChartSettings((state) => state.endColor);
   const [title, setTitle] = useState('Escriba el Título del gráfico');
@@ -81,11 +79,11 @@ const App = () => {
           <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl col-span-3 flex flex-col items-center justify-center">
             <header className="w-full px-5 flex flex-row items-center justify-between">
               <div className="flex flex-col items-center">
-                <div className="mb-2">
+                <div className="mb-1">
                   <input
                     type="text"
                     placeholder="Escriba el Título del gráfico"
-                    className="w-96 h-14 bg-gradient-to-tr from-ztz-softblue to-ztz-indigoblue rounded-xl px-4 text-white text-center"
+                    className="w-96 h-14 font-light bg-gradient-to-tr from-ztz-softblue to-ztz-indigoblue rounded-xl px-4 text-white text-center"
                     name="title"
                     value={title}
                     style={{ background: initialColor }}
@@ -93,17 +91,19 @@ const App = () => {
                   />
                 </div>
 
-              <div>
-                <input
-                  type="text"
-                  placeholder="Escriba el Subtitulo del gráfico"
-                  className="w-80 h-10 bg-gradient-to-tr from-orange-300 to-orange-500 rounded-xl shadow-2xl px-4 text-white text-center"
-                  name="title"
-                  style={{ background: endColor }}
-                  value={subTitle}
-                  onChange={(e) => setSubTitle(e.target.value)}
-                />
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Escriba el Subtitulo del gráfico"
+                    className="w-80 font-light text-base h-10 bg-gradient-to-tr from-orange-300 to-orange-500 rounded-xl shadow-2xl px-4 text-white text-center"
+                    name="title"
+                    style={{ background: endColor }}
+                    value={subTitle}
+                    onChange={(e) => setSubTitle(e.target.value)}
+                  />
+                </div>
               </div>
+              <Legend />
             </header>
 
             <Chart />

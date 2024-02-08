@@ -21,7 +21,6 @@ function Chart() {
 
   const data = useSelector((state) => state.chartData);
 
-  console.log(data);
   const margin = { top: 80, right: 30, bottom: 70, left: 60 },
     width = 800 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
@@ -134,7 +133,7 @@ function Chart() {
           .attr('width', (d, i) => (showImages[i] ? x.bandwidth() * 0.8 : 0));
       }
     } else if (theme === 'Cyber') {
-      svg
+      const path = svg
         .append('path')
         .datum(data)
         .attr('class', 'line')
@@ -145,10 +144,19 @@ function Chart() {
             .x((d) => x(d[0]) + x.bandwidth() * 0.5)
             .y((d) => y(d[1]) + x.bandwidth() / 3),
         )
-        .transition(d3.transition().ease(d3.easeSin).duration(2500))
         .attr('stroke', '#dddddd')
         .attr('stroke-width', 4)
         .attr('fill', 'none');
+
+      let totalLength = path.node().getTotalLength();
+
+      path
+        .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+        .attr('stroke-dashoffset', totalLength)
+        .transition()
+        .duration(2500)
+        .ease(d3.easeSin)
+        .attr('stroke-dashoffset', 0);
       svg
         .append('g')
         .selectAll('circleCyber')
@@ -164,7 +172,6 @@ function Chart() {
         .attr('stroke', '#454546')
         .attr('stroke-width', 1)
         .transition()
-        .duration(800)
         .delay((d, i) => i * 200)
         .attr('fill', (d, i) => '#ddd')
         .attr(
@@ -277,10 +284,11 @@ function Chart() {
           .attr('y', (d) => y(d[1]) - x.bandwidth() / 1.5)
           .attr('width', (d, i) => (showImages[i] ? x.bandwidth() * 0.8 : 0));
       }
-      svg
+      const bars = svg
         .selectAll('mybar')
         .data(data)
         .join('rect')
+        .on('click', (d, e, op) => console.log(d, e, op))
         .attr('x', (d) => x(d[0]))
         .attr('y', height)
         .attr('ry', 0)
@@ -296,6 +304,7 @@ function Chart() {
         .delay((d, i) => i * 200)
         .attr('y', (d) => y(d[1]))
         .attr('height', (d) => height - y(d[1]));
+
       svg
         .append('g')
         .selectAll('downFlap')
@@ -335,7 +344,7 @@ function Chart() {
     }
 
     if (theme === 'Valentin') {
-      svg
+      const path = svg
         .append('path')
         .datum(data)
         .attr('class', 'line')
@@ -346,10 +355,19 @@ function Chart() {
             .x((d) => x(d[0]) + x.bandwidth() / 2)
             .y((d) => y(d[1]) + x.bandwidth() / 5),
         )
-        .transition(d3.transition().ease(d3.easeSin).duration(2500))
+        .transition(d3.transition().ease(d3.easeSin).duration(1000))
         .attr('stroke', '#f083ad')
-        .attr('stroke-width', 10)
+        .attr('stroke-width', 8)
         .attr('fill', 'none');
+      let totalLength = path.node().getTotalLength();
+
+      path
+        .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+        .attr('stroke-dashoffset', totalLength)
+        .transition()
+        .duration(1000)
+        .ease(d3.easeSin)
+        .attr('stroke-dashoffset', 0);
 
       svg
         .append('g')
@@ -497,7 +515,6 @@ function Chart() {
       .join('text')
       .text((d) => {
         if (filterType === 'Mes') {
-          console.log('dasdad', MONTHS[d[0]], MONTHS[d[0]] ?? d[0], d[0]);
           return MONTHS[d[0]] ?? d[0];
         }
         return `${d[0]}`;

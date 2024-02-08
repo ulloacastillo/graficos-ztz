@@ -1,5 +1,4 @@
 export function validateData(input) {
-  console.log(input);
   const lines = input.trim().split('\n');
   const headers = lines[0].split(',');
   let dateCounts = {};
