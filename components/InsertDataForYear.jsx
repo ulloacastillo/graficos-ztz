@@ -3,6 +3,7 @@ import { validateData } from '../src/app/utils/validationYear';
 import { useDispatch } from 'react-redux';
 import { updateChartData } from '../src/app/redux/actions';
 import Swal from 'sweetalert2';
+import TextArea from './TextArea';
 
 const InsertDataForYear = () => {
   const [inputData, setInputdata] = useState('');
@@ -25,17 +26,16 @@ const InsertDataForYear = () => {
     dispatch(updateChartData(validation.data));
   };
   return (
-    <div>
-      <div>
-        <h3 className="mb-4 font-bold text-2xl text-black dark:text-black">
-          Ingresar datos por Año:
-        </h3>
-        <textarea
-          value={inputData}
-          onChange={handleInputChange}
-          className="w-300"
-        ></textarea>
-      </div>
+    <>
+      <TextArea
+        value={inputData}
+        handler={handleInputChange}
+        title={'Ingresar datos por Año o Mes:'}
+        placeholder={
+          'Ejemplo:\n2023=100\n2024=100\n2025=100\n2026=100\n2027=150'
+        }
+      />
+
       <div className="flex items-center justify-center py-7">
         <button
           type="button"
@@ -48,7 +48,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
           Generar Grafico
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

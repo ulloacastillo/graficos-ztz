@@ -9,16 +9,21 @@ import UploadExcel from './UploadExcel';
 import InsertData from './InsertData';
 import UploadImage from './UploadImage';
 import ChartConfig from './ChartConfig';
+import Legend from './Legend';
 import DataTable from './DataTable';
 import { useSelector } from 'react-redux';
 import { useChartSettings } from '@/app/store/store';
 import Chart from './Chart';
 import { takeScreenshot } from '@/app/utils/screenShot';
+import DonutChart from './DonutChart';
 
 const App = () => {
   const [open, setOpen] = useState(true);
   const [selectedOption, setSelectedOption] = useState(1);
   const filteredData = useSelector((state) => state.chartData);
+  const colNumber = parseInt(useSelector((state) => state.colNumber));
+  const claims = useSelector((state) => state.claims);
+
   const initialColor = useChartSettings((state) => state.initialColor);
   const endColor = useChartSettings((state) => state.endColor);
   const [title, setTitle] = useState('Escriba el Título del gráfico');
@@ -98,30 +103,33 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]${
       >
         <div className="grid grid-cols-3 grid-auto-rows:min-content gap-9 h-full">
           <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl col-span-3 flex flex-col items-center justify-center">
-            <header className="pt-4 pb-6 flex flex-col items-center">
-              <div className="mb-2">
-                <input
-                  type="text"
-                  placeholder="Escriba el Título del gráfico"
-                  className={`w-96 h-14 rounded-xl px-4 text-white text-center`}
-                  style={{ background: initialColor }}
-                  name="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
+            <header className="w-full px-5 flex flex-row items-center justify-between">
+              <div className="flex flex-col items-center">
+                <div className="mb-1">
+                  <input
+                    type="text"
+                    placeholder="Escriba el Título del gráfico"
+                    className="w-96 h-14 font-light bg-gradient-to-tr from-ztz-softblue to-ztz-indigoblue rounded-xl px-4 text-white text-center"
+                    name="title"
+                    value={title}
+                    style={{ background: initialColor }}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </div>
 
-              <div>
-                <input
-                  type="text"
-                  placeholder="Escriba el Subtitulo del gráfico"
-                  className="w-80 h-10 rounded-xl px-4 text-white text-center"
-                  style={{ background: endColor }}
-                  name="title"
-                  value={subTitle}
-                  onChange={(e) => setSubTitle(e.target.value)}
-                />
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Escriba el Subtitulo del gráfico"
+                    className="w-80 font-light text-base h-10 bg-gradient-to-tr from-orange-300 to-orange-500 rounded-xl shadow-2xl px-4 text-white text-center"
+                    name="title"
+                    style={{ background: endColor }}
+                    value={subTitle}
+                    onChange={(e) => setSubTitle(e.target.value)}
+                  />
+                </div>
               </div>
+              <Legend />
             </header>
 
             <Chart />
@@ -132,7 +140,9 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]${
             {selectedOption === 3 && <UploadImage />}
             {selectedOption === 4 && <ChartConfig />}
           </div>
-          <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1"></div>
+          <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1 flex flex-col items-center justify-center">
+            {colNumber === 2 && <DonutChart claims={claims} />}
+          </div>
           <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1 flex items-center justify-center">
             <DataTable data={filteredData} />
           </div>

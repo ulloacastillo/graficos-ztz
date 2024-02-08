@@ -7,6 +7,7 @@ import {
   updateOriginalData,
 } from '../src/app/redux/actions';
 import Filter from './Filter';
+import TextArea from './TextArea';
 import Swal from 'sweetalert2';
 
 const InsertCSV = () => {
@@ -32,16 +33,13 @@ const InsertCSV = () => {
     dispatch(updateChartHeaders(validation.headers));
   };
   return (
-    <div>
-      <h3 className="mb-4 font-bold text-2xl text-black dark:text-black">
-        {' '}
-        Ingresar datos CSV:
-      </h3>
-      <textarea
-        className="w-300"
+    <>
+      <TextArea
         value={inputData}
-        onChange={handleInputChange}
-      ></textarea>
+        handler={handleInputChange}
+        title={'Ingresar datos CSV:'}
+        placeholder={`Inserta tu archivo de la forma:\n\nFechaIngreso,FechaSalida(opcional)\nFecha1,Fecha2\n...`}
+      />
       <Filter />
       <div className="flex items-center justify-center py-5">
         <button
@@ -55,7 +53,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
           Generar Grafico
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

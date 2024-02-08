@@ -25,6 +25,7 @@ export const useChartSettings = create((set) => ({
   endColor: '#05002b',
   useImage: true,
   filterType: 'Mes',
+  textColor: '#000000',
   setTheme: (value) => set({ theme: value }),
   setUseImage: (bool) => set({ useImage: bool }),
   setEvents: (events) => set({ events: [...events] }),
@@ -32,4 +33,5 @@ export const useChartSettings = create((set) => ({
   setInitialColor: (color) => set({ initialColor: color }),
   setEndColor: (color) => set({ endColor: color }),
   setShowImages: (list) => set({ showImages: [...list] }),
+  setTextColor: (color) => set({ textColor: color }),
 }));
