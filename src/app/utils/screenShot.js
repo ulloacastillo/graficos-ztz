@@ -1,6 +1,3 @@
-import { data } from 'autoprefixer';
-import html2canvas from 'html2canvas';
-
 const imageToDataURL = async (imageUrl) => {
   return fetch(imageUrl)
     .then((response) => response.blob())

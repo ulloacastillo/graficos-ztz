@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RiFileExcel2Line } from 'react-icons/ri';
-import { BsTextareaResize } from 'react-icons/bs';
+import { BsTextareaResize, BsCamera } from 'react-icons/bs';
 import { CiImageOn, CiSettings } from 'react-icons/ci';
 import Image from 'next/image';
 import control from '../public/control.png';
@@ -13,6 +13,7 @@ import DataTable from './DataTable';
 import { useSelector } from 'react-redux';
 import { useChartSettings } from '@/app/store/store';
 import Chart from './Chart';
+import { takeScreenshot } from '@/app/utils/screenShot';
 
 const App = () => {
   const [open, setOpen] = useState(true);
@@ -28,7 +29,6 @@ const App = () => {
     { id: 3, tittle: 'Subir Imagen', icon: CiImageOn, gap: true },
     { id: 4, tittle: 'Configuración', icon: CiSettings },
   ];
-  console.log(initialColor);
   return (
     <div className="flex">
       <div
@@ -39,7 +39,7 @@ const App = () => {
         <Image
           src={control}
           className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
-           border-2 rounded-full  ${!open && 'rotate-180'}`}
+     border-2 rounded-full  ${!open && 'rotate-180'}`}
           onClick={() => setOpen(!open)}
         />
         <div className=" flex gap-x-4 item-center">
@@ -65,7 +65,33 @@ const App = () => {
             </li>
           ))}
         </ul>
+        <button
+          onClick={() =>
+            takeScreenshot('takeScreenshotChart', 'Capturagrafico')
+          }
+          style={{
+            width: open ? '85%' : '60%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          className={`absolute bottom-0 left-0 m-5 p-2 cursor-pointer transition-all bg-ztz-mainblue text-white px-6 py-2 rounded-lg
+border-ztz-indigoblue
+border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+active:border-b-[2px] active:brightness-90 active:translate-y-[2px]${
+            !open && 'w-16'
+          }`}
+        >
+          {open ? (
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              <BsCamera className="mr-2" /> Captura de grafico
+            </span>
+          ) : (
+            <BsCamera />
+          )}
+        </button>
       </div>
+
       <div
         className="flex-1 p-7 text-2xl font-semibold min-h-screen overflow-auto"
         style={{ marginLeft: open ? '72px' : '20px' }}
