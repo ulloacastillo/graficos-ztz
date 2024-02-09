@@ -5,6 +5,7 @@ import { useChartSettings } from '@/app/store/store';
 
 const DataTable = ({ data }) => {
   const filterType = useChartSettings((state) => state.filterType);
+  const selectedYear = useChartSettings((state) => state.selectedYear);
 
   const handleExportExcel = () => {
     const wb = XLSX.utils.book_new();
@@ -16,9 +17,16 @@ const DataTable = ({ data }) => {
     );
 
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    const fileName = `Reclamos filtrados por ${
-      filterType === 'Mes' ? 'Mes' : 'Año'
-    }.xlsx`;
+
+    let fileName;
+    if (filterType === 'Mes') {
+      fileName =
+        selectedYear !== 'Todos'
+          ? `Reclamos de meses del Año ${selectedYear}.xlsx`
+          : 'Reclamos de meses de todos los años.xlsx';
+    } else if (filterType === 'Año') {
+      fileName = 'Reclamos filtrados por Año.xlsx';
+    }
 
     XLSX.writeFile(wb, fileName);
   };
