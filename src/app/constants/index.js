@@ -10,7 +10,7 @@ export const MONTHS = {
   '09': 'SEP',
   10: 'OCT',
   11: 'NOV',
-  12: 'DEC',
+  12: 'DIC',
 };
 
 export const THEMES = {

@@ -33,7 +33,7 @@ const App = () => {
     { id: 3, tittle: 'Subir Imagen', icon: CiImageOn, gap: true },
     { id: 4, tittle: 'Configuración', icon: CiSettings },
   ];
-  console.log(initialColor);
+
   return (
     <div className="flex">
       <div
