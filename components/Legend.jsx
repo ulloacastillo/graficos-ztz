@@ -6,12 +6,18 @@ function Legend() {
       </header>
       <main className="font-light">
         <section className="flex flex-col items-center mb-1">
-          <p className="reclamos">Reclamos recibidos:</p>
-          <div className="text-red-500 font-medium">0</div>
+          <p className="">Reclamos recibidos:</p>
+          <div id="received" className="text-red-500 font-medium">
+            0
+          </div>
         </section>
         <section className="flex flex-col items-center mb-1">
-          <p className="aumento">Respecto del mes anterior aumentaron un:</p>
-          <div className="text-red-500 font-medium">0% (+0)</div>
+          <p className="">
+            Respecto del mes anterior <span id="upOrDown">aumentaron</span> un:
+          </p>
+          <div id="increase" className="text-red-500 font-medium">
+            0% (+0)
+          </div>
         </section>
       </main>
     </div>

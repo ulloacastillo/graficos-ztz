@@ -19,6 +19,7 @@ function Chart() {
   const textColor = useChartSettings((state) => state.textColor);
   const chartConfig = useRef();
 
+  let clickedBar = { id: null, color: null };
   const data = useSelector((state) => state.chartData);
 
   const margin = { top: 80, right: 30, bottom: 70, left: 60 },
@@ -288,14 +289,88 @@ function Chart() {
         .selectAll('mybar')
         .data(data)
         .join('rect')
-        .on('click', (d, e, op) => console.log(d, e, op))
         .attr('x', (d) => x(d[0]))
         .attr('y', height)
         .attr('ry', 0)
         .attr('width', x.bandwidth())
         .attr('height', 0)
+        .attr('id', (d, i) => `mybar${i}`)
         .attr('fill', (d, i) => {
           return myColor(i);
+        })
+        .on('click', (e, d) => {
+          const selectedBar = d3.select(e.currentTarget);
+          const clickedId = selectedBar.attr('id');
+          let claimsPreviousMonth;
+
+          if (clickedId !== 'mybar0') {
+            const idPrevious = parseInt(clickedId.slice(5)) - 1;
+            const previousMonth = d3.select(`#mybar${idPrevious}`);
+
+            claimsPreviousMonth = previousMonth._groups[0][0].__data__[1];
+          }
+          console.log(clickedBar, clickedId, claimsPreviousMonth);
+          const receivedText = d3.select('#received');
+          const increaseText = d3.select('#increase');
+          const upOrDown = d3.select('#upOrDown');
+          if (clickedBar.id === clickedId) {
+            d3.select('#' + clickedBar.id)
+              .attr('fill', clickedBar.color)
+              .attr('stroke', clickedBar.color)
+              .attr('stroke-width', 0.3);
+            receivedText.html(
+              `<div id="received" className="text-red-500 font-medium">0</div>`,
+            );
+            increaseText.html(
+              `<div id="increase" className="text-red-500 font-medium">0% (+0)</div>`,
+            );
+            clickedBar = { id: null, color: null };
+          } else {
+            d3.select('#' + clickedBar.id)
+              .attr('fill', clickedBar.color)
+              .attr('stroke', clickedBar.color)
+              .attr('stroke-width', 0.3);
+            const claimsReceived = selectedBar._groups[0][0].__data__[1];
+            receivedText.html(
+              `<div id="received" className="text-red-500 font-medium">${claimsReceived}</div>`,
+            );
+            const diff =
+              parseInt(claimsReceived) - parseInt(claimsPreviousMonth);
+            const rate = (diff / claimsReceived) * 100;
+            console.log(diff, rate);
+            if (clickedId !== 'mybar0') {
+              if (diff < 0) {
+                upOrDown.html('<span>Disminuyeron</span>');
+                increaseText.html(
+                  `<div id="increase" className="text-red-500 font-medium">${
+                    Math.trunc(rate * 100) / 100
+                  }% (${diff})</div>`,
+                );
+              } else {
+                upOrDown.html('<span>Aumentaron</span>');
+                increaseText.html(
+                  `<div id="increase" className="text-red-500 font-medium">${
+                    Math.trunc(rate * 100) / 100
+                  }% (+${diff})</div>`,
+                );
+              }
+            } else {
+              increaseText.html(
+                `<div id="increase" className="text-red-500 font-medium">${0}% (+${0})</div>`,
+              );
+            }
+
+            clickedBar = {
+              id: clickedId,
+              color: d3.select(e.currentTarget).attr('fill'),
+            };
+          }
+          if (clickedBar.id) {
+            d3.select(e.currentTarget)
+              .attr('fill', '#05002b')
+              .attr('stroke', '#ff0000')
+              .attr('stroke-width', 0.3);
+          }
         })
         .attr('stroke', '#454546')
         .attr('stroke-width', 0.3)
