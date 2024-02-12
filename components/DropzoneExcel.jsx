@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
+import { RiFileExcel2Line } from 'react-icons/ri';
 import { validateData } from '../src/app/utils/validation';
 import {
   updateChartData,
@@ -70,7 +71,7 @@ export default function Dropzone(props) {
     [dispatch, dateType],
   );
 
-  const { getRootProps, getInputProps, open } = useDropzone({
+  const { acceptedFiles, getRootProps, getInputProps, open } = useDropzone({
     onDrop,
     noClick: true,
     maxFiles: 2,
@@ -82,6 +83,7 @@ export default function Dropzone(props) {
       ],
     },
   });
+  const fileName = acceptedFiles[0] ? acceptedFiles[0].name : null;
 
   return (
     <section
@@ -99,8 +101,11 @@ export default function Dropzone(props) {
       <h2 className={`${titleSize} font-bold`}>{title}</h2>
       <p className="mb-[1.5rem]">Arrasta el archivo</p>
       {isUpload && (
-        <aside className="absolute top-[60%] flex flex-col items-center">
-          <h4>Archivo Subido</h4>
+        <aside className="absolute top-[60%] flex flex-col items-center px-4">
+          <div className="flex flex-row items-center justify-around">
+            <RiFileExcel2Line className="text-[3rem] text-green-800" />
+            <h6 className="font-light">Archivo Subido: {fileName}</h6>
+          </div>
         </aside>
       )}
     </section>
