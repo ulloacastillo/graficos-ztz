@@ -26,6 +26,7 @@ export const useChartSettings = create((set) => ({
   useImage: true,
   filterType: 'Mes',
   textColor: '#000000',
+  selectedYear: 'Todos',
   setTheme: (value) => set({ theme: value }),
   setUseImage: (bool) => set({ useImage: bool }),
   setEvents: (events) => set({ events: [...events] }),
@@ -34,4 +35,5 @@ export const useChartSettings = create((set) => ({
   setEndColor: (color) => set({ endColor: color }),
   setShowImages: (list) => set({ showImages: [...list] }),
   setTextColor: (color) => set({ textColor: color }),
+  setSelectedYear: (year) => set({ selectedYear: year }),
 }));

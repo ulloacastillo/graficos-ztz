@@ -9,20 +9,21 @@ const InsertData = () => {
   };
   return (
     <div className="flex flex-col items-center justify-center h-full py-6 space-y-4">
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input
-          type="checkbox"
-          value=""
-          className="sr-only peer"
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-        />
-        <div className="peer ring-2 ring-gray-900 bg-gradient-to-r from-ztz-softblue to-ztz-indigoblue rounded-xl outline-none duration-300 after:duration-500 w-20 h-8  shadow-inner peer-checked:bg-gradient-to-r peer-checked:from-ztz-mainblue peer-checked:to-dark-purple shadow-gray-900 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-900  after:content-[''] after:rounded-2xl after:absolute after:outline-none after:h-12 after:w-12 after:bg-gray-50 after:-top-2 after:-left-2 after:flex after:justify-center after:items-center after:border-4 after:border-gray-900  peer-checked:after:translate-x-14"></div>
-        <span className="ms-3 text-sm text-gray-900 pl-3 font-bold">
-          {isChecked ? 'Ingrese datos manuales' : 'Ingrese CSV'}
-        </span>
-      </label>
-
+      <div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+            type="checkbox"
+            value=""
+            class="sr-only peer"
+          />
+          <div class="group peer ring-0 bg-gradient-to-r from-ztz-softblue to-ztz-mainblue  rounded-full outline-none duration-700 after:duration-300 w-24 h-12  shadow-md peer-checked:bg-gradient-to-r peer-checked:from-ztz-indigoblue peer-checked:to-dark-purple peer-focus:outline-none  after:content-[''] after:rounded-full after:absolute after:bg-gray-50 after:outline-none after:h-10 after:w-10 after:top-1 after:left-1  peer-checked:after:translate-x-12 peer-hover:after:scale-95"></div>
+          <span className="ms-3 text-sm text-gray-900 pl-3 font-bold">
+            {isChecked ? 'Ingrese datos manuales' : 'Ingrese CSV'}
+          </span>
+        </label>
+      </div>
       {isChecked ? <InsertCSV /> : <InsertDataForYear />}
     </div>
   );

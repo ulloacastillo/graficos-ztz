@@ -10,13 +10,19 @@ const Filter = () => {
   const filterType = useChartSettings((state) => state.filterType);
   const setEvents = useChartSettings((state) => state.setEvents);
   const setShowImages = useChartSettings((state) => state.setShowImages);
+  const selectedYear = useChartSettings((state) => state.selectedYear);
+  const setSelectedYear = useChartSettings((state) => state.setSelectedYear);
 
   useEffect(() => {
     let filteredData;
-
-    const dataCopy = [...originalData];
+    let dataCopy = [...originalData];
 
     if (filterType === 'Mes') {
+      if (selectedYear !== 'Todos') {
+        dataCopy = dataCopy.filter(
+          (item) => item[0].slice(0, 4) === selectedYear,
+        );
+      }
       filteredData = dataCopy.reduce((acc, item) => {
         const date = item[0].slice(5, 7);
         const existingItem = acc.find((i) => i[0] === date);
@@ -47,7 +53,12 @@ const Filter = () => {
     const showImagesArray = filteredData.map((d) => false);
     setEvents(array);
     setShowImages(showImagesArray);
-  }, [filterType, originalData]);
+  }, [filterType, originalData, selectedYear]);
+
+  const getUniqueYears = () => {
+    const years = originalData.map((item) => item[0].slice(0, 4));
+    return ['Todos', ...new Set(years)];
+  };
 
   return (
     <div className="w-full px-8 py-8">
@@ -87,12 +98,35 @@ const Filter = () => {
               htmlFor="horizontal-year"
               className="w-full py-3 ms-2 text-lg font-bold text-black dark:text-black"
             >
-              {' '}
-              Año{' '}
+              Año
             </label>
           </div>
         </li>
       </ul>
+      {filterType === 'Mes' && (
+        <div className="flex flex-col w-full md:w-1/3 px-3 mb-6 md:mb-0 p-6">
+          <label
+            className="mb-4 font-bold text-2xl text-black dark:text-black"
+            htmlFor="year-select"
+          >
+            Año:
+          </label>
+          <div className="relative">
+            <select
+              className="block appearance-none w-auto bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 align-middle"
+              id="year-select"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+            >
+              {getUniqueYears().map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
