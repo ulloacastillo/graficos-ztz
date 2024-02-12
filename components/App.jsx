@@ -115,7 +115,13 @@ const App = () => {
             {selectedOption === 4 && <ChartConfig />}
           </div>
           <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1 flex flex-col items-center justify-center">
-            {colNumber === 2 && <DonutChart claims={claims} />}
+            {colNumber === 2 ? (
+              <DonutChart claims={claims} />
+            ) : (
+              <h2 className="text-lg font-normal text-center px-3 ">
+                No existe Fecha respuesta en archivo subido
+              </h2>
+            )}
           </div>
           <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1 flex items-center justify-center">
             <DataTable data={filteredData} />

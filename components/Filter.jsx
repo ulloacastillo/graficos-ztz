@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateChartData } from '../src/app/redux/actions';
 import { useChartSettings } from '@/app/store/store';

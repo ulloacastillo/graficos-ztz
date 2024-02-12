@@ -13,7 +13,7 @@ import {
 import Swal from 'sweetalert2';
 
 export default function Dropzone(props) {
-  const { title, titleSize } = props;
+  const { title, titleSize, dateType } = props;
   const dispatch = useDispatch();
   const [isUpload, setUpload] = useState(false);
 
@@ -41,7 +41,7 @@ export default function Dropzone(props) {
           const worksheet = workbook.Sheets[sheetName];
           const csvData = XLSX.utils.sheet_to_csv(worksheet);
 
-          const validation = validateData(csvData);
+          const validation = validateData(csvData, dateType);
           if (!validation.isValid) {
             Swal.fire({
               icon: 'error',
@@ -67,7 +67,7 @@ export default function Dropzone(props) {
         reader.readAsBinaryString(file);
       });
     },
-    [dispatch],
+    [dispatch, dateType],
   );
 
   const { getRootProps, getInputProps, open } = useDropzone({

@@ -12,6 +12,12 @@ export const MONTHS = {
   11: 'NOV',
   12: 'DIC',
 };
+export const DATE_TYPES = [
+  { id: 1, value: 'DD-MM-AA' },
+  { id: 2, value: 'MM-DD-AA' },
+  { id: 3, value: 'DD-MM-AAAA' },
+  { id: 4, value: 'MM-DD-AAAA' },
+];
 
 export const THEMES = {
   default: {

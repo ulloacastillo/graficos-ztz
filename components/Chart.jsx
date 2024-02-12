@@ -1,9 +1,9 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import { useImageStore, useChartSettings } from '@/app/store/store';
 import { useSelector } from 'react-redux';
-import { MONTHS, THEMES } from '@/app/constants';
+import { MONTHS } from '@/app/constants';
 import * as d3 from 'd3';
 
 function Chart() {
@@ -37,10 +37,10 @@ function Chart() {
 
     const parsedData = data.map((item) => [new Date(item[0]), item[1]]);
     parsedData.sort((a, b) => a[0] - b[0]);
-    const sortedData = parsedData.map((item) => [
-      item[0].toLocaleDateString('es-CL'),
-      item[1],
-    ]);
+    // const sortedData = parsedData.map((item) => [
+    //   item[0].toLocaleDateString('es-CL'),
+    //   item[1],
+    // ]);
 
     d3.select(svgRef.current).selectAll('*').remove();
     // append the svg object to the body of the page

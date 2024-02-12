@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { validateData } from '../src/app/utils/validation';
 import { useDispatch } from 'react-redux';
 import {
@@ -8,18 +8,25 @@ import {
 } from '../src/app/redux/actions';
 import Filter from './Filter';
 import TextArea from './TextArea';
+import Select from './Select';
 import Swal from 'sweetalert2';
+import { DATE_TYPES } from '@/app/constants';
 
 const InsertCSV = () => {
   const [inputData, setInputdata] = useState('');
+  const [dateType, setDateType] = useState(DATE_TYPES[0].value);
   const dispatch = useDispatch();
+
+  const handleDateChange = (event) => {
+    setDateType(event.target.value);
+  };
 
   const handleInputChange = (event) => {
     setInputdata(event.target.value);
   };
 
   const handleGenerateGraph = () => {
-    const validation = validateData(inputData);
+    const validation = validateData(inputData, dateType);
     if (!validation.isValid) {
       Swal.fire({
         icon: 'error',
@@ -34,6 +41,15 @@ const InsertCSV = () => {
   };
   return (
     <>
+      <Select
+        className={'m-0'}
+        onChange={handleDateChange}
+        label="Seleccione el formato de fecha"
+        id="selectDateType"
+        options={DATE_TYPES.map((el) => {
+          return { ...el, text: el.value };
+        })}
+      />
       <TextArea
         value={inputData}
         handler={handleInputChange}
