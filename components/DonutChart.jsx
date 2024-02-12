@@ -20,7 +20,6 @@ function DonutChart({ claims }) {
     const pie = d3.pie().value((d) => d[1]);
 
     const data_ready = pie(Object.entries(claims));
-    console.log(data_ready);
 
     d3.select(svgRef.current).selectAll('*').remove();
 

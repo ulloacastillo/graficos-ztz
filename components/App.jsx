@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { RiFileExcel2Line } from 'react-icons/ri';
-import { BsTextareaResize, BsCamera } from 'react-icons/bs';
-import { CiImageOn, CiSettings } from 'react-icons/ci';
-import Image from 'next/image';
-import control from '../public/control.png';
-import Logo from './icons/Logo';
-import UploadExcel from './UploadExcel';
-import InsertData from './InsertData';
-import UploadImage from './UploadImage';
-import ChartConfig from './ChartConfig';
-import Legend from './Legend';
-import DataTable from './DataTable';
-import { useSelector } from 'react-redux';
 import { useChartSettings } from '@/app/store/store';
-import Chart from './Chart';
 import { takeScreenshot } from '@/app/utils/screenShot';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import { BsCamera, BsTextareaResize } from 'react-icons/bs';
+import { CiImageOn, CiSettings } from 'react-icons/ci';
+import { RiFileExcel2Line } from 'react-icons/ri';
+import { useSelector } from 'react-redux';
+import control from '../public/control.png';
+import Chart from './Chart';
+import ChartConfig from './ChartConfig';
+import DataTable from './DataTable';
 import DonutChart from './DonutChart';
+import InsertData from './InsertData';
+import Legend from './Legend';
+import UploadExcel from './UploadExcel';
+import UploadImage from './UploadImage';
+import Logo from './icons/Logo';
 
 const App = () => {
   const [open, setOpen] = useState(true);
@@ -131,9 +131,9 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]${
               </div>
               <Legend />
             </header>
-
             <Chart />
           </div>
+
           <div className="w-full h-auto bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1">
             {selectedOption === 1 && <UploadExcel />}
             {selectedOption === 2 && <InsertData />}

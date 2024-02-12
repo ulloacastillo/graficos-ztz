@@ -1,10 +1,10 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
-import { useImageStore, useChartSettings } from '@/app/store/store';
-import { useSelector } from 'react-redux';
-import { MONTHS, THEMES } from '@/app/constants';
+import { MONTHS } from '@/app/constants';
+import { useChartSettings, useImageStore } from '@/app/store/store';
 import * as d3 from 'd3';
+import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 function Chart() {
   const image = useImageStore((state) => state.image);
