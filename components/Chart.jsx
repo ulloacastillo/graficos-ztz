@@ -16,6 +16,8 @@ function Chart() {
   const filterType = useChartSettings((state) => state.filterType);
   const initialColor = useChartSettings((state) => state.initialColor);
   const endColor = useChartSettings((state) => state.endColor);
+  const selectedYear = useChartSettings((state) => state.selectedYear);
+
   const textColor = useChartSettings((state) => state.textColor);
   const chartConfig = useRef();
 
@@ -30,6 +32,12 @@ function Chart() {
   const theme = useChartSettings((state) => state.theme);
 
   useEffect(() => {
+    const title = d3.select('#legendTitle');
+    title.html(
+      `<h2 id="legendTitle">Resumen ${
+        selectedYear === 'Todos' ? '' : selectedYear
+      }</h2>`,
+    );
     const myColor = d3
       .scaleLinear()
       .domain([1, data.length])
@@ -488,11 +496,7 @@ function Chart() {
       .data(data)
       .join('text')
       .text((d) => {
-        const dateString = String(d[0]);
-        const parsedDate = dateString.includes('-')
-          ? dateString.split('-')
-          : [dateString];
-        const [year, month, day] = parsedDate.map(Number);
+        return selectedYear === 'Todos' ? '' : selectedYear;
       })
       .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
       .attr('y', (d) => y.range()[0] + monthTextOffsetY + 11)
@@ -525,6 +529,7 @@ function Chart() {
       .on('click', (e, d) => {
         const selectedBar = d3.select(e.currentTarget);
         const clickedId = selectedBar.attr('id');
+
         let claimsPreviousMonth;
 
         if (clickedId !== 'mybar0') {
@@ -548,6 +553,7 @@ function Chart() {
           increaseText.html(
             `<div id="increase" className="text-red-500 font-medium">0% (+0)</div>`,
           );
+
           clickedBar = { id: null, color: null };
         } else {
           d3.select('#' + clickedBar.id)
@@ -558,6 +564,7 @@ function Chart() {
           receivedText.html(
             `<div id="received" className="text-red-500 font-medium">${claimsReceived}</div>`,
           );
+
           const diff = parseInt(claimsReceived) - parseInt(claimsPreviousMonth);
           const rate = (diff / claimsReceived) * 100;
 
