@@ -36,4 +36,6 @@ export const useChartSettings = create((set) => ({
   setShowImages: (list) => set({ showImages: [...list] }),
   setTextColor: (color) => set({ textColor: color }),
   setSelectedYear: (year) => set({ selectedYear: year }),
+  chartType: 'bar',
+  setChartType: (type) => set({ chartType: type }),
 }));

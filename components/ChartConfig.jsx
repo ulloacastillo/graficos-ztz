@@ -1,15 +1,14 @@
-import { useChartSettings } from '@/app/store/store';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import SelectEvent from './SelectEvent';
-import ColorPicker from './ColorPicker';
-import CheckBoxImage from './CheckBoxImage';
 import { THEMES } from '@/app/constants';
+import { useChartSettings } from '@/app/store/store';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import CheckBoxImage from './CheckBoxImage';
+import ColorPicker from './ColorPicker';
+import SelectEvent from './SelectEvent';
 
 function ChartConfig() {
   const theme = useChartSettings((state) => state.theme);
   const setTheme = useChartSettings((state) => state.setTheme);
-
   const eventsRegister = useChartSettings((state) => state.events);
   const setEvents = useChartSettings((state) => state.setEvents);
   const data = useSelector((state) => state.chartData);
@@ -19,12 +18,13 @@ function ChartConfig() {
   const endColor = useChartSettings((state) => state.endColor);
   const textColor = useChartSettings((state) => state.textColor);
   const setTextColor = useChartSettings((state) => state.setTextColor);
+  const chartType = useChartSettings((state) => state.chartType);
+  const setChartType = useChartSettings((state) => state.setChartType);
 
   useEffect(() => {
     const array = data.map(
       (d) => new Object({ date: d[0], amount: d[1], icon: null }),
     );
-
     setEvents(array);
   }, [data]);
 
@@ -32,6 +32,10 @@ function ChartConfig() {
     setTheme(e.target.value);
     setInitialColor(THEMES[e.target.value].colors[0]);
     setEndColor(THEMES[e.target.value].colors[1]);
+  };
+
+  const handleChartTypeChange = (e) => {
+    setChartType(e.target.value);
   };
 
   return (
@@ -57,6 +61,20 @@ function ChartConfig() {
               <option value="NewYear">Año nuevo</option>
             </select>
           </div>
+          <div className="flex flex-row justify-between items-center">
+            <label className="text-sm" htmlFor="chartType">
+              Tipo de gráfico
+            </label>
+            <select
+              className="bg-gray-50 border border-gray-300 text-sm rounded-full block p-2.5 w-fit"
+              name="chartType"
+              onChange={handleChartTypeChange}
+              value={chartType}
+            >
+              <option value="bar">Barra</option>
+              <option value="area">Area</option>
+            </select>
+          </div>
           {theme !== 'Cyber' && (
             <>
               <div className="flex flex-row justify-between items-center">
@@ -69,7 +87,6 @@ function ChartConfig() {
               </div>
             </>
           )}
-
           <div className="flex flex-row justify-between items-center">
             <span className="text-sm">Color del Texto </span>
             <ColorPicker setColor={setTextColor} color={textColor} />
