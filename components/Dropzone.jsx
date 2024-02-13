@@ -36,7 +36,7 @@ export default function Dropzone(props) {
     });
   }, []);
 
-  const { acceptedFiles, getRootProps, getInputProps, open } = useDropzone({
+  const { getRootProps, getInputProps, open } = useDropzone({
     onDrop,
     noClick: true,
     maxFiles: 2,

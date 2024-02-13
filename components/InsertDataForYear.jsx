@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { validateData } from '../src/app/utils/validationYear';
 import { useDispatch } from 'react-redux';
 import { updateChartData } from '../src/app/redux/actions';

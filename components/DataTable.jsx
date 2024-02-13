@@ -1,4 +1,3 @@
-import React from 'react';
 import { MONTHS } from '@/app/constants';
 import * as XLSX from 'xlsx';
 import { useChartSettings } from '@/app/store/store';

@@ -40,7 +40,6 @@ function DonutChart({ claims }) {
           .outerRadius(radius),
       )
       .on('mouseover', (d, i) => {
-        console.log(i);
         const u = svg.selectAll('text').remove();
         svg
           .append('text')
@@ -110,8 +109,6 @@ function DonutChart({ claims }) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 400 400"
-      width={400}
-      height={400}
       ref={svgRef}
     ></svg>
   );
