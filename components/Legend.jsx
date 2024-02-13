@@ -1,8 +1,8 @@
 function Legend() {
   return (
-    <div className="w-80 my-0 border-8 border-blue-900 rounded-md text-sm">
+    <div className="w-80 my-0 border-8 border-blue-900 rounded-md text-sm text-center">
       <header className="bg-blue-900 text-white text-center w-full mb-3 py-2">
-        <h1>Resumen -MES- -AÑO-</h1>
+        <h2 id="legendTitle">Resumen -MES- -AÑO-</h2>
       </header>
       <main className="font-light">
         <section className="flex flex-col items-center mb-1">

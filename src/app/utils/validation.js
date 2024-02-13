@@ -1,5 +1,3 @@
-import { count } from 'd3';
-
 export function validateData(input, dateType) {
   const DATE_TYPES_FORMAT = {
     'DD-MM-AA': {
@@ -44,11 +42,11 @@ export function validateData(input, dateType) {
       },
     },
   };
-
+  let excelError = null;
   const lines = input.trim().split('\n');
   const headers = lines[0].split(',');
   let dateCounts = {};
-  let notAnswered = 0;
+  let notAnswered = { total: 0 };
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
@@ -78,8 +76,18 @@ export function validateData(input, dateType) {
         };
       }
 
-      notAnswered += answer === 'SI' || answer === 'NO' ? 1 : 0;
       date = DATE_TYPES_FORMAT[dateType].getDate(date);
+      const yearDate = date.split('/')[2];
+
+      if (answer === 'SI' || answer === 'NO') {
+        if (notAnswered[yearDate]) {
+          notAnswered[yearDate]++;
+        } else {
+          notAnswered[yearDate] = 1;
+        }
+        notAnswered.total++;
+      }
+
       if (dateCounts[date]) {
         dateCounts[date]++;
       } else {
@@ -93,11 +101,25 @@ export function validateData(input, dateType) {
     }
   }
 
+  console.log(notAnswered);
   const data = Object.entries(dateCounts)
     .sort((a, b) => a[0] - b[0])
     .map(([date, count]) => {
-      return [new Date(date).toISOString().split('T')[0], count];
+      try {
+        return [new Date(date).toISOString().split('T')[0], count];
+      } catch {
+        excelError = {
+          isValid: false,
+          error: `La columna ${headers[0]} no posee el formato ${dateType}`,
+        };
+      }
     });
+  if (excelError) {
+    return {
+      isValid: false,
+      error: `La columna ${headers[0]} no posee el formato ${dateType}.\nPor favor seleccione el formato de fecha correcto`,
+    };
+  }
 
   return {
     isValid: true,

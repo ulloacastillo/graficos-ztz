@@ -37,13 +37,7 @@ function Chart() {
 
     const parsedData = data.map((item) => [new Date(item[0]), item[1]]);
     parsedData.sort((a, b) => a[0] - b[0]);
-    // const sortedData = parsedData.map((item) => [
-    //   item[0].toLocaleDateString('es-CL'),
-    //   item[1],
-    // ]);
 
-    d3.select(svgRef.current).selectAll('*').remove();
-    // append the svg object to the body of the page
     d3.select(svgRef.current).selectAll('*').remove();
 
     const svg = d3
@@ -59,6 +53,46 @@ function Chart() {
       .range([0, width])
       .domain(data.map((d) => d[0]))
       .padding(0.12);
+
+    const showImageUpload = (xOffSet, yOffSet) => {
+      const u = svg.selectAll('uploadImage').data(data);
+      u.remove();
+
+      if (image[0] && useImage) {
+        u.join('image')
+          .attr('href', (d, i) => {
+            return image[0].src;
+          })
+          .attr('x', (d) => x(d[0]) + x.bandwidth() / xOffSet)
+          .attr('y', (d) => y(d[1]) - x.bandwidth() / yOffSet)
+          .attr('width', (d, i) => (showImages[i] ? x.bandwidth() * 0.8 : 0));
+      }
+    };
+    const drawLineChart = (
+      strokeDashArr,
+      xOffSet,
+      yOffSet,
+      stroke,
+      width,
+      fill,
+    ) => {
+      return svg
+        .append('g')
+        .append('path')
+        .datum(data)
+        .attr('class', 'line')
+        .style('stroke-dasharray', strokeDashArr)
+        .attr(
+          'd',
+          d3
+            .line()
+            .x((d) => x(d[0]) + x.bandwidth() / xOffSet)
+            .y((d) => y(d[1]) + x.bandwidth() / yOffSet),
+        )
+        .attr('stroke', stroke)
+        .attr('stroke-width', width)
+        .attr('fill', fill);
+    };
 
     if (data.length < 5) {
       x.padding(0.5);
@@ -83,7 +117,6 @@ function Chart() {
 
     if (theme === 'Navidad') {
       svg
-        .append('g')
         .selectAll('triangle1')
         .data(data)
         .join('path')
@@ -102,10 +135,8 @@ function Chart() {
         .attr('transform', (d) => `translate(${x(d[0])}, 0)`);
 
       svg
-        .append('g')
         .selectAll('triangle2')
         .data(data)
-        .join('path')
         .join('path')
         .attr('class', 'line')
         .attr('d', (d) => {
@@ -121,33 +152,9 @@ function Chart() {
         .delay((d, i) => i * 200)
         .attr('transform', (d) => `translate(${x(d[0]) - 1}, 0)`);
 
-      const u = svg.selectAll('uploadImage').data(data);
-      u.remove();
-
-      if (image[0] && useImage) {
-        u.join('image')
-          .attr('href', (d, i) => {
-            return image[0].src;
-          })
-          .attr('x', (d) => x(d[0]) + x.bandwidth() / 10)
-          .attr('y', (d) => y(d[1]) - x.bandwidth() / 1.5)
-          .attr('width', (d, i) => (showImages[i] ? x.bandwidth() * 0.8 : 0));
-      }
+      showImageUpload(10, 1.5);
     } else if (theme === 'Cyber') {
-      const path = svg
-        .append('path')
-        .datum(data)
-        .attr('class', 'line')
-        .attr(
-          'd',
-          d3
-            .line()
-            .x((d) => x(d[0]) + x.bandwidth() * 0.5)
-            .y((d) => y(d[1]) + x.bandwidth() / 3),
-        )
-        .attr('stroke', '#dddddd')
-        .attr('stroke-width', 4)
-        .attr('fill', 'none');
+      const path = drawLineChart(null, 2, 3, '#dddddd', 4, 'none');
 
       let totalLength = path.node().getTotalLength();
 
@@ -226,11 +233,7 @@ function Chart() {
               })`,
           );
       }
-    } else if (
-      theme === 'Navidad' ||
-      theme === 'Halloween' ||
-      theme === 'default'
-    ) {
+    } else if (theme === 'Halloween' || theme === 'default') {
       svg
         .append('g')
         .selectAll('barProjection')
@@ -273,19 +276,10 @@ function Chart() {
           'transform',
           (d) => `translate(${x(d[0])}, ${y(d[1]) - x.bandwidth() / 3})`,
         );
-      const u = svg.selectAll('uploadImage').data(data);
-      u.remove();
 
-      if (image[0] && useImage) {
-        u.join('image')
-          .attr('href', (d, i) => {
-            return image[0].src;
-          })
-          .attr('x', (d) => x(d[0]) + x.bandwidth() / 10)
-          .attr('y', (d) => y(d[1]) - x.bandwidth() / 1.5)
-          .attr('width', (d, i) => (showImages[i] ? x.bandwidth() * 0.8 : 0));
-      }
-      const bars = svg
+      showImageUpload(10, 1.5);
+
+      svg
         .selectAll('mybar')
         .data(data)
         .join('rect')
@@ -294,83 +288,8 @@ function Chart() {
         .attr('ry', 0)
         .attr('width', x.bandwidth())
         .attr('height', 0)
-        .attr('id', (d, i) => `mybar${i}`)
         .attr('fill', (d, i) => {
           return myColor(i);
-        })
-        .on('click', (e, d) => {
-          const selectedBar = d3.select(e.currentTarget);
-          const clickedId = selectedBar.attr('id');
-          let claimsPreviousMonth;
-
-          if (clickedId !== 'mybar0') {
-            const idPrevious = parseInt(clickedId.slice(5)) - 1;
-            const previousMonth = d3.select(`#mybar${idPrevious}`);
-
-            claimsPreviousMonth = previousMonth._groups[0][0].__data__[1];
-          }
-          console.log(clickedBar, clickedId, claimsPreviousMonth);
-          const receivedText = d3.select('#received');
-          const increaseText = d3.select('#increase');
-          const upOrDown = d3.select('#upOrDown');
-          if (clickedBar.id === clickedId) {
-            d3.select('#' + clickedBar.id)
-              .attr('fill', clickedBar.color)
-              .attr('stroke', clickedBar.color)
-              .attr('stroke-width', 0.3);
-            receivedText.html(
-              `<div id="received" className="text-red-500 font-medium">0</div>`,
-            );
-            increaseText.html(
-              `<div id="increase" className="text-red-500 font-medium">0% (+0)</div>`,
-            );
-            clickedBar = { id: null, color: null };
-          } else {
-            d3.select('#' + clickedBar.id)
-              .attr('fill', clickedBar.color)
-              .attr('stroke', clickedBar.color)
-              .attr('stroke-width', 0.3);
-            const claimsReceived = selectedBar._groups[0][0].__data__[1];
-            receivedText.html(
-              `<div id="received" className="text-red-500 font-medium">${claimsReceived}</div>`,
-            );
-            const diff =
-              parseInt(claimsReceived) - parseInt(claimsPreviousMonth);
-            const rate = (diff / claimsReceived) * 100;
-            console.log(diff, rate);
-            if (clickedId !== 'mybar0') {
-              if (diff < 0) {
-                upOrDown.html('<span>Disminuyeron</span>');
-                increaseText.html(
-                  `<div id="increase" className="text-red-500 font-medium">${
-                    Math.trunc(rate * 100) / 100
-                  }% (${diff})</div>`,
-                );
-              } else {
-                upOrDown.html('<span>Aumentaron</span>');
-                increaseText.html(
-                  `<div id="increase" className="text-red-500 font-medium">${
-                    Math.trunc(rate * 100) / 100
-                  }% (+${diff})</div>`,
-                );
-              }
-            } else {
-              increaseText.html(
-                `<div id="increase" className="text-red-500 font-medium">${0}% (+${0})</div>`,
-              );
-            }
-
-            clickedBar = {
-              id: clickedId,
-              color: d3.select(e.currentTarget).attr('fill'),
-            };
-          }
-          if (clickedBar.id) {
-            d3.select(e.currentTarget)
-              .attr('fill', '#05002b')
-              .attr('stroke', '#ff0000')
-              .attr('stroke-width', 0.3);
-          }
         })
         .attr('stroke', '#454546')
         .attr('stroke-width', 0.3)
@@ -419,21 +338,9 @@ function Chart() {
     }
 
     if (theme === 'Valentin') {
-      const path = svg
-        .append('path')
-        .datum(data)
-        .attr('class', 'line')
-        .attr(
-          'd',
-          d3
-            .line()
-            .x((d) => x(d[0]) + x.bandwidth() / 2)
-            .y((d) => y(d[1]) + x.bandwidth() / 5),
-        )
-        .transition(d3.transition().ease(d3.easeSin).duration(1000))
-        .attr('stroke', '#f083ad')
-        .attr('stroke-width', 8)
-        .attr('fill', 'none');
+      const path = drawLineChart(null, 2, 5, '#f083ad', 8, 'none');
+      path.transition(d3.transition().ease(d3.easeSin).duration(1000));
+
       let totalLength = path.node().getTotalLength();
 
       path
@@ -461,20 +368,7 @@ function Chart() {
         );
     }
     if (theme === 'NewYear') {
-      let path = svg
-        .append('path')
-        .datum(data)
-        .attr('class', 'line')
-        .attr(
-          'd',
-          d3
-            .line()
-            .x((d) => x(d[0]) + x.bandwidth() / 2)
-            .y((d) => y(d[1]) + x.bandwidth() / 5),
-        )
-        .attr('stroke', '#000000')
-        .attr('stroke-width', 5)
-        .attr('fill', 'none');
+      let path = drawLineChart(null, 2, 5, '#000000', 5, 'none');
 
       let totalLength = path.node().getTotalLength();
 
@@ -524,22 +418,7 @@ function Chart() {
             : (x.bandwidth() / 1.8) * 2,
         );
     } else {
-      svg
-        .append('g')
-        .append('path')
-        .datum(data)
-        .attr('class', 'line')
-        .style('stroke-dasharray', '3, 3')
-        .attr(
-          'd',
-          d3
-            .line()
-            .x((d) => x(d[0]) + x.bandwidth() / 2)
-            .y((d) => y(d[1]) + x.bandwidth() / 6),
-        )
-        .attr('stroke', '#fff')
-        .attr('stroke-width', 1)
-        .attr('fill', 'none');
+      drawLineChart('3, 3', 2, 6, '#fff', 1, 'none');
     }
 
     // linea eje x
@@ -637,40 +516,105 @@ function Chart() {
       .attr('text-anchor', 'middle')
       .style('text-anchor', 'middle');
 
-    if (theme === 'Cyber') {
-      svg
-        .selectAll('claims')
-        .data(data)
-        .join('text')
-        .text((d) => d[1])
-        .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
-        .attr('y', (d) => y(d[1]) + x.bandwidth() * 1.2)
-        .attr('font-size', 10)
-        .attr('font-weight', '600')
-        .attr('fill', (d, i) => textColor)
-        .attr('text-anchor', 'middle')
-        .style('text-anchor', 'middle')
-        .attr(
-          'transform',
-          (d, i) =>
-            `rotate(${ROTATE_HANGERS_ANGLE[i]}, ${x(d[0])}, ${
+    svg
+      .selectAll('claims')
+      .data(data)
+      .join('text')
+      .text((d) => d[1])
+      .attr('id', (d, i) => `mybar${i}`)
+      .on('click', (e, d) => {
+        const selectedBar = d3.select(e.currentTarget);
+        const clickedId = selectedBar.attr('id');
+        let claimsPreviousMonth;
+
+        if (clickedId !== 'mybar0') {
+          const idPrevious = parseInt(clickedId.slice(5)) - 1;
+          const previousMonth = d3.select(`#mybar${idPrevious}`);
+
+          claimsPreviousMonth = previousMonth._groups[0][0].__data__[1];
+        }
+
+        const receivedText = d3.select('#received');
+        const increaseText = d3.select('#increase');
+        const upOrDown = d3.select('#upOrDown');
+        if (clickedBar.id === clickedId) {
+          d3.select('#' + clickedBar.id)
+            .attr('fill', clickedBar.color)
+            .attr('stroke', clickedBar.color)
+            .attr('stroke-width', 0.3);
+          receivedText.html(
+            `<div id="received" className="text-red-500 font-medium">0</div>`,
+          );
+          increaseText.html(
+            `<div id="increase" className="text-red-500 font-medium">0% (+0)</div>`,
+          );
+          clickedBar = { id: null, color: null };
+        } else {
+          d3.select('#' + clickedBar.id)
+            .attr('fill', clickedBar.color)
+            .attr('stroke', clickedBar.color)
+            .attr('stroke-width', 0.3);
+          const claimsReceived = selectedBar._groups[0][0].__data__[1];
+          receivedText.html(
+            `<div id="received" className="text-red-500 font-medium">${claimsReceived}</div>`,
+          );
+          const diff = parseInt(claimsReceived) - parseInt(claimsPreviousMonth);
+          const rate = (diff / claimsReceived) * 100;
+
+          if (clickedId !== 'mybar0') {
+            if (diff < 0) {
+              upOrDown.html('<span>Disminuyeron</span>');
+              increaseText.html(
+                `<div id="increase" className="text-red-500 font-medium">${
+                  Math.trunc(rate * 100) / 100
+                }% (${diff})</div>`,
+              );
+            } else {
+              upOrDown.html('<span>Aumentaron</span>');
+              increaseText.html(
+                `<div id="increase" className="text-red-500 font-medium">${
+                  Math.trunc(rate * 100) / 100
+                }% (+${diff})</div>`,
+              );
+            }
+          } else {
+            increaseText.html(
+              `<div id="increase" className="text-red-500 font-medium">${0}% (+${0})</div>`,
+            );
+          }
+
+          clickedBar = {
+            id: clickedId,
+            color: d3.select(e.currentTarget).attr('fill'),
+          };
+        }
+        if (clickedBar.id) {
+          d3.select(e.currentTarget)
+            .attr('fill', '#05002b')
+            .attr('stroke', '#ff0000')
+            .attr('stroke-width', 0.3);
+        }
+      })
+      .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
+      .attr('y', (d) =>
+        theme === 'Cyber'
+          ? y(d[1]) + x.bandwidth() * 1.2
+          : y(d[1]) - x.bandwidth() / 1.5,
+      )
+      .attr('font-size', theme === 'Cyber' ? 10 : 12)
+      .attr('font-weight', '600')
+      .attr('fill', (d, i) => (theme === 'Cyber' ? textColor : myColor(i)))
+      .attr('text-anchor', 'middle')
+      .style('text-anchor', 'middle')
+      .style('cursor', 'pointer')
+      .attr('transform', (d, i) =>
+        theme === 'Cyber'
+          ? `rotate(${ROTATE_HANGERS_ANGLE[i]}, ${x(d[0])}, ${
               y(d[1]) + x.bandwidth() / 3.5
-            })`,
-        );
-    } else {
-      svg
-        .selectAll('claims')
-        .data(data)
-        .join('text')
-        .text((d) => d[1])
-        .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
-        .attr('y', (d) => y(d[1]) - x.bandwidth() / 1.5)
-        .attr('font-size', 12)
-        .attr('font-weight', '600')
-        .attr('fill', (d, i) => myColor(i))
-        .attr('text-anchor', 'middle')
-        .attr('transform', 'rotate(0)');
-    }
+            })`
+          : 'rotate(0)',
+      );
+
     chartConfig.current = { svg, x, y };
   }, [
     data,

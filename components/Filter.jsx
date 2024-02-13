@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateChartData } from '../src/app/redux/actions';
+import { updateChartData, updateClaims } from '../src/app/redux/actions';
 import { useChartSettings } from '@/app/store/store';
 
 const Filter = () => {
@@ -8,6 +8,7 @@ const Filter = () => {
   const dispatch = useDispatch();
   const setFilterType = useChartSettings((state) => state.setFilterType);
   const filterType = useChartSettings((state) => state.filterType);
+  const claims = useSelector((state) => state.claims);
   const setEvents = useChartSettings((state) => state.setEvents);
   const setShowImages = useChartSettings((state) => state.setShowImages);
   const selectedYear = useChartSettings((state) => state.selectedYear);
@@ -47,6 +48,12 @@ const Filter = () => {
     }
 
     dispatch(updateChartData(filteredData));
+    dispatch(
+      updateClaims({
+        ...claims,
+        total: filteredData.reduce((acc, item) => acc + item[1], 0),
+      }),
+    );
     const array = filteredData.map(
       (d) => new Object({ date: d[0], amount: d[1], icon: null }),
     );

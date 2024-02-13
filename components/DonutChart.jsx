@@ -1,10 +1,20 @@
 import { useEffect, useRef } from 'react';
+import { useChartSettings } from '@/app/store/store';
 import * as d3 from 'd3';
 
 function DonutChart({ claims }) {
-  const { total, notAnswered } = claims;
-  const notAnsweredPercent = (notAnswered / total) * 100;
+  const selectedYear = useChartSettings((state) => state.selectedYear);
 
+  const { total, notAnswered } = claims;
+
+  let notAnsweredClaims;
+  if (selectedYear === 'Todos') {
+    notAnsweredClaims = notAnswered.total;
+  } else {
+    notAnsweredClaims = notAnswered[selectedYear] | 0;
+  }
+
+  const notAnsweredPercent = (notAnsweredClaims / total) * 100;
   const width = 400,
     height = 400,
     margin = 5;
@@ -19,7 +29,7 @@ function DonutChart({ claims }) {
     // Compute the position of each group on the pie:
     const pie = d3.pie().value((d) => d[1]);
 
-    const data_ready = pie(Object.entries(claims));
+    const data_ready = pie(Object.entries({ total, notAnsweredClaims }));
 
     d3.select(svgRef.current).selectAll('*').remove();
 
@@ -45,8 +55,10 @@ function DonutChart({ claims }) {
           .append('text')
           .text(
             i.data[0] === 'total'
-              ? `${new Intl.NumberFormat('de-DE').format(total - notAnswered)}`
-              : `${notAnswered}`,
+              ? `${new Intl.NumberFormat('de-DE').format(
+                  total - notAnsweredClaims,
+                )}`
+              : `${notAnsweredClaims}`,
           )
           .attr('text-anchor', 'middle')
           .style('font-size', '60px');
@@ -75,7 +87,7 @@ function DonutChart({ claims }) {
           .style('font-size', '60px');
         svg
           .append('text')
-          .text(`Reclamos sin respuesta (${notAnswered})`)
+          .text(`Reclamos sin respuesta (${notAnsweredClaims})`)
           .attr('text-anchor', 'middle')
           .style('font-size', '18px')
           .style('font-weight', 'normal')
@@ -98,12 +110,12 @@ function DonutChart({ claims }) {
     svg
 
       .append('text')
-      .text(`Reclamos sin respuesta (${notAnswered})`)
+      .text(`Reclamos sin respuesta (${notAnsweredClaims})`)
       .attr('text-anchor', 'middle')
       .style('font-size', '18px')
       .style('font-weight', 'normal')
       .attr('dy', '2em');
-  }, []);
+  }, [claims]);
 
   return (
     <svg
