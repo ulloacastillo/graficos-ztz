@@ -66,7 +66,15 @@ function DonutChart() {
       .attr('d', arc)
       .attr('fill', (d, i) => colorScale(i))
       .attr('stroke', 'white')
-      .style('stroke-width', '2px');
+      .style('stroke-width', '2px')
+      .transition()
+      .duration(1000)
+      .attrTween('d', function (d) {
+        const interpolate = d3.interpolate({ startAngle: 0, endAngle: 0 }, d);
+        return function (t) {
+          return arc(interpolate(t));
+        };
+      });
 
     svg
       .selectAll('allQuantities')
