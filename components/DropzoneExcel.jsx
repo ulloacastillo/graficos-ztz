@@ -43,6 +43,7 @@ export default function Dropzone(props) {
           const csvData = XLSX.utils.sheet_to_csv(worksheet);
 
           const validation = validateData(csvData, dateType);
+
           if (!validation.isValid) {
             Swal.fire({
               icon: 'error',

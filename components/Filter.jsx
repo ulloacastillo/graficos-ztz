@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateChartData } from '../src/app/redux/actions';
+import { updateChartData, updateClaims } from '../src/app/redux/actions';
 import { useChartSettings } from '@/app/store/store';
+import Select from './Select';
 
 const Filter = () => {
   const originalData = useSelector((state) => state.originalData);
   const dispatch = useDispatch();
   const setFilterType = useChartSettings((state) => state.setFilterType);
   const filterType = useChartSettings((state) => state.filterType);
+  const claims = useSelector((state) => state.claims);
   const setEvents = useChartSettings((state) => state.setEvents);
   const setShowImages = useChartSettings((state) => state.setShowImages);
   const selectedYear = useChartSettings((state) => state.selectedYear);
@@ -47,6 +49,12 @@ const Filter = () => {
     }
 
     dispatch(updateChartData(filteredData));
+    dispatch(
+      updateClaims({
+        ...claims,
+        total: filteredData.reduce((acc, item) => acc + item[1], 0),
+      }),
+    );
     const array = filteredData.map(
       (d) => new Object({ date: d[0], amount: d[1], icon: null }),
     );
@@ -104,27 +112,20 @@ const Filter = () => {
         </li>
       </ul>
       {filterType === 'Mes' && (
-        <div className="flex flex-col w-full md:w-1/3 px-3 mb-6 md:mb-0 p-6">
-          <label
-            className="mb-4 font-bold text-2xl text-black dark:text-black"
-            htmlFor="year-select"
-          >
-            Año:
-          </label>
-          <div className="relative">
-            <select
-              className="block appearance-none w-auto bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 align-middle"
-              id="year-select"
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(e.target.value)}
-            >
-              {getUniqueYears().map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="flex flex-col items-center justify-center gap-2 mt-10">
+          <Select
+            label="Seleccione el año a graficar"
+            id="year-select"
+            onChange={(e) => setSelectedYear(e.target.value)}
+            options={getUniqueYears().map((year) => {
+              return { value: year, id: year, text: year };
+            })}
+            selected={selectedYear}
+            setSelected={setSelectedYear}
+            className={
+              'bg-gray-50 border border-gray-300 rounded-full block p-2.5 w-fit '
+            }
+          />
         </div>
       )}
     </div>
