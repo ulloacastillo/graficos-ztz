@@ -18,7 +18,6 @@ import UploadExcel from './UploadExcel';
 import UploadImage from './UploadImage';
 import Logo from './icons/Logo';
 import MainDonutChart from './MainDonutChart';
-import AreaChart from './AreaChart';
 
 const App = () => {
   const [open, setOpen] = useState(true);
