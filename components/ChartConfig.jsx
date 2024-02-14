@@ -73,6 +73,7 @@ function ChartConfig() {
             >
               <option value="bar">Barra</option>
               <option value="area">Area</option>
+              <option value="donut">Dona</option>
             </select>
           </div>
           {theme !== 'Cyber' && (

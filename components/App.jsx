@@ -17,6 +17,7 @@ import Legend from './Legend';
 import UploadExcel from './UploadExcel';
 import UploadImage from './UploadImage';
 import Logo from './icons/Logo';
+import MainDonutChart from './MainDonutChart';
 
 const App = () => {
   const [open, setOpen] = useState(true);
@@ -134,6 +135,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]${
             </header>
             {chartType === 'bar' && <Chart />}
             {chartType === 'area' && <AreaChart />}
+            {chartType === 'donut' && <MainDonutChart />}
           </div>
 
           <div className="w-full h-auto bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1">
