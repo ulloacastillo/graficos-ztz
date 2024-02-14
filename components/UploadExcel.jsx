@@ -18,10 +18,12 @@ const UploadExcel = () => {
         <Filter />
       </div>
       <Select
-        className={'mb-2'}
         onChange={handleDateChange}
         label="Seleccione el formato de fecha"
         id="selectDateType"
+        className={
+          'bg-gray-50 border border-gray-300 rounded-full block p-2.5 w-fit mb-2 '
+        }
         options={DATE_TYPES.map((el) => {
           return { ...el, text: el.value };
         })}

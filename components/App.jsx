@@ -58,7 +58,8 @@ const App = () => {
               onClick={() => setSelectedOption(menu.id)}
               className={`text-gray-300 text-4xl flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md ${
                 menu.gap ? 'mt-9' : 'mt-2'
-              }`}
+              } ${selectedOption === menu.id && 'bg-light-white'} 
+              `}
             >
               {React.createElement(menu.icon, { size: 20 })}
               <span
