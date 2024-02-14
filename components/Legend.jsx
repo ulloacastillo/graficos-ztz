@@ -22,7 +22,7 @@ function Legend() {
           {showTooltip ? <Tooltip /> : null}
         </div>
       </header>
-      <main className="font-light">
+      <main className="font-light pb-2">
         <section className="flex flex-col items-center mb-1">
           <p className="">Reclamos recibidos:</p>
           <div id="received" className="text-red-500 font-medium">

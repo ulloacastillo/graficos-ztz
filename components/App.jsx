@@ -73,9 +73,7 @@ const App = () => {
           ))}
         </ul>
         <button
-          onClick={() =>
-            takeScreenshot('takeScreenshotChart', 'Capturagrafico')
-          }
+          onClick={() => takeScreenshot('chartContainer', 'Capturagrafico')}
           style={{
             width: open ? '85%' : '60%',
             display: 'flex',
@@ -104,7 +102,10 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]${
         style={{ marginLeft: open ? '72px' : '20px' }}
       >
         <div className="grid grid-cols-3 grid-auto-rows:min-content gap-9 h-full">
-          <div className="w-full h-full bg-gray-100 rounded-xl shadow-2xl col-span-3 flex flex-col items-center justify-center">
+          <div
+            id="chartContainer"
+            className="w-full h-full bg-gray-100 rounded-xl shadow-2xl col-span-3 flex flex-col items-center justify-center"
+          >
             <header className="w-full px-5 flex flex-row items-center justify-between">
               <div className="flex flex-col items-center">
                 <div className="mb-1 mt-6">
