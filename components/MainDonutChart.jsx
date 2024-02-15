@@ -1,16 +1,11 @@
-import { useChartSettings, useImageStore } from '@/app/store/store';
+import { MONTHS } from '@/app/constants';
+import { useChartSettings } from '@/app/store/store';
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { MONTHS } from '@/app/constants';
 
 function DonutChart() {
-  const image = useImageStore((state) => state.image);
   const svgRef = useRef();
-
-  const useImage = useChartSettings((state) => state.useImage);
-  const eventsRegister = useChartSettings((state) => state.events);
-  const showImages = useChartSettings((state) => state.showImages);
   const initialColor = useChartSettings((state) => state.initialColor);
   const endColor = useChartSettings((state) => state.endColor);
   const textColor = useChartSettings((state) => state.textColor);
@@ -85,7 +80,7 @@ function DonutChart() {
       .attr('transform', (d) => `translate(${arc.centroid(d)})`)
       .attr('text-anchor', 'middle')
       .attr('font-size', '16px')
-      .attr('fill', 'white');
+      .attr('fill', textColor);
 
     data.forEach((d, i) => {
       svg
@@ -105,17 +100,7 @@ function DonutChart() {
     });
 
     chartConfig.current = { svg };
-  }, [
-    data,
-    image,
-    theme,
-    useImage,
-    eventsRegister,
-    initialColor,
-    endColor,
-    showImages,
-    textColor,
-  ]);
+  }, [data, theme, initialColor, endColor, textColor]);
 
   return (
     <svg

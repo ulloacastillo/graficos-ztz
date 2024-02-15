@@ -5,12 +5,7 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 function AreaChart() {
-  const image = useImageStore((state) => state.image);
   const svgRef = useRef();
-
-  const useImage = useChartSettings((state) => state.useImage);
-  const eventsRegister = useChartSettings((state) => state.events);
-  const showImages = useChartSettings((state) => state.showImages);
   const filterType = useChartSettings((state) => state.filterType);
   const initialColor = useChartSettings((state) => state.initialColor);
   const endColor = useChartSettings((state) => state.endColor);
@@ -18,7 +13,7 @@ function AreaChart() {
   const chartConfig = useRef();
 
   const data = useSelector((state) => state.chartData);
-
+  let clickedBar = { id: null, color: null };
   const margin = { top: 80, right: 30, bottom: 70, left: 60 },
     width = 800 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
@@ -146,24 +141,91 @@ function AreaChart() {
       .enter()
       .append('text')
       .text((d) => d[1])
+      .attr('id', (d, i) => `mybar${i}`)
       .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
       .attr('y', (d) => y(d[1]) - 10)
       .attr('text-anchor', 'middle')
       .style('font-size', '10px')
-      .style('fill', textColor);
+      .style('fill', textColor)
+      .on('click', function (event, d) {
+        const selectedBar = d3.select(event.currentTarget);
+        const clickedId = selectedBar.attr('id');
+
+        let claimsPreviousMonth;
+
+        if (clickedId && clickedId !== 'mybar0') {
+          const idPrevious = parseInt(clickedId.slice(5)) - 1;
+          const previousMonth = d3.select(`#mybar${idPrevious}`);
+
+          claimsPreviousMonth = previousMonth._groups[0][0].__data__[1];
+        }
+
+        const receivedText = d3.select('#received');
+        const increaseText = d3.select('#increase');
+        const upOrDown = d3.select('#upOrDown');
+        if (clickedBar.id === clickedId) {
+          d3.select('#' + clickedBar.id)
+            .attr('fill', clickedBar.color)
+            .attr('stroke', clickedBar.color)
+            .attr('stroke-width', 0.3);
+          receivedText.html(
+            `<div id="received" className="text-red-500 font-medium">0</div>`,
+          );
+          increaseText.html(
+            `<div id="increase" className="text-red-500 font-medium">0% (+0)</div>`,
+          );
+
+          clickedBar = { id: null, color: null };
+        } else {
+          d3.select('#' + clickedBar.id)
+            .attr('fill', clickedBar.color)
+            .attr('stroke', clickedBar.color)
+            .attr('stroke-width', 0.3);
+          const claimsReceived = selectedBar._groups[0][0].__data__[1];
+          receivedText.html(
+            `<div id="received" className="text-red-500 font-medium">${claimsReceived}</div>`,
+          );
+
+          const diff = parseInt(claimsReceived) - parseInt(claimsPreviousMonth);
+          const rate = (diff / claimsReceived) * 100;
+
+          if (clickedId !== 'mybar0') {
+            if (diff < 0) {
+              upOrDown.html('<span>Disminuyeron</span>');
+              increaseText.html(
+                `<div id="increase" className="text-red-500 font-medium">${
+                  Math.trunc(rate * 100) / 100
+                }% (${diff})</div>`,
+              );
+            } else {
+              upOrDown.html('<span>Aumentaron</span>');
+              increaseText.html(
+                `<div id="increase" className="text-red-500 font-medium">${
+                  Math.trunc(rate * 100) / 100
+                }% (+${diff})</div>`,
+              );
+            }
+          } else {
+            increaseText.html(
+              `<div id="increase" className="text-red-500 font-medium">${0}% (+${0})</div>`,
+            );
+          }
+
+          clickedBar = {
+            id: clickedId,
+            color: d3.select(event.currentTarget).attr('fill'),
+          };
+        }
+        if (clickedBar.id) {
+          d3.select(event.currentTarget)
+            .attr('fill', '#05002b')
+            .attr('stroke', '#ff0000')
+            .attr('stroke-width', 0.3);
+        }
+      });
 
     chartConfig.current = { svg, x, y };
-  }, [
-    data,
-    image,
-    theme,
-    useImage,
-    eventsRegister,
-    initialColor,
-    endColor,
-    showImages,
-    textColor,
-  ]);
+  }, [data, theme, initialColor, endColor, textColor]);
 
   return (
     <svg
