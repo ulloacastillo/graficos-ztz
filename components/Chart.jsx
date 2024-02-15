@@ -22,13 +22,13 @@ function Chart() {
   const chartConfig = useRef();
 
   let clickedBar = { id: null, color: null };
-  const data = useSelector((state) => state.chartData);
+  const originalData = useSelector((state) => state.chartData);
 
   const margin = { top: 80, right: 30, bottom: 70, left: 60 },
     width = 800 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
 
-  const maxData = Math.max(...data.map((item) => item[1]));
+  const maxData = Math.max(...originalData.map((item) => item[1]));
   const theme = useChartSettings((state) => state.theme);
 
   useEffect(() => {
@@ -38,14 +38,15 @@ function Chart() {
         selectedYear === 'Todos' ? '' : selectedYear
       }</h2>`,
     );
+    const data = originalData.toSorted((a, b) => a[0] - b[0]);
+
     const myColor = d3
       .scaleLinear()
       .domain([1, data.length])
       .range([initialColor, endColor]);
 
-    const parsedData = data.map((item) => [new Date(item[0]), item[1]]);
-    parsedData.sort((a, b) => a[0] - b[0]);
-
+    // const parsedData = data.map((item) => [new Date(item[0]), item[1]]);
+    // parsedData.sort((a, b) => a[0] - b[0]);
     d3.select(svgRef.current).selectAll('*').remove();
 
     const svg = d3
@@ -597,9 +598,9 @@ function Chart() {
         }
         if (clickedBar.id) {
           d3.select(e.currentTarget)
-            .attr('fill', '#05002b')
-            .attr('stroke', '#ff0000')
-            .attr('stroke-width', 0.3);
+            .attr('fill', '#ff0000')
+            .attr('stroke', '#000000')
+            .attr('stroke-width', 0.5);
         }
       })
       .attr('x', (d) => x(d[0]) + x.bandwidth() / 2)
@@ -624,7 +625,7 @@ function Chart() {
 
     chartConfig.current = { svg, x, y };
   }, [
-    data,
+    originalData,
     image,
     theme,
     useImage,

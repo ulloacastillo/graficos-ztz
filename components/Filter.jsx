@@ -47,7 +47,7 @@ const Filter = () => {
         return acc;
       }, []);
     }
-
+    console.log(filteredData);
     dispatch(updateChartData(filteredData));
     dispatch(
       updateClaims({
