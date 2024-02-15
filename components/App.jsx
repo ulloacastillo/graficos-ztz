@@ -7,6 +7,7 @@ import { CiImageOn, CiSettings } from 'react-icons/ci';
 import { RiFileExcel2Line } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import control from '../public/control.png';
+import AreaChart from './AreaChart';
 import Chart from './Chart';
 import ChartConfig from './ChartConfig';
 import DataTable from './DataTable';
@@ -16,7 +17,7 @@ import Legend from './Legend';
 import UploadExcel from './UploadExcel';
 import UploadImage from './UploadImage';
 import Logo from './icons/Logo';
-import AreaChart from './AreaChart';
+import MainDonutChart from './MainDonutChart';
 
 const App = () => {
   const [open, setOpen] = useState(true);
@@ -24,7 +25,7 @@ const App = () => {
   const filteredData = useSelector((state) => state.chartData);
   const colNumber = parseInt(useSelector((state) => state.colNumber));
   const claims = useSelector((state) => state.claims);
-
+  const { chartType } = useChartSettings();
   const initialColor = useChartSettings((state) => state.initialColor);
   const endColor = useChartSettings((state) => state.endColor);
   const [title, setTitle] = useState('Escriba el Título del gráfico');
@@ -134,7 +135,9 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]${
               </div>
               <Legend />
             </header>
-            <Chart />
+            {chartType === 'bar' && <Chart />}
+            {chartType === 'area' && <AreaChart />}
+            {chartType === 'donut' && <MainDonutChart />}
           </div>
 
           <div className="w-full h-auto bg-gray-100 rounded-xl shadow-2xl row-start-2 col-span-1">
